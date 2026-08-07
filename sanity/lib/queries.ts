@@ -1,16 +1,127 @@
-import {groq} from "next-sanity";
-export const projectBySlugQuery=groq`*[_type=="project"&&slug.current==$slug][0]{
-title,category,projectType,summary,heroImage,role,timeline,tools,platform,
-problem,goal,designChallenge,targetUsers,researchMethods,researchInsights[]{title,description},
-personas[]{image,alt,caption,displaySize},journeyMaps[]{image,alt,caption,displaySize},
-userFlows[]{image,alt,caption,displaySize},wireframes[]{image,alt,caption,displaySize},designSystem[]{image,alt,caption,displaySize},
-solutionOverview,keyFeatures[]{title,description,icon},
-finalUiSections[]{title,description,displayMode,screens[]{image,alt,caption,displaySize}},
-edgeCaseIntro,edgeCases[]{title,scenario,challenge,solution,actions,screens[]{image,alt,caption,displaySize}},
-prototypeUrl,"prototypeVideoUrl":prototypeVideo.asset->url,prototypePoster,prototypeNotes,
-outcome,impactMetrics[]{metric,label,description},learnings,nextSteps,
-contentSections[]{eyebrow,title,summary,layout,background,images[]{image,alt,caption,displaySize}},
-liveUrl,figmaUrl,repositoryUrl,
-personasImage,journeyMapImage,userFlowImage,wireframeImages,designSystemImage,
-finalScreens[]{title,description,image},sections[]{number,title,description,image}
-}`;
+import {groq} from "next-sanity"
+
+export const projectBySlugQuery = groq`
+*[_type == "project" && slug.current == $slug][0]{
+  _id,
+  title,
+  slug,
+  summary,
+  heroImage{
+    ...,
+    asset->{_id,url,metadata},
+    alt,
+    caption
+  },
+
+  projectType,
+  role,
+  timeline,
+  platform,
+  team,
+  tools,
+  responsibilities,
+
+  problemStatement,
+  context[]{
+    ...,
+    _type == "caseStudyImage" => {
+      _key,_type,display,
+      image{...,asset->{_id,url,metadata},alt,caption}
+    }
+  },
+  howMightWe,
+  constraints,
+
+  researchMethods,
+  personas[]{_key,_type,display,image{...,asset->{_id,url,metadata},alt,caption}},
+  journeyMap[]{_key,_type,display,image{...,asset->{_id,url,metadata},alt,caption}},
+  competitiveAnalysis[]{
+    ...,
+    _type == "caseStudyImage" => {
+      _key,_type,display,
+      image{...,asset->{_id,url,metadata},alt,caption}
+    }
+  },
+  researchInsights[]{title,evidence,decision},
+
+  productGoal,
+  successCriteria,
+  productPrinciples,
+  designDecisions[]{decision,reason,impact},
+
+  informationArchitecture[]{
+    ...,
+    _type == "caseStudyImage" => {
+      _key,_type,display,
+      image{...,asset->{_id,url,metadata},alt,caption}
+    }
+  },
+  primaryUserFlow[]{
+    ...,
+    _type == "caseStudyImage" => {
+      _key,_type,display,
+      image{...,asset->{_id,url,metadata},alt,caption}
+    }
+  },
+  secondaryFlows[]{
+    title,
+    description,
+    screens[]{_key,_type,display,image{...,asset->{_id,url,metadata},alt,caption}}
+  },
+
+  wireframeSummary[],
+  lowFidelityWireframes[]{_key,_type,display,image{...,asset->{_id,url,metadata},alt,caption}},
+  iterations[]{
+    eyebrow,
+    title,
+    body[]{
+      ...,
+      _type == "caseStudyImage" => {
+        _key,_type,display,
+        image{...,asset->{_id,url,metadata},alt,caption}
+      }
+    }
+  },
+
+  visualDirection[]{
+    ...,
+    _type == "caseStudyImage" => {
+      _key,_type,display,
+      image{...,asset->{_id,url,metadata},alt,caption}
+    }
+  },
+  designSystem[]{_key,_type,display,image{...,asset->{_id,url,metadata},alt,caption}},
+  accessibility,
+
+  solutionIntro[],
+  featureFlows[]{
+    title,
+    description,
+    screens[]{_key,_type,display,image{...,asset->{_id,url,metadata},alt,caption}}
+  },
+
+  prototypeDescription,
+  "prototypeVideoUrl": prototypeVideo.asset->url,
+  prototypeUrl,
+
+  edgeCases[]{
+    title,
+    scenario,
+    response,
+    recoveryAction,
+    screens[]{_key,_type,display,image{...,asset->{_id,url,metadata},alt,caption}}
+  },
+
+  impactSummary[],
+  outcomes,
+  metrics[]{label,value,note},
+
+  learnings,
+  nextSteps,
+  reflection[],
+
+  liveUrl,
+  figmaUrl,
+  githubUrl
+}
+`
