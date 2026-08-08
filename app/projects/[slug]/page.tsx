@@ -29,8 +29,14 @@ function mapGallery(items?: CaseStudyImage[]) {
     }))
 }
 
+function isPortableTextBlock(
+  item: RichContentItem,
+): item is Extract<RichContentItem, {_type: "block"}> {
+  return item._type === "block"
+}
+
 function blockText(item: RichContentItem) {
-  if (item._type !== "block") return ""
+  if (!isPortableTextBlock(item)) return ""
   return (item.children || []).map((child) => child.text || "").join("")
 }
 
@@ -57,6 +63,8 @@ function RichContent({
             </div>
           ) : null
         }
+
+        if (!isPortableTextBlock(item)) return null
 
         const text = blockText(item)
         if (!text) return null
