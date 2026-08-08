@@ -72,6 +72,7 @@ export const projectBySlugQuery = groq`
   wireframeSummary[],
   lowFidelityWireframes[]{_key,_type,display,image{...,asset->{_id,url,metadata},alt,caption}},
   iterations[]{
+    _key,
     eyebrow,
     title,
     body[]{
@@ -80,7 +81,8 @@ export const projectBySlugQuery = groq`
         _key,_type,display,
         image{...,asset->{_id,url,metadata},alt,caption}
       }
-    }
+    },
+    screens[]{_key,_type,display,image{...,asset->{_id,url,metadata},alt,caption}}
   },
 
   visualDirection[]{

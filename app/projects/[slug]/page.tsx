@@ -359,7 +359,34 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
             <Reveal><SectionHeading eyebrow="Wireframes" title="Reducing friction before adding polish" /></Reveal>
             {hasRichContent(project.wireframeSummary) && <div className="mt-12 max-w-4xl"><RichContent value={project.wireframeSummary} /></div>}
             {project.lowFidelityWireframes?.length ? <div className="mt-14"><h3 className="mb-6 text-2xl font-black">Low-Fidelity Wireframes</h3><LightboxGallery items={mapGallery(project.lowFidelityWireframes)} /></div> : null}
-            {project.iterations?.length ? <div className="mt-16 space-y-16"><h3 className="text-2xl font-black">Key Iterations</h3>{project.iterations.map((iteration, index) => <Reveal key={`${iteration.title}-${index}`}><article className="rounded-[2rem] border border-slate-200 bg-white p-8 dark:border-white/10 dark:bg-white/[0.04]"><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-600">{iteration.eyebrow || `Iteration ${String(index + 1).padStart(2, "0")}`}</p><h4 className="mt-3 text-3xl font-black tracking-[-0.03em]">{iteration.title}</h4><div className="mt-6"><RichContent value={iteration.body} /></div></article></Reveal>)}</div> : null}
+            {project.iterations?.length ? (
+              <div className="mt-16 space-y-16">
+                <h3 className="text-2xl font-black">Key Iterations</h3>
+                {project.iterations.map((iteration, index) => {
+                  const screens = mapGallery(iteration.screens)
+                  return (
+                    <Reveal key={`${iteration.title}-${index}`}>
+                      <article className="rounded-[2rem] border border-slate-200 bg-white p-8 dark:border-white/10 dark:bg-white/[0.04]">
+                        <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-600">
+                          {iteration.eyebrow || `Iteration ${String(index + 1).padStart(2, "0")}`}
+                        </p>
+                        <h4 className="mt-3 text-3xl font-black tracking-[-0.03em]">
+                          {iteration.title}
+                        </h4>
+                        <div className="mt-6">
+                          <RichContent value={iteration.body} />
+                        </div>
+                        {screens.length ? (
+                          <div className="mt-8">
+                            <LightboxGallery items={screens} />
+                          </div>
+                        ) : null}
+                      </article>
+                    </Reveal>
+                  )
+                })}
+              </div>
+            ) : null}
           </div>
         </section>
       )}

@@ -78,6 +78,7 @@ export type Iteration = {
   eyebrow?: string
   title: string
   body?: RichContentItem[]
+  screens?: CaseStudyImage[]
 }
 
 export type Metric = {
