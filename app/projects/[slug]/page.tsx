@@ -113,6 +113,57 @@ function RichContent({
   )
 }
 
+function InformationArchitecture({
+  value,
+}: {
+  value?: RichContentItem[]
+}) {
+  if (!value?.length) return null
+
+  return (
+    <div className="overflow-x-auto rounded-[2rem] border border-slate-200 bg-slate-50 p-6 md:p-8 dark:border-white/10 dark:bg-[#0B1120]">
+      <div className="min-w-[720px] font-mono text-sm leading-8 text-slate-700 dark:text-slate-300">
+        {value.map((item, index) => {
+          if (item._type === "caseStudyImage") {
+            const gallery = mapGallery([item])
+
+            return gallery.length ? (
+              <div
+                key={item._key || `ia-image-${index}`}
+                className="my-6 font-sans"
+              >
+                <LightboxGallery items={gallery} />
+              </div>
+            ) : null
+          }
+
+          if (!isPortableTextBlock(item)) return null
+
+          const text = blockText(item)
+
+          if (!text) {
+            return (
+              <div
+                key={item._key || `ia-space-${index}`}
+                className="h-4"
+              />
+            )
+          }
+
+          return (
+            <div
+              key={item._key || `ia-${index}`}
+              className="whitespace-pre-wrap"
+            >
+              {text}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 function SectionHeading({
   eyebrow,
   title,
@@ -346,7 +397,12 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
         <section id="ia-flows" className="scroll-mt-24 bg-white px-6 py-24 dark:bg-[#080D1A] lg:px-8">
           <div className="mx-auto max-w-7xl">
             <Reveal><SectionHeading eyebrow="IA & Flows" title="Dispatch first. Diagnose while waiting." /></Reveal>
-            {hasRichContent(project.informationArchitecture) && <div className="mt-14"><h3 className="mb-6 text-2xl font-black">Information Architecture</h3><RichContent value={project.informationArchitecture} /></div>}
+            {hasRichContent(project.informationArchitecture) && (
+              <div className="mt-14">
+                <h3 className="mb-6 text-2xl font-black">Information Architecture</h3>
+                <InformationArchitecture value={project.informationArchitecture} />
+              </div>
+            )}
             {hasRichContent(project.primaryUserFlow) && <div className="mt-14"><h3 className="mb-6 text-2xl font-black">Primary User Flow</h3><RichContent value={project.primaryUserFlow} /></div>}
             {project.secondaryFlows?.length ? <div className="mt-14 space-y-16"><h3 className="text-2xl font-black">Secondary Flows</h3>{project.secondaryFlows.map((flow, index) => {const screens = mapGallery(flow.screens); return <Reveal key={`${flow.title}-${index}`}><article><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-600">Secondary Flow {String(index + 1).padStart(2, "0")}</p><h4 className="mt-3 text-3xl font-black tracking-[-0.03em]">{flow.title}</h4>{flow.description && <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">{flow.description}</p>}{screens.length ? <div className="mt-8"><LightboxGallery items={screens} /></div> : null}</article></Reveal>})}</div> : null}
           </div>
