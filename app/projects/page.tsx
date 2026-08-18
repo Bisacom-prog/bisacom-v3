@@ -37,7 +37,7 @@ const fallbackProjects: ProjectCard[] = [
     type: "Product Design · Responsive Web",
     description:
       "A mobile-first ordering and catering experience that turns a manual, chat-heavy workflow into a structured digital product.",
-    image: "/img/kitchen.webp",
+    image: "/img/kitchen-v2.webp",
     href: "/projects/ma-adjo-s-kitchen",
   },
 ]
