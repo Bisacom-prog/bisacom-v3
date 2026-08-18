@@ -48,7 +48,7 @@ export default function PrivacyPolicyPage() {
               <strong>Brand:</strong> Bisacom
             </p>
             <p>
-              <strong>Email:</strong> bisacom@gmail.com
+              <strong>Email:</strong> hello@bisacom.dev
             </p>
           </div>
         </section>
