@@ -1,12 +1,14 @@
 {
   "name": "bisacom-portfolio",
   "version": "0.1.0",
-  "private": true,                   
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\"",
+    "dev:clean": "npm run clean && next dev"
   },
   "dependencies": {
     "@sanity/image-url": "^2.1.1",

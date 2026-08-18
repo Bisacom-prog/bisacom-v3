@@ -1,17 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
-
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: { default: siteConfig.title, template: `%s | ${siteConfig.name}` },
   description: siteConfig.description,
   applicationName: siteConfig.name,
-  keywords: ["Product Designer", "UI UX Designer", "UX Designer Norwich", "UK Product Designer", "Front-end Designer", "Bisacom"],
+  keywords: ["Freelance Product Designer", "Product Designer Norwich", "UI UX Designer UK", "UX Designer Norwich", "SaaS Product Designer", "Front-end Designer", "Bisacom"],
   authors: [{ name: "Bismark Apenkwah", url: siteConfig.url }],
   creator: "Bismark Apenkwah",
   alternates: { canonical: "/" },
@@ -22,8 +18,9 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     locale: "en_GB",
     type: "website",
+    images: [{ url: "/img/hero-product-design-v2.png", width: 1586, height: 992, alt: "Bisacom product design portfolio" }],
   },
-  twitter: { card: "summary_large_image", title: siteConfig.title, description: siteConfig.description },
+  twitter: { card: "summary_large_image", title: siteConfig.title, description: siteConfig.description, images: ["/img/hero-product-design-v2.png"] },
   robots: { index: true, follow: true },
 };
 
@@ -38,9 +35,20 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: "Bisacom",
+    url: siteConfig.url,
+    email: siteConfig.email,
+    founder: { "@type": "Person", name: "Bismark Apenkwah", jobTitle: "Product Designer" },
+    areaServed: ["United Kingdom", "Remote"],
+    serviceType: ["Product Design", "UX/UI Design", "Website Design and Development"],
+  };
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground selection:bg-brand/20 selection:text-foreground">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
         <a href="#main-content" className="skip-link">Skip to main content</a>
         {children}
       </body>
