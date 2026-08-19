@@ -24,6 +24,8 @@ export async function POST(request: Request) {
       `Type: ${text(body.enquiryType, 30) || "contact"}`,
       `Name: ${name}`,
       `Email: ${email}`,
+      body.business ? `Business: ${text(body.business, 160)}` : "",
+      body.currentWebsite ? `Current website: ${text(body.currentWebsite, 300)}` : "",
       body.service ? `Service: ${text(body.service, 120)}` : "",
       body.budget ? `Budget: ${text(body.budget, 80)}` : "",
       body.timeline ? `Timeline: ${text(body.timeline, 120)}` : "",
@@ -33,7 +35,7 @@ export async function POST(request: Request) {
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json"},
-      body: JSON.stringify({from: process.env.CONTACT_FROM_EMAIL || "Bisacom Portfolio <onboarding@resend.dev>", to: [EMAIL], reply_to: email, subject: `${body.enquiryType === "quote" ? "Quote request" : "Portfolio enquiry"} from ${name}`, text: details}),
+      body: JSON.stringify({from: process.env.CONTACT_FROM_EMAIL || "Bisacom Portfolio <onboarding@resend.dev>", to: [EMAIL], reply_to: email, subject: `${body.enquiryType === "quote" ? `Quote request${body.business ? ` — ${text(body.business, 80)}` : ""}` : "Portfolio enquiry"} from ${name}`, text: details}),
     });
     if (!response.ok) return NextResponse.json({error: "Email could not be sent."}, {status: 502});
     return NextResponse.json({ok: true});

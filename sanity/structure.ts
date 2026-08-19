@@ -19,4 +19,13 @@ export const structure: StructureResolver = (S) =>
               excludedTitles: ['Cleaning Website', 'Aba’s Pie', "Aba's Pie"],
             }),
         ),
-    ])
+      S.divider(),
+      S.listItem()
+        .title('Client Reviews')
+        .child(
+          S.documentList()
+            .title('Client Reviews')
+            .filter('_type == "review"')
+            .defaultOrdering([{field: '_createdAt', direction: 'desc'}]),
+        ),
+      ])

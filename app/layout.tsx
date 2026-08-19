@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: { default: siteConfig.title, template: `%s | ${siteConfig.name}` },
   description: siteConfig.description,
   applicationName: siteConfig.name,
-  keywords: ["Freelance Product Designer", "Product Designer Norwich", "UI UX Designer UK", "UX Designer Norwich", "SaaS Product Designer", "Front-end Designer", "Bisacom"],
+  keywords: ["Freelance Product Designer", "Freelance UI UX Designer", "Website Designer Norwich", "Product Designer Norwich", "UX Audit UK", "Next.js Developer Norwich", "Figma Designer UK", "Bisacom"],
   authors: [{ name: "Bismark Apenkwah", url: siteConfig.url }],
   creator: "Bismark Apenkwah",
   alternates: { canonical: "/" },
@@ -43,7 +43,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     email: siteConfig.email,
     founder: { "@type": "Person", name: "Bismark Apenkwah", jobTitle: "Product Designer" },
     areaServed: ["United Kingdom", "Remote"],
-    serviceType: ["Product Design", "UX/UI Design", "Website Design and Development"],
+    serviceType: ["UX Audit", "Product Design", "UX/UI Design", "Figma Prototyping", "Website Design and Development", "Next.js Development"],
   };
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>

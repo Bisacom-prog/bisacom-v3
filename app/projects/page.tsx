@@ -25,20 +25,20 @@ type ProjectCard = {
 
 const fallbackProjects: ProjectCard[] = [
   {
+    title: "Ma Adjo’s Kitchen",
+    type: "Live Client Project · Responsive Web",
+    description:
+      "A shipped ordering and catering website that replaces a phone-only journey with structured WhatsApp ordering, allergen guidance and event enquiries.",
+    image: "/img/kitchen-v2.webp",
+    href: "/projects/ma-adjo-s-kitchen",
+  },
+  {
     title: "Mobile Mechanic App",
     type: "Product Design · Mobile App",
     description:
       "AI-assisted roadside support concept focused on fast help requests, mechanic matching and resilient mobile flows.",
     image: "/img/mobile.webp",
     href: "/projects/mobile-mechanic-app",
-  },
-  {
-    title: "Ma Adjo’s Kitchen",
-    type: "Product Design · Responsive Web",
-    description:
-      "A mobile-first ordering and catering experience that turns a manual, chat-heavy workflow into a structured digital product.",
-    image: "/img/kitchen-v2.webp",
-    href: "/projects/ma-adjo-s-kitchen",
   },
 ]
 
@@ -47,13 +47,17 @@ export const revalidate = 60
 export default async function ProjectsPage() {
   const sanityProjects = await client.fetch<ProjectCard[]>(projectsIndexQuery)
   const sanitySlugs = new Set(sanityProjects.map((project) => project.slug))
+  const order = ["Ma Adjo’s Kitchen", "Mobile Mechanic App", "Short-Notice Shift Coverage"]
   const projects = [
     ...sanityProjects,
     ...fallbackProjects.filter((project) => {
       const slug = project.href?.split("/").filter(Boolean).at(-1)
       return !slug || !sanitySlugs.has(slug)
     }),
-  ]
+  ].sort((a,b)=>{
+    const ai=order.indexOf(a.title), bi=order.indexOf(b.title)
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi)
+  })
 
   return (
     <main className="min-h-screen bg-[#F8FAFC] px-6 py-24 text-slate-950 dark:bg-[#050914] dark:text-white lg:px-8">
