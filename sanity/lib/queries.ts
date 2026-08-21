@@ -118,6 +118,12 @@ export const projectBySlugQuery = groq`
 
   prototypeDescription,
   "prototypeVideoUrl": prototypeVideo.asset->url,
+  prototypeVideos[]{
+    _key,
+    title,
+    description,
+    "url": video.asset->url
+  },
   prototypeUrl,
   validationSummary,
   validationPlan[]{_key,_type,display,displaySize,alt,caption,image{...,asset->{_id,url,metadata}}},

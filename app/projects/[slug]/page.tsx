@@ -273,7 +273,7 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
     hasRichContent(project.solutionIntro) || project.solutionOverview || project.featureFlows?.length || project.finalUiSections?.length
       ? {id: "solution", label: "Final UI"}
       : null,
-    project.prototypeDescription || project.prototypeVideoUrl || project.prototypeUrl || project.figmaUrl
+    project.prototypeDescription || project.prototypeVideoUrl || project.prototypeVideos?.length || project.prototypeUrl || project.figmaUrl
       ? {id: "prototype", label: "Prototype"}
       : null,
     project.edgeCases?.length ? {id: "edge-cases", label: "Edge Cases"} : null,
@@ -490,11 +490,95 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
         </section>
       )}
 
-      {(project.prototypeDescription || project.prototypeVideoUrl || project.prototypeUrl || project.figmaUrl) && (
+      {(project.prototypeDescription || project.prototypeVideoUrl || project.prototypeVideos?.length || project.prototypeUrl || project.figmaUrl) && (
         <section id="prototype" className="scroll-mt-24 bg-white px-6 py-24 dark:bg-[#080D1A] lg:px-8">
           <div className="mx-auto max-w-7xl">
-            <Reveal><SectionHeading eyebrow="Prototype" title="Testing the complete journey" description={project.prototypeDescription} /></Reveal>
-            <Reveal><div className="mt-10 overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.04]">{project.prototypeVideoUrl ? <video controls className="w-full rounded-[1.5rem]"><source src={project.prototypeVideoUrl} /></video> : null}{(project.prototypeUrl || project.figmaUrl) && <div className="flex justify-center p-6"><a href={project.prototypeUrl || project.figmaUrl} target="_blank" rel="noreferrer" className="rounded-xl bg-[#2D5BFF] px-7 py-4 text-sm font-bold text-white">Explore Interactive Prototype →</a></div>}</div></Reveal>
+            <Reveal>
+              <SectionHeading
+                eyebrow="Prototype"
+                title="Testing the complete journey"
+                description={project.prototypeDescription}
+              />
+            </Reveal>
+
+            <Reveal>
+              <div className="mt-10 rounded-[2rem] border border-slate-200 bg-slate-50 p-5 md:p-6 dark:border-white/10 dark:bg-white/[0.04]">
+                {(() => {
+                  const prototypeVideos =
+                    Array.isArray(project.prototypeVideos) && project.prototypeVideos.length
+                      ? project.prototypeVideos
+                      : project.prototypeVideoUrl
+                        ? [
+                            {
+                              title: "Core Roadside Assistance Flow",
+                              description:
+                                "A walkthrough of the primary roadside assistance journey from requesting help through payment and completion.",
+                              url: project.prototypeVideoUrl,
+                            },
+                          ]
+                        : []
+
+                  if (!prototypeVideos.length) return null
+
+                  return (
+                    <div
+                      className={
+                        prototypeVideos.length > 1
+                          ? "grid gap-10 lg:grid-cols-2 lg:items-start"
+                          : "flex justify-center"
+                      }
+                    >
+                      {prototypeVideos.map((video: any, index: number) => (
+                        <article
+                          key={`${video.url || video.videoUrl || index}-${index}`}
+                          className={prototypeVideos.length > 1 ? "min-w-0" : "w-full max-w-[440px]"}
+                        >
+                          <div className="flex justify-center">
+                            <video
+                              controls
+                              playsInline
+                              preload="metadata"
+                              className="h-auto w-full max-w-[440px] rounded-[1.5rem] bg-black shadow-xl"
+                            >
+                              <source src={video.url || video.videoUrl} />
+                              Your browser does not support the video tag.
+                            </video>
+                          </div>
+
+                          {(video.title || video.description) && (
+                            <div className="mx-auto mt-5 max-w-[440px]">
+                              {video.title && (
+                                <h3 className="text-lg font-black tracking-[-0.02em] text-slate-950 dark:text-white">
+                                  {video.title}
+                                </h3>
+                              )}
+                              {video.description && (
+                                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                                  {video.description}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </article>
+                      ))}
+                    </div>
+                  )
+                })()}
+
+                {(project.prototypeUrl || project.figmaUrl) && (
+                  <div className="flex justify-center pt-8">
+                    <a
+                      href={project.prototypeUrl || project.figmaUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-xl bg-[#2D5BFF] px-7 py-4 text-sm font-bold text-white"
+                    >
+                      Explore Interactive Prototype →
+                    </a>
+                  </div>
+                )}
+              </div>
+            </Reveal>
           </div>
         </section>
       )}

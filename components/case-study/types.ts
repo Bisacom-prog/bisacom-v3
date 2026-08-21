@@ -102,6 +102,13 @@ export type TextOutcome = {
   description?: string
 }
 
+export type PrototypeVideo = {
+  _key?: string
+  title?: string
+  description?: string
+  url?: string
+}
+
 export type Project = {
   _id?: string
   title: string
@@ -164,6 +171,7 @@ export type Project = {
 
   prototypeDescription?: string
   prototypeVideoUrl?: string
+  prototypeVideos?: PrototypeVideo[]
   prototypeUrl?: string
   validationSummary?: string
   validationPlan?: CaseStudyImage[]

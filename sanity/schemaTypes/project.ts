@@ -699,10 +699,49 @@ export const project = defineType({
     }),
     defineField({
       name: 'prototypeVideo',
-      title: 'Prototype Video',
+      title: 'Legacy Prototype Video',
       type: 'file',
       group: 'prototype',
       options: {accept: 'video/*'},
+      description: 'Legacy single-video field retained for existing projects. For new uploads, use Prototype Videos below.',
+    }),
+    defineField({
+      name: 'prototypeVideos',
+      title: 'Prototype Videos',
+      type: 'array',
+      group: 'prototype',
+      description: 'Add one or more focused prototype walkthroughs. Mobile Mechanic can use this for the Core Assistance Journey and AI-Assisted Diagnosis.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'prototypeVideoItem',
+          title: 'Prototype Video',
+          fields: [
+            defineField({
+              name: 'title',
+              title: 'Video Title',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'description',
+              title: 'Video Description',
+              type: 'text',
+              rows: 3,
+            }),
+            defineField({
+              name: 'video',
+              title: 'Video File',
+              type: 'file',
+              options: {accept: 'video/*'},
+              validation: (Rule) => Rule.required(),
+            }),
+          ],
+          preview: {
+            select: {title: 'title', subtitle: 'description'},
+          },
+        }),
+      ],
     }),
     defineField({
       name: 'prototypeUrl',
