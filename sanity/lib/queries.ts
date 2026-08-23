@@ -215,17 +215,112 @@ export const projectBySlugQuery = groq`
 }
 `
 
-
 export const blogPostsQuery = groq`
-*[_type == "post" && defined(slug.current) && coalesce(seoNoIndex, false) != true] | order(publishedAt desc){
-  _id,title,"slug":slug.current,excerpt,category,publishedAt,readTime,seoTitle,seoDescription,primaryKeyword,seoKeywords,
-  "featuredImageUrl":featuredImage.asset->url,"featuredImageAlt":featuredImage.alt
+*[
+  _type == "post" &&
+  defined(slug.current) &&
+  coalesce(seo.noIndex, seoNoIndex, false) != true &&
+  defined(publishedAt) &&
+  publishedAt <= now()
+] | order(publishedAt desc){
+  _id,
+  title,
+  "slug": slug.current,
+  excerpt,
+  publishedAt,
+  "updatedAt": _updatedAt,
+  featured,
+  tags,
+  "category": coalesce(category->title, category, "Product Design"),
+  "categorySlug": category->slug.current,
+  "authorName": coalesce(author->name, "Bismark Apenkwah"),
+  "authorRole": author->role,
+  "seoTitle": coalesce(seo.title, seoTitle, title),
+  "seoDescription": coalesce(seo.description, seoDescription, excerpt),
+  "primaryKeyword": coalesce(seo.primaryKeyword, primaryKeyword),
+  "seoKeywords": coalesce(seo.keywords, seoKeywords, []),
+  "canonicalUrl": seo.canonicalUrl,
+  "seoNoIndex": coalesce(seo.noIndex, seoNoIndex, false),
+  "featuredImageUrl": featuredImage.asset->url,
+  "featuredImageAlt": featuredImage.alt,
+  "socialImageUrl": seo.socialImage.asset->url
 }
 `;
 
 export const blogPostBySlugQuery = groq`
-*[_type == "post" && slug.current == $slug][0]{
-  _id,title,"slug":slug.current,excerpt,category,publishedAt,readTime,body,seoTitle,seoDescription,primaryKeyword,seoKeywords,seoNoIndex,
-  featuredImage{...,asset->{_id,url,metadata},alt}
+*[
+  _type == "post" &&
+  slug.current == $slug &&
+  coalesce(seo.noIndex, seoNoIndex, false) != true &&
+  defined(publishedAt) &&
+  publishedAt <= now()
+][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  excerpt,
+  publishedAt,
+  "updatedAt": _updatedAt,
+  featured,
+  tags,
+  "category": coalesce(category->title, category, "Product Design"),
+  "categorySlug": category->slug.current,
+  author->{
+    name,
+    role,
+    bio,
+    "slug": slug.current,
+    linkedin,
+    website,
+    photo{
+      ...,
+      "url": asset->url,
+      alt
+    }
+  },
+  "seoTitle": coalesce(seo.title, seoTitle, title),
+  "seoDescription": coalesce(seo.description, seoDescription, excerpt),
+  "primaryKeyword": coalesce(seo.primaryKeyword, primaryKeyword),
+  "seoKeywords": coalesce(seo.keywords, seoKeywords, []),
+  "canonicalUrl": seo.canonicalUrl,
+  "seoNoIndex": coalesce(seo.noIndex, seoNoIndex, false),
+  featuredImage{
+    ...,
+    "url": asset->url,
+    alt,
+    caption
+  },
+  "socialImageUrl": seo.socialImage.asset->url,
+  body[]{
+    ...,
+    _type == "image" => {
+      ...,
+      "url": asset->url,
+      alt,
+      caption
+    }
+  },
+  relatedPosts[]->{
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    "category": coalesce(category->title, category, "Product Design"),
+    publishedAt
+  }
+}
+`;
+
+export const blogPostSlugsQuery = groq`
+*[
+  _type == "post" &&
+  defined(slug.current) &&
+  coalesce(seo.noIndex, seoNoIndex, false) != true &&
+  defined(publishedAt) &&
+  publishedAt <= now()
+]{
+  "slug": slug.current,
+  "updatedAt": _updatedAt,
+  publishedAt
 }
 `;
