@@ -1,6 +1,5 @@
 import type {MetadataRoute} from "next";
-
-const SITE_URL = "https://www.bisacom.dev";
+import {siteConfig} from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -11,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/studio/", "/api/"],
       },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
+    sitemap: `${siteConfig.url}/sitemap.xml`,
+    host: siteConfig.url,
   };
 }

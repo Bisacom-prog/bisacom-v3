@@ -21,6 +21,15 @@ export const structure: StructureResolver = (S) =>
         ),
       S.divider(),
       S.listItem()
+        .title('Blog Posts')
+        .child(
+          S.documentList()
+            .title('Blog Posts')
+            .filter('_type == "post"')
+            .defaultOrdering([{field: 'publishedAt', direction: 'desc'}]),
+        ),
+      S.divider(),
+      S.listItem()
         .title('Client Reviews')
         .child(
           S.documentList()

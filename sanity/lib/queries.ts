@@ -214,3 +214,18 @@ export const projectBySlugQuery = groq`
   githubUrl
 }
 `
+
+
+export const blogPostsQuery = groq`
+*[_type == "post" && defined(slug.current) && coalesce(seoNoIndex, false) != true] | order(publishedAt desc){
+  _id,title,"slug":slug.current,excerpt,category,publishedAt,readTime,seoTitle,seoDescription,primaryKeyword,seoKeywords,
+  "featuredImageUrl":featuredImage.asset->url,"featuredImageAlt":featuredImage.alt
+}
+`;
+
+export const blogPostBySlugQuery = groq`
+*[_type == "post" && slug.current == $slug][0]{
+  _id,title,"slug":slug.current,excerpt,category,publishedAt,readTime,body,seoTitle,seoDescription,primaryKeyword,seoKeywords,seoNoIndex,
+  featuredImage{...,asset->{_id,url,metadata},alt}
+}
+`;

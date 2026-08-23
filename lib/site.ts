@@ -3,7 +3,7 @@ export const siteConfig = {
   personName: "Bismark Apenkwah",
   title: "Product Designer in Norwich, UK | UX/UI & Next.js | Bisacom",
   description: "Product Designer in Norwich, UK specialising in UX/UI design, responsive websites, SaaS products, design systems and developer-ready Next.js experiences for startups and growing businesses.",
-  url: "https://bisacom.dev",
+  url: "https://www.bisacom.dev",
   email: "hello@bisacom.dev",
   location: "Norwich, United Kingdom",
   locale: "en_GB",
