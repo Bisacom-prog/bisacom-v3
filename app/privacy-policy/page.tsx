@@ -1,5 +1,6 @@
 export const metadata = {
   title: "Privacy & Cookie Policy | Bisacom",
+  alternates: {canonical: "/privacy-policy"},
   description:
     "Read the Privacy & Cookie Policy for Bisacom, a UK-based product design and digital creative brand.",
 };

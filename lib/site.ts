@@ -1,7 +1,12 @@
 export const siteConfig = {
   name: "Bisacom",
-  title: "Freelance UI/UX Designer & Next.js Developer in Norwich | Bisacom",
-  description: "Freelance UI/UX designer and front-end developer in Norwich, UK. UX audits, Figma UI design and responsive Next.js websites for startups and growing businesses.",
+  personName: "Bismark Apenkwah",
+  title: "Product Designer in Norwich, UK | UX/UI & Next.js | Bisacom",
+  description: "Product Designer in Norwich, UK specialising in UX/UI design, responsive websites, SaaS products, design systems and developer-ready Next.js experiences for startups and growing businesses.",
   url: "https://bisacom.dev",
   email: "hello@bisacom.dev",
+  location: "Norwich, United Kingdom",
+  locale: "en_GB",
+  linkedIn: "https://www.linkedin.com/in/bismarkapenkwah",
+  github: "https://github.com/Bisacom-prog",
 } as const;

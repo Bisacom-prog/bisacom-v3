@@ -1,5 +1,6 @@
 export const metadata = {
   title: "Terms of Use | Bisacom",
+  alternates: {canonical: "/terms-of-use"},
   description:
     "Read the Terms of Use for Bisacom, a UK-based product design and digital creative brand.",
 };

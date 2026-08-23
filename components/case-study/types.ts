@@ -115,6 +115,11 @@ export type Project = {
   slug?: {current?: string}
   category?: string
   summary?: string
+  seoTitle?: string
+  seoDescription?: string
+  seoKeywords?: string[]
+  seoNoIndex?: boolean
+  updatedAt?: string
   heroImage?: SanityImage
   featured?: boolean
 

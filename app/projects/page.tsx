@@ -6,6 +6,12 @@ export const metadata: Metadata = {
   title: "Product Design Case Studies",
   description: "Explore mobile, SaaS and responsive web product-design case studies by Bismark Apenkwah, a Product Designer in Norwich, UK.",
   alternates: {canonical: "/projects"},
+  openGraph: {
+    title: "Product Design Case Studies",
+    description: "Explore mobile, SaaS and responsive web product-design case studies by Bismark Apenkwah, a Product Designer in Norwich, UK.",
+    url: "/projects",
+    type: "website",
+  },
 }
 
 type ProjectCard = {

@@ -335,6 +335,7 @@ export const project = defineType({
     {name: 'outcomes', title: 'Outcomes'},
     {name: 'reflection', title: 'Reflection'},
     {name: 'links', title: 'Links'},
+    {name: 'seo', title: 'SEO'},
   ],
 
   fields: [
@@ -416,6 +417,42 @@ export const project = defineType({
       group: 'overview',
       of: [{type: 'string'}],
       options: {layout: 'tags'},
+    }),
+
+    // SEO
+    defineField({
+      name: 'seoTitle',
+      title: 'SEO Title',
+      type: 'string',
+      group: 'seo',
+      description: 'Optional search title. Aim for roughly 50–60 characters. Falls back to the project title.',
+      validation: (Rule) => Rule.max(70),
+    }),
+    defineField({
+      name: 'seoDescription',
+      title: 'SEO Description',
+      type: 'text',
+      rows: 3,
+      group: 'seo',
+      description: 'Optional search description. Aim for roughly 140–160 characters. Falls back to the project summary.',
+      validation: (Rule) => Rule.max(180),
+    }),
+    defineField({
+      name: 'seoKeywords',
+      title: 'SEO Keywords',
+      type: 'array',
+      group: 'seo',
+      of: [{type: 'string'}],
+      options: {layout: 'tags'},
+      description: 'A small set of phrases that accurately describe this case study.',
+    }),
+    defineField({
+      name: 'seoNoIndex',
+      title: 'Hide from search engines',
+      type: 'boolean',
+      group: 'seo',
+      initialValue: false,
+      description: 'Enable only for drafts or projects you do not want indexed.',
     }),
 
     // DISCOVERY

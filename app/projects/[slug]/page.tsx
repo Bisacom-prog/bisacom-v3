@@ -13,19 +13,44 @@ import CaseStudyNav from "@/components/case-study/CaseStudyNav"
 import Reveal from "@/components/case-study/Reveal"
 import LightboxGallery from "@/components/case-study/LightboxGallery"
 import PhoneRail from "@/components/case-study/PhoneRail"
+import {siteConfig} from "@/lib/site"
 
 export const dynamic = "force-dynamic"
 
 export async function generateMetadata({params}: {params: Promise<{slug:string}>}): Promise<Metadata> {
   const {slug} = await params
   const project = await client.fetch<Project | null>(projectBySlugQuery, {slug})
-  if (!project) return {title: "Project not found"}
+  if (!project) return {title: "Project not found", robots: {index: false, follow: false}}
+
+  const title = project.seoTitle || `${project.title} UX/UI Case Study`
+  const description = project.seoDescription || project.summary
+  const canonical = `${siteConfig.url}/projects/${slug}`
   const image = project.heroImage?.asset?.url
+
   return {
-    title: project.title,
-    description: project.summary,
-    alternates: {canonical: `/projects/${slug}`},
-    openGraph: {title: project.title, description: project.summary, type: "article", images: image ? [{url:image, alt: project.heroImage?.alt || `${project.title} case study`}]:[]},
+    title,
+    description,
+    keywords: project.seoKeywords,
+    authors: [{name: siteConfig.personName, url: siteConfig.url}],
+    alternates: {canonical},
+    robots: project.seoNoIndex ? {index: false, follow: false} : {index: true, follow: true},
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: siteConfig.name,
+      locale: siteConfig.locale,
+      type: "article",
+      publishedTime: undefined,
+      modifiedTime: project.updatedAt,
+      images: image ? [{url: image, alt: project.heroImage?.alt || `${project.title} UX/UI case study`}]:[],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
   }
 }
 
@@ -251,6 +276,27 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
 
   if (!project) notFound()
 
+  const canonicalUrl = `${siteConfig.url}/projects/${slug}`
+  const projectStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "@id": `${canonicalUrl}#case-study`,
+    name: project.seoTitle || project.title,
+    headline: project.seoTitle || project.title,
+    description: project.seoDescription || project.summary,
+    url: canonicalUrl,
+    inLanguage: "en-GB",
+    image: project.heroImage?.asset?.url,
+    dateModified: project.updatedAt,
+    author: {
+      "@type": "Person",
+      "@id": `${siteConfig.url}/#person`,
+      name: siteConfig.personName,
+      url: siteConfig.url,
+    },
+    about: project.seoKeywords?.length ? project.seoKeywords : ["Product Design", "UX Design", "UI Design"],
+  }
+
   const sections = [
     project.problemStatement || project.problem || hasRichContent(project.context) || project.howMightWe || project.designChallenge || project.constraints?.length
       ? {id: "problem", label: "Problem"}
@@ -296,6 +342,10 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
 
   return (
     <main className="bg-[#F8FAFC] text-slate-950 dark:bg-[#050914] dark:text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{__html: JSON.stringify(projectStructuredData)}}
+      />
       <section className="relative isolate overflow-hidden bg-[#050914] text-white">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(45,91,255,0.28),transparent_30%),radial-gradient(circle_at_82%_14%,rgba(34,197,94,0.12),transparent_25%),linear-gradient(180deg,#050914_0%,#070B16_100%)]" />
         <div className="mx-auto max-w-7xl px-6 pb-20 pt-28 lg:px-8 lg:pb-28 lg:pt-36">

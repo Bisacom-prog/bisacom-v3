@@ -6,6 +6,17 @@ export const metadata: Metadata = {
   title: "Freelance UI/UX Design & Website Services",
   description: "UX audits, Figma UI design sprints and responsive Next.js website design from a Norwich-based freelance product designer.",
   alternates: {canonical: "/services"},
+  openGraph: {
+    title: "Freelance UI/UX Design & Website Services",
+    description: "UX audits, Figma UI design sprints and responsive Next.js website design from a Norwich-based freelance product designer.",
+    url: "/services",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Freelance UI/UX Design & Website Services",
+    description: "UX audits, Figma UI design sprints and responsive Next.js website design from a Norwich-based freelance product designer.",
+  },
 };
 
 export default function ServicesPage(){

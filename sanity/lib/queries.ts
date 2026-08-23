@@ -7,6 +7,11 @@ export const projectsIndexQuery = groq`
   "slug": slug.current,
   summary,
   projectType,
+  seoTitle,
+  seoDescription,
+  seoKeywords,
+  seoNoIndex,
+  "updatedAt": _updatedAt,
   platform,
   "heroImageUrl": heroImage.asset->url,
   "heroImageAlt": coalesce(heroImage.alt, title + " case study preview")
@@ -19,6 +24,11 @@ export const projectBySlugQuery = groq`
   title,
   slug,
   summary,
+  seoTitle,
+  seoDescription,
+  seoKeywords,
+  seoNoIndex,
+  "updatedAt": _updatedAt,
   heroImage{
     ...,
     asset->{_id,url,metadata},
