@@ -1,9 +1,55 @@
-import { client } from "@/sanity/lib/client";
+import {client} from "@/sanity/lib/client";
 import {
   blogPostBySlugQuery,
   blogPostSlugsQuery,
   blogPostsQuery,
 } from "@/sanity/lib/queries";
+
+export type SanityPortableTextChild = {
+  _key?: string;
+  _type?: string;
+  text?: string;
+  marks?: string[];
+};
+
+export type SanityMarkDef = {
+  _key?: string;
+  _type?: string;
+  href?: string;
+  openInNewTab?: boolean;
+};
+
+export type SanityPortableTextBlock = {
+  _key?: string;
+  _type: "block";
+  style?: string;
+  listItem?: string;
+  level?: number;
+  children?: SanityPortableTextChild[];
+  markDefs?: SanityMarkDef[];
+};
+
+export type SanityImageBlock = {
+  _key?: string;
+  _type: "image";
+  url?: string;
+  alt?: string;
+  caption?: string;
+};
+
+export type SanityCalloutBlock = {
+  _key?: string;
+  _type: "callout";
+  tone?: string;
+  title?: string;
+  text?: string;
+};
+
+export type SanityBlogBodyBlock =
+  | SanityPortableTextBlock
+  | SanityImageBlock
+  | SanityCalloutBlock
+  | ({_key?: string; _type: string} & Record<string, unknown>);
 
 export type SanityBlogPost = {
   _id?: string;
@@ -17,7 +63,7 @@ export type SanityBlogPost = {
   featured?: boolean;
   tags?: string[];
   readTime?: string;
-  body?: unknown[];
+  body?: SanityBlogBodyBlock[];
   seoTitle?: string;
   seoDescription?: string;
   primaryKeyword?: string;
@@ -25,6 +71,7 @@ export type SanityBlogPost = {
   canonicalUrl?: string;
   seoNoIndex?: boolean;
   featuredImageUrl?: string;
+  featuredImageAlt?: string;
   socialImageUrl?: string;
   featuredImage?: {
     url?: string;
@@ -38,7 +85,10 @@ export type SanityBlogPost = {
     slug?: string;
     linkedin?: string;
     website?: string;
-    photo?: { url?: string; alt?: string };
+    photo?: {
+      url?: string;
+      alt?: string;
+    };
   };
   relatedPosts?: Array<{
     _id: string;
@@ -48,6 +98,12 @@ export type SanityBlogPost = {
     category?: string;
     publishedAt?: string;
   }>;
+};
+
+export type SanityBlogSlug = {
+  slug: string;
+  updatedAt?: string;
+  publishedAt?: string;
 };
 
 export async function getSanityBlogPosts(): Promise<SanityBlogPost[]> {
@@ -60,23 +116,22 @@ export async function getSanityBlogPosts(): Promise<SanityBlogPost[]> {
 }
 
 export async function getSanityBlogPost(
-  slug: string
+  slug: string,
 ): Promise<SanityBlogPost | null> {
   try {
-    return await client.fetch<SanityBlogPost | null>(blogPostBySlugQuery, { slug });
+    return await client.fetch<SanityBlogPost | null>(
+      blogPostBySlugQuery,
+      {slug},
+    );
   } catch (error) {
     console.error(`Failed to fetch Sanity blog post "${slug}":`, error);
     return null;
   }
 }
 
-export async function getSanityBlogSlugs(): Promise<
-  Array<{ slug: string; updatedAt?: string; publishedAt?: string }>
-> {
+export async function getSanityBlogSlugs(): Promise<SanityBlogSlug[]> {
   try {
-    return await client.fetch<
-      Array<{ slug: string; updatedAt?: string; publishedAt?: string }>
-    >(blogPostSlugsQuery);
+    return await client.fetch<SanityBlogSlug[]>(blogPostSlugsQuery);
   } catch (error) {
     console.error("Failed to fetch Sanity blog slugs:", error);
     return [];
