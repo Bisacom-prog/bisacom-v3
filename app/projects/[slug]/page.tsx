@@ -277,6 +277,8 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
   if (!project) notFound()
 
   const canonicalUrl = `${siteConfig.url}/projects/${slug}`
+  const isClientProject = project.projectType === "client" || project.projectType === "freelance"
+  const isConceptProject = project.projectType === "concept"
   const projectStructuredData = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -326,13 +328,17 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
     project.validationSummary || project.validationPlan?.length
       ? {id: "validation", label: "Validation"}
       : null,
-    project.implementationSummary || project.implementationRole || project.architectureSteps?.length || project.cmsApproach || project.implementationHighlights?.length || project.responsiveImplementation
+    isClientProject && (project.implementationSummary || project.implementationRole || project.architectureSteps?.length || project.cmsApproach || project.implementationHighlights?.length || project.responsiveImplementation)
       ? {id: "implementation", label: "Implementation"}
       : null,
-    hasRichContent(project.impactSummary) || project.outcome || project.outcomes?.length || project.metrics?.length || project.deliveredOutcomes?.length || project.expectedImpacts?.length || project.futureMetrics?.length || project.outcomeImages?.length
+    (isClientProject
+      ? project.outcome || project.deliveredOutcomes?.length || project.expectedImpacts?.length || project.futureMetrics?.length || project.outcomeImages?.length
+      : hasRichContent(project.impactSummary) || project.outcomes?.length || project.metrics?.length || project.outcomeImages?.length)
       ? {id: "impact", label: "Impact"}
       : null,
-    project.reflectionSummary || project.learningCards?.length || project.tradeOffs?.length || project.validationNeeds?.length || project.whatIDoDifferently || project.nextSteps?.length || project.finalReflection || (Array.isArray(project.learnings) && project.learnings.length) || hasRichContent(project.reflection)
+    (isClientProject
+      ? project.reflectionSummary || project.learningCards?.length || project.tradeOffs?.length || project.validationNeeds?.length || project.whatIDoDifferently || project.nextSteps?.length || project.finalReflection
+      : (Array.isArray(project.learnings) && project.learnings.length) || project.nextSteps?.length || hasRichContent(project.reflection))
       ? {id: "reflection", label: "Reflection"}
       : null,
     project.liveUrl || project.figmaUrl || project.githubUrl || project.repositoryUrl
@@ -560,9 +566,10 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
                       : project.prototypeVideoUrl
                         ? [
                             {
-                              title: "Core Roadside Assistance Flow",
-                              description:
-                                "A walkthrough of the primary roadside assistance journey from requesting help through payment and completion.",
+                              title: isClientProject ? "Desktop Ordering Flow" : "Core Roadside Assistance Flow",
+                              description: isClientProject
+                                ? "A walkthrough of the primary Ma Adjo’s Kitchen desktop ordering journey from menu discovery through checkout and order completion."
+                                : "A walkthrough of the primary roadside assistance journey from requesting help through payment and completion.",
                               url: project.prototypeVideoUrl,
                             },
                           ]
@@ -581,14 +588,14 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
                       {prototypeVideos.map((video: any, index: number) => (
                         <article
                           key={`${video.url || video.videoUrl || index}-${index}`}
-                          className={prototypeVideos.length > 1 ? "min-w-0" : "w-full max-w-[440px]"}
+                          className={prototypeVideos.length > 1 ? "min-w-0" : isClientProject ? "w-full max-w-5xl" : "w-full max-w-[440px]"}
                         >
                           <div className="flex justify-center">
                             <video
                               controls
                               playsInline
                               preload="metadata"
-                              className="h-auto w-full max-w-[440px] rounded-[1.5rem] bg-black shadow-xl"
+                              className={`h-auto w-full rounded-[1.5rem] bg-black shadow-xl ${isClientProject ? "max-w-5xl" : "max-w-[440px]"}`}
                             >
                               <source src={video.url || video.videoUrl} />
                               Your browser does not support the video tag.
@@ -596,7 +603,7 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
                           </div>
 
                           {(video.title || video.description) && (
-                            <div className="mx-auto mt-5 max-w-[440px]">
+                            <div className={`mx-auto mt-5 ${isClientProject ? "max-w-5xl" : "max-w-[440px]"}`}>
                               {video.title && (
                                 <h3 className="text-lg font-black tracking-[-0.02em] text-slate-950 dark:text-white">
                                   {video.title}
@@ -651,7 +658,7 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
         </section>
       )}
 
-      {(project.implementationSummary || project.implementationRole || project.architectureSteps?.length || project.cmsApproach || project.implementationHighlights?.length || project.responsiveImplementation) && (
+      {isClientProject && (project.implementationSummary || project.implementationRole || project.architectureSteps?.length || project.cmsApproach || project.implementationHighlights?.length || project.responsiveImplementation) && (
         <section id="implementation" className="scroll-mt-24 px-6 py-24 lg:px-8">
           <div className="mx-auto max-w-7xl">
             <Reveal><SectionHeading eyebrow="09 — Development & Implementation" title="Turning product decisions into a working experience" description={project.implementationSummary} /></Reveal>
@@ -667,22 +674,22 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
         </section>
       )}
 
-      {(hasRichContent(project.impactSummary) || project.outcome || project.outcomes?.length || project.metrics?.length || project.deliveredOutcomes?.length || project.expectedImpacts?.length || project.futureMetrics?.length || project.outcomeImages?.length) && (
+      {((isClientProject && (project.outcome || project.deliveredOutcomes?.length || project.expectedImpacts?.length || project.futureMetrics?.length || project.outcomeImages?.length)) || (!isClientProject && (hasRichContent(project.impactSummary) || project.outcomes?.length || project.metrics?.length || project.outcomeImages?.length))) && (
         <section id="impact" className="scroll-mt-24 bg-white px-6 py-24 dark:bg-[#080D1A] lg:px-8">
           <div className="mx-auto max-w-7xl">
             <Reveal><SectionHeading eyebrow="10 — Impact & Outcomes" title="From business problems to product outcomes" description={project.outcome} /></Reveal>
-            {hasRichContent(project.impactSummary) && <div className="mt-12 max-w-4xl"><RichContent value={project.impactSummary} /></div>}
+            {!isClientProject && hasRichContent(project.impactSummary) && <div className="mt-12 max-w-4xl"><RichContent value={project.impactSummary} /></div>}
             {project.deliveredOutcomes?.length ? <div className="mt-12"><h3 className="mb-6 text-2xl font-black">Delivered Outcomes</h3><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{project.deliveredOutcomes.map((item, index) => <Reveal key={`${item.title}-${index}`}><article className="rounded-[2rem] border border-slate-200 bg-slate-50 p-7 dark:border-white/10 dark:bg-[#0B1120]"><h4 className="text-lg font-black">{item.title}</h4>{item.description && <p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>}</article></Reveal>)}</div></div> : null}
             {project.expectedImpacts?.length ? <div className="mt-12"><h3 className="mb-6 text-2xl font-black">Expected Business & UX Impact</h3><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{project.expectedImpacts.map((item, index) => <Reveal key={`${item.title}-${index}`}><article className="rounded-[2rem] border border-emerald-200 bg-emerald-50/60 p-7 dark:border-emerald-400/20 dark:bg-emerald-400/10"><h4 className="text-lg font-black">{item.title}</h4>{item.description && <p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>}</article></Reveal>)}</div></div> : null}
             {project.futureMetrics?.length ? <div className="mt-12"><h3 className="mb-6 text-2xl font-black">Success Metrics / Future Measurement</h3><div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{project.futureMetrics.map((item, index) => <Reveal key={`${item.metric}-${index}`}><article className="rounded-[2rem] border border-blue-200 bg-blue-50/60 p-7 dark:border-blue-400/20 dark:bg-blue-400/10"><h4 className="text-lg font-black">{item.metric}</h4>{item.description && <p className="mt-3 leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>}</article></Reveal>)}</div></div> : null}
-            {project.metrics?.length ? <div className="mt-12 grid gap-5 md:grid-cols-3">{project.metrics.map((metric, index) => <Reveal key={`${metric.label || metric.value}-${index}`} delay={index * 70}><article className="rounded-[2rem] border border-slate-200 bg-slate-50 p-7 dark:border-white/10 dark:bg-[#0B1120]">{metric.value && <p className="text-3xl font-black text-blue-600">{metric.value}</p>}{metric.label && <h3 className="mt-3 text-lg font-black">{metric.label}</h3>}{metric.note && <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{metric.note}</p>}</article></Reveal>)}</div> : null}
-            {project.outcomes?.length ? <div className="mt-12"><h3 className="mb-6 text-2xl font-black">Design Outcomes</h3><div className="grid gap-4 md:grid-cols-2">{project.outcomes.map((outcome, index) => <Reveal key={`${outcome}-${index}`}><div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-lg font-semibold leading-8 dark:border-white/10 dark:bg-[#0B1120]">{outcome}</div></Reveal>)}</div></div> : null}
+            {!isClientProject && project.metrics?.length ? <div className="mt-12 grid gap-5 md:grid-cols-3">{project.metrics.map((metric, index) => <Reveal key={`${metric.label || metric.value}-${index}`} delay={index * 70}><article className="rounded-[2rem] border border-slate-200 bg-slate-50 p-7 dark:border-white/10 dark:bg-[#0B1120]">{metric.value && <p className="text-3xl font-black text-blue-600">{metric.value}</p>}{metric.label && <h3 className="mt-3 text-lg font-black">{metric.label}</h3>}{metric.note && <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{metric.note}</p>}</article></Reveal>)}</div> : null}
+            {!isClientProject && project.outcomes?.length ? <div className="mt-12"><h3 className="mb-6 text-2xl font-black">Design Outcomes</h3><div className="grid gap-4 md:grid-cols-2">{project.outcomes.map((outcome, index) => <Reveal key={`${outcome}-${index}`}><div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-lg font-semibold leading-8 dark:border-white/10 dark:bg-[#0B1120]">{outcome}</div></Reveal>)}</div></div> : null}
             {project.outcomeImages?.length ? <div className="mt-14"><h3 className="mb-6 text-2xl font-black">Outcomes & Reflection</h3><LightboxGallery items={mapGallery(project.outcomeImages)} /></div> : null}
           </div>
         </section>
       )}
 
-      {(project.reflectionSummary || project.learningCards?.length || project.tradeOffs?.length || project.validationNeeds?.length || project.whatIDoDifferently || project.nextSteps?.length || project.finalReflection || (Array.isArray(project.learnings) && project.learnings.length) || hasRichContent(project.reflection)) && (
+      {((isClientProject && (project.reflectionSummary || project.learningCards?.length || project.tradeOffs?.length || project.validationNeeds?.length || project.whatIDoDifferently || project.nextSteps?.length || project.finalReflection)) || (!isClientProject && ((Array.isArray(project.learnings) && project.learnings.length) || project.nextSteps?.length || hasRichContent(project.reflection)))) && (
         <section id="reflection" className="scroll-mt-24 px-6 py-24 lg:px-8">
           <div className="mx-auto max-w-7xl">
             <Reveal><SectionHeading eyebrow="11 — Reflection & Next Steps" title="Learning from the product and looking forward" description={project.reflectionSummary} /></Reveal>
@@ -695,9 +702,9 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
             </div>
             {project.finalReflection ? <Reveal><article className="mt-14 rounded-[2rem] bg-[#050914] p-8 text-white"><p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-300">Final Reflection</p><p className="mt-5 whitespace-pre-line text-lg leading-9 text-slate-300">{project.finalReflection}</p></article></Reveal> : null}
             <div className="mt-12 grid gap-8 lg:grid-cols-2">
-              {Array.isArray(project.learnings) && project.learnings.length ? <Reveal><article className="rounded-[2rem] border border-slate-200 bg-white p-8 dark:border-white/10 dark:bg-white/[0.04]"><h3 className="text-2xl font-black">What I Learned</h3><div className="mt-6 space-y-4">{project.learnings.map((item, index) => <div key={`${item}-${index}`} className="flex gap-3"><span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-blue-600" /><p className="leading-7">{item}</p></div>)}</div></article></Reveal> : null}
+              {!isClientProject && Array.isArray(project.learnings) && project.learnings.length ? <Reveal><article className="rounded-[2rem] border border-slate-200 bg-white p-8 dark:border-white/10 dark:bg-white/[0.04]"><h3 className="text-2xl font-black">What I Learned</h3><div className="mt-6 space-y-4">{project.learnings.map((item, index) => <div key={`${item}-${index}`} className="flex gap-3"><span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-blue-600" /><p className="leading-7">{item}</p></div>)}</div></article></Reveal> : null}
             </div>
-            {hasRichContent(project.reflection) && <div className="mt-12 max-w-4xl"><RichContent value={project.reflection} /></div>}
+            {!isClientProject && hasRichContent(project.reflection) && <div className="mt-12 max-w-4xl"><RichContent value={project.reflection} /></div>}
           </div>
         </section>
       )}
