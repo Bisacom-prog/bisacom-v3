@@ -1,7 +1,15 @@
 import {projectSchemaTypes} from './project'
 import {review} from './review'
 import {post} from './post'
+import {author} from './author'
+import {blogCategory} from './blogCategory'
+import {seo} from './seo'
 
-// Register the project document and every reusable object type it references.
-// This includes caseStudyImage, featureFlow, edgeCase and the Validation fields.
-export const schemaTypes = [...projectSchemaTypes, review, post]
+export const schemaTypes = [
+  ...projectSchemaTypes,
+  review,
+  seo,
+  author,
+  blogCategory,
+  post,
+]

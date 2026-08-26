@@ -48,8 +48,7 @@ export type SanityCalloutBlock = {
 export type SanityBlogBodyBlock =
   | SanityPortableTextBlock
   | SanityImageBlock
-  | SanityCalloutBlock
-  | ({_key?: string; _type: string} & Record<string, unknown>);
+  | SanityCalloutBlock;
 
 export type SanityBlogPost = {
   _id?: string;
