@@ -566,10 +566,10 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
                       : project.prototypeVideoUrl
                         ? [
                             {
-                              title: isClientProject ? "Desktop Ordering Flow" : "Core Roadside Assistance Flow",
-                              description: isClientProject
-                                ? "A walkthrough of the primary Ma Adjo’s Kitchen desktop ordering journey from menu discovery through checkout and order completion."
-                                : "A walkthrough of the primary roadside assistance journey from requesting help through payment and completion.",
+                              title: `${project.title} Flow`,
+                              description:
+                                project.prototypeDescription ||
+                                "An interactive walkthrough of the product’s essential end-to-end journey.",
                               url: project.prototypeVideoUrl,
                             },
                           ]
