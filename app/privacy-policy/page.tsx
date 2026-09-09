@@ -63,6 +63,7 @@ export default function PrivacyPolicyPage() {
           <ul className="list-disc space-y-3 pl-6 leading-relaxed text-slate-300">
             <li>Contact form submissions (name, email address, message)</li>
             <li>Project enquiry information</li>
+            <li>Book launch list signups (email address and your agreement to receive the planner and book updates). These are sent through Resend and retained in the Bisacom email inbox to manage the launch list. To leave the list, email hello@bisacom.dev.</li>
             <li>
               Technical information such as browser type, IP address and device
               information
