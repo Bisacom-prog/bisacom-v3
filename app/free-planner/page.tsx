@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import EbookWaitlist from "@/components/EbookWaitlist";
+import PlannerBookUpsell from "@/components/PlannerBookUpsell";
 
 const title = "Free 30-Day Product Design Career Planner";
 const description =
-  "Get the free 30-Day Product Design Career Planner from Chapter 11 of From Beginner to Hired by Bismark Apenkwah and join the book launch list.";
+  "Get the free 30-Day Product Design Career Planner, the companion resource to From Beginner to Hired by Bismark Apenkwah, with a practical action plan for portfolio, interview and job-search progress.";
 
 export const metadata: Metadata = {
   title,
@@ -15,13 +16,13 @@ export const metadata: Metadata = {
     description,
     url: "https://bisacom.dev/free-planner",
     type: "website",
-    images: [{ url: "/img/from-beginner-to-hired.webp", alt: "From Beginner to Hired book cover" }],
+    images: [{ url: "/img/From-beginner.webp", alt: "From Beginner to Hired book cover" }],
   },
   twitter: {
     card: "summary",
     title,
     description,
-    images: ["/img/from-beginner-to-hired.webp"],
+    images: ["/img/From-beginner.webp"],
   },
 };
 
@@ -38,6 +39,9 @@ export default function FreePlannerPage() {
       </header>
       <h1 className="sr-only">{title}</h1>
       <EbookWaitlist />
+      <div className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
+        <PlannerBookUpsell />
+      </div>
     </main>
   );
 }
