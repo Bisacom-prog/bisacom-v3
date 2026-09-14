@@ -502,3 +502,81 @@ section[id] { scroll-margin-top: 5.5rem; }
 .dark .book-cta-dark:hover {
   color: #0f172a !important;
 }
+
+/* Job-market portfolio upgrade: hero design-to-code motion */
+.hero-build-flow {
+  position: absolute; left: 50%; bottom: 1.2rem; z-index: 3; transform: translateX(-50%);
+  display: flex; align-items: center; gap: .5rem; width: max-content; max-width: calc(100% - 2rem);
+  border: 1px solid rgba(255,255,255,.14); border-radius: 999px; background: rgba(5,9,20,.8);
+  padding: .55rem .75rem; color: #dbe6ff; box-shadow: 0 18px 44px rgba(0,0,0,.3); backdrop-filter: blur(14px);
+  font-size: .68rem; font-weight: 800; letter-spacing: .02em;
+}
+.hero-build-flow i { position: relative; display: block; width: 2.8rem; height: 1px; overflow: hidden; background: rgba(141,162,255,.25); }
+.hero-build-flow i::after { content:""; position:absolute; top:-1px; left:-35%; width:35%; height:3px; border-radius:999px; background:#8da2ff; box-shadow:0 0 10px #5c7cff; animation:heroBuildPulse 2.5s ease-in-out infinite; }
+.hero-build-flow i:nth-of-type(2)::after { animation-delay:.7s; }
+@keyframes heroBuildPulse { 0% { left:-35%; opacity:0; } 20% { opacity:1; } 70% { opacity:1; } 100% { left:105%; opacity:0; } }
+
+/* Brand portfolio preview */
+.brand-preview { position:relative; width:100%; height:100%; overflow:hidden; background:linear-gradient(135deg,#050914 0%,#101936 52%,#0b1120 100%); }
+.brand-preview__halo { position:absolute; border-radius:999px; filter:blur(44px); opacity:.4; }
+.brand-preview__halo--one { width:11rem; height:11rem; left:-3rem; top:-3rem; background:#2d5bff; }
+.brand-preview__halo--two { width:10rem; height:10rem; right:-2rem; bottom:-3rem; background:#f59e0b; opacity:.22; }
+.brand-preview__grid { position:absolute; inset:1rem 1rem 2.7rem; display:grid; grid-template-columns:1.05fr .95fr; grid-template-rows:1fr 1fr; gap:.7rem; }
+.brand-tile { position:relative; overflow:hidden; border:1px solid rgba(255,255,255,.1); border-radius:1rem; box-shadow:0 18px 45px rgba(0,0,0,.28); }
+.brand-tile--bisacom { grid-row:1 / span 2; background:#fff; }
+.brand-tile--mall { background:#050505; }
+.brand-tile--abas { background:#f7efe5; }
+.brand-logo { object-fit:contain; padding:1.1rem; transition:transform .55s cubic-bezier(.22,1,.36,1); }
+.brand-tile--bisacom .brand-logo { padding:1.4rem; }
+.brand-tile span { position:absolute; left:.65rem; bottom:.55rem; z-index:2; border-radius:999px; background:rgba(5,9,20,.78); padding:.28rem .5rem; color:#fff; font-size:.58rem; font-weight:800; backdrop-filter:blur(8px); }
+.group:hover .brand-logo { transform:scale(1.035); }
+.brand-preview__caption { position:absolute; left:1rem; right:1rem; bottom:.7rem; color:#cbd5e1; font-size:.62rem; font-weight:700; letter-spacing:.04em; }
+
+/* Motion prototype */
+.motion-meta { border:1px solid rgba(255,255,255,.12); border-radius:999px; background:rgba(255,255,255,.04); padding:.5rem .75rem; }
+.motion-demo-shell { position:relative; min-height:34rem; overflow:hidden; border:1px solid rgba(255,255,255,.1); border-radius:2rem; background:radial-gradient(circle at 50% 20%,rgba(45,91,255,.24),transparent 40%),linear-gradient(145deg,#071022,#030611); box-shadow:0 28px 80px rgba(0,0,0,.38); display:grid; place-items:center; }
+.motion-demo-shell::before { content:""; position:absolute; inset:0; background-image:linear-gradient(rgba(112,151,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(112,151,255,.055) 1px,transparent 1px); background-size:36px 36px; mask-image:linear-gradient(to bottom,#000,transparent 85%); }
+.motion-demo-glow { position:absolute; width:20rem; height:20rem; border-radius:999px; background:#2457ff; filter:blur(90px); opacity:.16; animation:motionGlow 4.8s ease-in-out infinite alternate; }
+.motion-phone { position:relative; z-index:2; width:min(82%,21rem); border:1px solid rgba(255,255,255,.18); border-radius:2.3rem; background:linear-gradient(180deg,#0d1a33,#07101f); padding:.8rem; box-shadow:0 30px 70px rgba(0,0,0,.5); animation:motionPhoneFloat 4s ease-in-out infinite; }
+.motion-phone::before { content:""; display:block; position:absolute; top:.7rem; left:50%; transform:translateX(-50%); width:4.6rem; height:.35rem; border-radius:999px; background:rgba(255,255,255,.14); }
+.motion-phone__top { display:flex; justify-content:space-between; padding:.55rem .35rem .8rem; color:#94a3b8; font-size:.58rem; font-weight:700; }
+.motion-phone__content { border-radius:1.55rem; background:linear-gradient(180deg,#0b1830,#091326); padding:1.15rem; box-shadow:inset 0 0 0 1px rgba(255,255,255,.05); }
+.motion-live-badge { display:inline-flex; align-items:center; gap:.45rem; border:1px solid rgba(96,165,250,.2); border-radius:999px; background:rgba(37,99,235,.12); padding:.35rem .55rem; color:#93c5fd; font-size:.58rem; font-weight:800; }
+.motion-live-badge i { width:.42rem; height:.42rem; border-radius:999px; background:#22c55e; box-shadow:0 0 0 0 rgba(34,197,94,.5); animation:motionLivePulse 1.8s ease-out infinite; }
+.motion-phone h3 { margin-top:1rem; font-size:1.35rem; font-weight:900; }
+.motion-phone__sub { margin-top:.2rem; color:#94a3b8; font-size:.7rem; line-height:1.45; }
+.motion-route { position:relative; height:6.1rem; margin:1.05rem 0; border:1px solid rgba(255,255,255,.08); border-radius:1.1rem; background:radial-gradient(circle at 20% 50%,rgba(45,91,255,.22),transparent 30%),rgba(255,255,255,.02); overflow:hidden; }
+.motion-route__line { position:absolute; left:17%; right:17%; top:50%; height:2px; transform:translateY(-50%); background:linear-gradient(90deg,#2d5bff,#60a5fa); }
+.motion-route__line::after { content:""; position:absolute; inset:-1px; background:repeating-linear-gradient(90deg,transparent 0 10px,rgba(255,255,255,.8) 10px 14px); opacity:.45; animation:motionLine 1.6s linear infinite; }
+.motion-route__origin,.motion-route__destination { position:absolute; top:50%; transform:translateY(-50%); display:grid; place-items:center; width:2.1rem; height:2.1rem; border-radius:999px; background:#fff; color:#07101f; font-size:.52rem; font-weight:900; box-shadow:0 6px 20px rgba(0,0,0,.25); }
+.motion-route__origin { left:7%; } .motion-route__destination { right:6%; width:2.8rem; height:2.8rem; font-size:.48rem; }
+.motion-route__car { position:absolute; z-index:3; top:50%; left:22%; transform:translate(-50%,-50%); display:grid; place-items:center; width:1.5rem; height:1.5rem; border-radius:.48rem; background:#2d5bff; color:white; font-size:.55rem; box-shadow:0 0 0 5px rgba(45,91,255,.14),0 8px 20px rgba(0,0,0,.35); animation:motionCar 8s cubic-bezier(.65,0,.35,1) infinite; }
+.motion-sequence { display:grid; gap:.5rem; }
+.motion-step { display:flex; align-items:center; gap:.7rem; border:1px solid rgba(255,255,255,.07); border-radius:.9rem; background:rgba(255,255,255,.035); padding:.65rem .7rem; opacity:.33; transform:translateX(0); }
+.motion-step__icon { display:grid; place-items:center; flex:0 0 auto; width:1.6rem; height:1.6rem; border-radius:.55rem; background:rgba(45,91,255,.16); color:#8da2ff; font-size:.7rem; font-weight:900; }
+.motion-step b { display:block; font-size:.68rem; }
+.motion-step small { display:block; margin-top:.08rem; color:#94a3b8; font-size:.55rem; }
+.motion-step--one { animation:motionStepOne 8s ease-in-out infinite; }
+.motion-step--two { animation:motionStepTwo 8s ease-in-out infinite; }
+.motion-step--three { animation:motionStepThree 8s ease-in-out infinite; }
+.motion-demo-label { position:absolute; right:1rem; bottom:1rem; z-index:3; border-radius:999px; background:rgba(5,9,20,.82); padding:.45rem .65rem; color:#cbd5e1; font-size:.58rem; font-weight:800; }
+@keyframes motionGlow { from{transform:translate(-12%,-6%) scale(.9)} to{transform:translate(10%,8%) scale(1.1)} }
+@keyframes motionPhoneFloat { 0%,100%{transform:translateY(0) rotate(-.35deg)} 50%{transform:translateY(-8px) rotate(.25deg)} }
+@keyframes motionLivePulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,.45)} 80%,100%{box-shadow:0 0 0 8px rgba(34,197,94,0)} }
+@keyframes motionLine { to{transform:translateX(28px)} }
+@keyframes motionCar { 0%,16%{left:22%} 40%,62%{left:49%} 84%,100%{left:73%} }
+@keyframes motionStepOne { 0%,4%,100%{opacity:.32;transform:translateX(0)} 10%,27%{opacity:1;transform:translateX(4px)} 33%{opacity:.32;transform:translateX(0)} }
+@keyframes motionStepTwo { 0%,28%,100%{opacity:.32;transform:translateX(0)} 36%,57%{opacity:1;transform:translateX(4px)} 64%{opacity:.32;transform:translateX(0)} }
+@keyframes motionStepThree { 0%,60%,100%{opacity:.32;transform:translateX(0)} 69%,92%{opacity:1;transform:translateX(4px)} }
+
+@media (max-width: 639px) {
+  .hero-build-flow { display:none; }
+  .brand-preview__grid { inset:.8rem .8rem 2.5rem; }
+  .motion-demo-shell { min-height:30rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-build-flow i::after, .motion-demo-glow, .motion-phone, .motion-live-badge i, .motion-route__line::after, .motion-route__car, .motion-step { animation:none !important; }
+  .motion-route__car { left:62%; }
+  .motion-step { opacity:1; transform:none; }
+}
