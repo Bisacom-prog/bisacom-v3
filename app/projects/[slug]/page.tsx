@@ -14,6 +14,7 @@ import Reveal from "@/components/case-study/Reveal"
 import LightboxGallery from "@/components/case-study/LightboxGallery"
 import PhoneRail from "@/components/case-study/PhoneRail"
 import {siteConfig} from "@/lib/site"
+import MotionPrototype from "@/components/MotionPrototype"
 
 export const dynamic = "force-dynamic"
 
@@ -406,6 +407,8 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
       </section>
 
       <CaseStudyNav items={sections} />
+
+      {slug === "mobile-mechanic-app" && <MotionPrototype />}
 
       {(project.problemStatement || project.problem || hasRichContent(project.context) || project.howMightWe || project.designChallenge || project.constraints?.length) && (
         <section id="problem" className="scroll-mt-24 px-6 py-24 lg:px-8">

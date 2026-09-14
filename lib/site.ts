@@ -7,6 +7,6 @@ export const siteConfig = {
   email: "hello@bisacom.dev",
   location: "Norwich, United Kingdom",
   locale: "en_GB",
-  linkedIn: "https://www.linkedin.com/in/bismarkapenkwah/",
+  linkedIn: "https://uk.linkedin.com/in/bismarkapenkwah",
   github: "https://github.com/Bisacom-prog",
 } as const;
