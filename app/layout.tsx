@@ -19,6 +19,9 @@ export const metadata: Metadata = {
     "Figma Designer UK",
     "UX Audit UK",
     "Next.js Developer Norwich",
+    "Design Engineer UK",
+    "Brand Identity Designer Norwich",
+    "Graphic Designer Norwich",
     "Bisacom",
   ],
   authors: [{ name: siteConfig.personName, url: siteConfig.url }],
@@ -56,7 +59,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         "@id": `${siteConfig.url}/#person`,
         name: siteConfig.personName,
         url: siteConfig.url,
-        jobTitle: "Product Designer",
+        jobTitle: "Product Designer and Design Engineer",
         sameAs: [siteConfig.linkedIn, siteConfig.github],
         knowsAbout: [
           "Product Design",
@@ -69,6 +72,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           "SaaS Design",
           "React",
           "Next.js",
+          "TypeScript",
+          "Brand Identity Design",
+          "Graphic Design",
         ],
         address: {
           "@type": "PostalAddress",

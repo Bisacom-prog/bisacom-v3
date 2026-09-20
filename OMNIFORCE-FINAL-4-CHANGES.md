@@ -11,7 +11,7 @@ Applied to the current Bisacom portfolio source.
    - Service routes remain available for existing freelance traffic.
    - Closing CTA now targets full-time Product Design / Design Engineering hiring conversations.
 
-3. Brand Systems case study expanded
+3. Brand systems kept as supporting background rather than a case study
    - Bisacom, Mall Street Food and Aba's Pie now each include:
      - brief / portfolio framing
      - design idea

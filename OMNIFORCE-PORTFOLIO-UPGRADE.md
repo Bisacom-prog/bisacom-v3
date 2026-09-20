@@ -7,7 +7,7 @@ Homepage is retuned around: Product Designer + Design Engineer, AI products, Saa
 1. Ma Adjo's Kitchen — shipped client product
 2. Mobile Mechanic — AI-assisted product + motion prototype
 3. ShiftFlow — B2B SaaS workflow
-4. Selected Brand Systems — Bisacom, Mall Street Food, Aba's Pie
+4. Brand background retained in About and capability sections
 
 ## Motion
 - Existing hero particle field/light sweep retained and enhanced with a Figma → Design system → React animated build-flow rail.

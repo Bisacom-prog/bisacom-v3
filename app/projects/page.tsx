@@ -3,12 +3,12 @@ import {projectsIndexQuery} from "../../sanity/lib/queries"
 import type {Metadata} from "next"
 
 export const metadata: Metadata = {
-  title: "Product Design, Design Engineering & Brand Work",
-  description: "Explore shipped product work, AI and SaaS case studies, design engineering and selected brand systems by Bismark Apenkwah.",
+  title: "Product Design & Design Engineering",
+  description: "Explore shipped product work, AI and SaaS case studies, and design engineering work by Bismark Apenkwah.",
   alternates: {canonical: "/projects"},
   openGraph: {
-    title: "Product Design, Design Engineering & Brand Work",
-    description: "Explore shipped product work, AI and SaaS case studies, design engineering and selected brand systems by Bismark Apenkwah.",
+    title: "Product Design & Design Engineering",
+    description: "Explore shipped product work, AI and SaaS case studies, and design engineering work by Bismark Apenkwah.",
     url: "/projects",
     type: "website",
   },
@@ -46,14 +46,7 @@ const fallbackProjects: ProjectCard[] = [
     image: "/img/mobile.webp",
     href: "/projects/mobile-mechanic-app",
   },
-  {
-    title: "Selected Brand Systems",
-    type: "Brand Design · Identity Systems",
-    description:
-      "Selected identity work across Bisacom, Mall Street Food and Aba’s Pie, showing visual direction, logo craft, colour systems and digital application thinking.",
-    image: "/img/bisacom-brand.png",
-    href: "/projects/brand-systems",
-  },
+
 ]
 
 export const revalidate = 60
@@ -61,7 +54,7 @@ export const revalidate = 60
 export default async function ProjectsPage() {
   const sanityProjects = await client.fetch<ProjectCard[]>(projectsIndexQuery)
   const sanitySlugs = new Set(sanityProjects.map((project) => project.slug))
-  const order = ["Ma Adjo’s Kitchen", "Mobile Mechanic App", "Short-Notice Shift Coverage", "Selected Brand Systems"]
+  const order = ["Ma Adjo’s Kitchen", "Mobile Mechanic App", "Short-Notice Shift Coverage"]
   const projects = [
     ...sanityProjects,
     ...fallbackProjects.filter((project) => {
@@ -82,10 +75,10 @@ export default async function ProjectsPage() {
         <div className="mt-3 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
           <div>
             <h1 className="text-4xl font-black tracking-[-0.04em] md:text-6xl">
-              Product, design engineering & brand work
+              Product & design engineering
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-              Selected work spanning shipped product delivery, AI and SaaS UX, motion thinking, brand systems and front-end implementation.
+              Selected work spanning shipped product delivery, AI and SaaS UX, motion thinking and front-end implementation.
             </p>
           </div>
           <a href="/" className="text-sm font-bold text-blue-600 dark:text-blue-400">
