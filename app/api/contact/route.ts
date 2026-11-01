@@ -1,4 +1,5 @@
 import {NextResponse} from "next/server";
+import {guardFormRequest} from "@/lib/request-guard";
 
 const EMAIL = "hello@bisacom.dev";
 
@@ -7,6 +8,8 @@ function text(value: unknown, max = 2000) {
 }
 
 export async function POST(request: Request) {
+  const blocked = guardFormRequest(request, "contact");
+  if (blocked) return blocked;
   try {
     const body = await request.json();
     if (text(body.website)) return NextResponse.json({ok: true});

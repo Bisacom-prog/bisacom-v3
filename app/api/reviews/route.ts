@@ -1,4 +1,5 @@
 import {NextResponse} from "next/server";
+import {guardFormRequest} from "@/lib/request-guard";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
@@ -14,6 +15,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const blocked = guardFormRequest(request, "reviews");
+  if (blocked) return blocked;
   try {
     const body = await request.json();
     if (typeof body.website === "string" && body.website) return NextResponse.json({ok: true});
@@ -23,9 +26,16 @@ export async function POST(request: Request) {
     const rating = Math.max(1, Math.min(5, Number(body.rating)));
     if (!name || !/^\S+@\S+\.\S+$/.test(email) || review.length < 20 || !Number.isInteger(rating)) return NextResponse.json({error:"Invalid review."},{status:400});
     if (!projectId || !process.env.SANITY_API_WRITE_TOKEN) return NextResponse.json({error:"Review service is not configured."},{status:503});
-    const mutation = {mutations:[{create:{_type:"review",name,email,company:String(body.company||"").trim().slice(0,120),role:String(body.role||"").trim().slice(0,120),rating,review,approved:false}}]};
+    // The dataset is publicly readable, so the reviewer's email never goes into Sanity.
+    const company = String(body.company||"").trim().slice(0,120);
+    const role = String(body.role||"").trim().slice(0,120);
+    const mutation = {mutations:[{create:{_type:"review",name,company,role,rating,review,approved:false}}]};
     const response = await fetch(`https://${projectId}.api.sanity.io/v${version}/data/mutate/${dataset}`,{method:"POST",headers:{Authorization:`Bearer ${process.env.SANITY_API_WRITE_TOKEN}`,"Content-Type":"application/json"},body:JSON.stringify(mutation)});
     if (!response.ok) return NextResponse.json({error:"Review could not be saved."},{status:502});
+    // Keep the address privately in the owner's inbox. The review is already saved if this fails.
+    if (process.env.RESEND_API_KEY) {
+      await fetch("https://api.resend.com/emails",{method:"POST",headers:{Authorization:`Bearer ${process.env.RESEND_API_KEY}`,"Content-Type":"application/json"},body:JSON.stringify({from:process.env.CONTACT_FROM_EMAIL||"Bisacom Portfolio <onboarding@resend.dev>",to:["hello@bisacom.dev"],reply_to:email,subject:`New review to approve from ${name}`,text:`Name: ${name}\nEmail: ${email}\nCompany: ${company}\nRole: ${role}\nRating: ${rating}\n\n${review}`}),signal:AbortSignal.timeout(10000)}).catch(()=>{});
+    }
     return NextResponse.json({ok:true});
   } catch { return NextResponse.json({error:"Invalid request."},{status:400}); }
 }

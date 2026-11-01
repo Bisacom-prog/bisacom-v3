@@ -1,9 +1,10 @@
 import {NextResponse} from "next/server";
 import {ebook, ebookConsent} from "@/lib/ebook";
+import {guardFormRequest, isRateLimited} from "@/lib/request-guard";
 
 export async function POST(request: Request) {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== new URL(request.url).origin) return NextResponse.json({error: "Please sign up from the portfolio."}, {status: 403});
+  const blocked = guardFormRequest(request, "planner");
+  if (blocked) return blocked;
   let body;
   try {
     const raw = await request.text();
@@ -15,6 +16,10 @@ export async function POST(request: Request) {
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || body.consent !== true || !/^[0-9a-f-]{36}$/i.test(body.requestId || "")) {
     return NextResponse.json({error: "Enter a valid email and agree to receive the planner and updates."}, {status: 400});
+  }
+  // This route emails the submitted address, so limit repeats to stop it being used against someone.
+  if (isRateLimited(`planner-email:${email}`, 2, 24 * 60 * 60 * 1000)) {
+    return NextResponse.json({ok: true, message: "Your planner email is on its way. Check your inbox and spam folder."});
   }
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.CONTACT_FROM_EMAIL;

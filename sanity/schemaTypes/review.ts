@@ -6,7 +6,6 @@ export const review = defineType({
   type: "document",
   fields: [
     defineField({name:"name",title:"Client name",type:"string",validation:Rule=>Rule.required()}),
-    defineField({name:"email",title:"Email (private)",type:"email",validation:Rule=>Rule.required()}),
     defineField({name:"company",title:"Company",type:"string"}),
     defineField({name:"role",title:"Role",type:"string"}),
     defineField({name:"rating",title:"Star rating",type:"number",validation:Rule=>Rule.required().integer().min(1).max(5)}),
