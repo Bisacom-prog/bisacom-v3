@@ -22,7 +22,22 @@ export type Book = {
   contents?: {title: string; body: string; items: string[]};
   companion?: {eyebrow: string; title: string; body: string; label: string; href: string};
   closing?: {title: string; body: string};
+  // The book has its own page under app/books/<slug> instead of the shared template.
+  customPage?: boolean;
 };
+
+// PASTE YOUR CHECKOUT LINKS HERE. Buy buttons, checkout wording and the "Available now"
+// status all appear automatically once a link is set. Leave a link empty to hide it.
+export const aiBusinessSystemsLinks = {
+  stripe: "", // Stripe Payment Link, e.g. https://buy.stripe.com/...
+  gumroad: "", // Gumroad product link, e.g. https://yourname.gumroad.com/l/...
+};
+export const aiBusinessSystemsPrice = "£19";
+
+export const aiBusinessSystemsCheckout = [
+  {provider: "stripe" as const, label: "Stripe", href: aiBusinessSystemsLinks.stripe},
+  {provider: "gumroad" as const, label: "Gumroad", href: aiBusinessSystemsLinks.gumroad},
+].filter((option) => option.href);
 
 export const books: Book[] = [
   {
@@ -99,20 +114,16 @@ export const books: Book[] = [
     },
   },
   {
-    slug: "the-money-we-were-never-taught",
-    title: "The Money We Were Never Taught",
-    status: "upcoming",
-    statusLabel: "Upcoming · Not yet available",
-    description: "Synopsis to be announced closer to publication.",
-    audience: "To be announced",
-  },
-  {
-    slug: "my-first-money-adventure",
-    title: "My First Money Adventure",
-    status: "upcoming",
-    statusLabel: "Upcoming · Not yet available",
-    description: "Synopsis to be announced closer to publication.",
-    audience: "To be announced",
+    slug: "ai-business-systems",
+    title: "AI Business Systems",
+    subtitle: "The Small Business AI Operating System",
+    series: "Bisacom Playbooks",
+    status: aiBusinessSystemsCheckout.length ? "available" : "upcoming",
+    statusLabel: aiBusinessSystemsCheckout.length ? "Available now · PDF" : "Launching soon · Not yet on sale",
+    description: "A 76-page practical workbook that helps you turn occasional AI use into 20 repeatable business systems, with reusable prompts, worksheets and a 30-Day Implementation Plan.",
+    audience: "Solo founders, freelancers, creators and small business owners",
+    cover: {src: "/ai-business-systems/cover.webp", width: 911, height: 1287, alt: "AI Business Systems workbook cover, 2026 Edition, by Bismark Apenkwah"},
+    customPage: true,
   },
 ];
 

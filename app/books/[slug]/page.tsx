@@ -6,7 +6,7 @@ import {books, getBook, notifyHref, type Book} from "@/lib/books";
 import {siteConfig} from "@/lib/site";
 
 export const dynamicParams = false;
-export const generateStaticParams = () => books.map((book) => ({slug: book.slug}));
+export const generateStaticParams = () => books.filter((book) => !book.customPage).map((book) => ({slug: book.slug}));
 
 export async function generateMetadata({params}: {params: Promise<{slug: string}>}): Promise<Metadata> {
   const {slug} = await params;
