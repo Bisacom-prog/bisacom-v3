@@ -26,11 +26,11 @@ const capabilities = [
   {title: "Design Engineering", does: "Carries design intent into production, or works closely with the engineers who do.", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Git & GitHub", "Sanity + Vercel"]},
 ];
 
-const disciplines = [
-  ["Product design", "Research, information architecture, flows, interaction states and usability decisions."],
-  ["Graphic & brand design", "Visual identity, typography, colour, composition and brand consistency across digital touchpoints."],
-  ["Design systems", "Reusable components, responsive states, accessibility considerations and scalable interface patterns."],
-  ["Design engineering", "Figma-to-code workflows grounded in React, Next.js, TypeScript and implementation feasibility."],
+const principles = [
+  ["Start with the problem", "I want to know who it’s for and what the business needs before I open Figma."],
+  ["Design every state", "Errors, empty screens and edge cases are part of the product, not an afterthought."],
+  ["Design what can ship", "Knowing the code helps me make realistic decisions early, not at handover."],
+  ["Say what’s proven", "I separate what’s been tested from what’s still an assumption, which is why my concept projects are labelled as concepts."],
 ];
 
 export default async function Page() {
@@ -123,22 +123,24 @@ export default async function Page() {
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[.72fr_1.28fr] lg:px-8">
           <div>
             <p className="eyebrow">About</p>
-            <h2 className="mt-3 text-3xl font-black text-slate-950 dark:text-white">A visual designer who grew into product design and design engineering.</h2>
+            <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">I design with the build in mind.</h2>
           </div>
           <div>
-            <p className="text-lg leading-8 text-slate-600 dark:text-slate-300">I’m Bismark Apenkwah, a Product Designer and Design Engineer based in Norwich, UK. My foundation is in graphic design and brand identity, where I learned to think carefully about visual hierarchy, typography, colour, composition and how a brand should feel across every touchpoint. I now bring that visual discipline into product design — shaping user flows, interfaces and design systems — and into front-end implementation with React and Next.js.</p>
-            <p className="mt-5 text-base leading-8 text-slate-600 dark:text-slate-300">That combination lets me work across the full path from idea to interface: understanding the problem, designing the experience in Figma, building reusable UI patterns and carrying the intent into production. For product teams, that means a designer who understands implementation constraints; for clients, it means brand-aware digital experiences that are coherent, usable and ready to ship.</p>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2">
-              {disciplines.map(([title, copy], index) => (
+            <p className="text-lg leading-8 text-slate-600 dark:text-slate-300">I’m Bismark Apenkwah, a Product Designer and Design Engineer based in Norwich, UK. I started in graphic design and brand identity, which taught me hierarchy, typography and how a brand should feel. Product design added research, user flows and systems thinking. Learning React and Next.js changed how I design, because I now consider how a screen gets built while I’m still shaping it.</p>
+            <p className="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">On <Link href="/projects/ma-adjo-s-kitchen" className="text-link">Ma Adjo’s Kitchen</Link>, I took a client’s ordering journey from UX through to a live product on my own.</p>
+            <h3 className="mt-10 font-bold text-slate-950 dark:text-white">How I work</h3>
+            <div className="mt-5 grid gap-6 sm:grid-cols-2">
+              {principles.map(([title, copy], index) => (
                 <article key={title} className="flex gap-4">
                   <span className="icon-box" aria-hidden="true">{["○", "◇", "↗", "<>"][index]}</span>
                   <div>
-                    <h3 className="font-bold text-slate-950 dark:text-white">{title}</h3>
+                    <h4 className="font-bold text-slate-950 dark:text-white">{title}</h4>
                     <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">{copy}</p>
                   </div>
                 </article>
               ))}
             </div>
+            <p className="mt-8 border-t border-slate-200 pt-6 text-base font-semibold leading-7 text-slate-950 dark:border-white/10 dark:text-white">Product teams get a designer who speaks engineering. Clients get one person who can take an idea through to a working product.</p>
           </div>
         </div>
       </section>
