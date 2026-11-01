@@ -1,98 +1,248 @@
-"use client";
-
 import Image from "next/image";
-import BookLaunchStrip from "@/components/BookLaunchStrip";
-import HeroBackground from "@/components/HeroBackground";
-import BrandShowcasePreview from "@/components/BrandShowcasePreview";
-import MotionPrototype from "@/components/MotionPrototype";
-import {FormEvent, useEffect, useState} from "react";
+import Link from "next/link";
+import BookGrid from "@/components/books/BookGrid";
+import ContactSection from "@/components/home/ContactSection";
+import DesignToCode from "@/components/home/DesignToCode";
+import {MotionDemo} from "@/components/MotionPrototype";
+import {books} from "@/lib/books";
 import {blogPosts} from "@/lib/blog-posts";
+import {featuredProjects, statusLabels} from "@/lib/projects";
+import {getApprovedReviews} from "@/lib/reviews";
+import {siteConfig} from "@/lib/site";
 
-const projects = [
-  {title:"Ma Adjo’s Kitchen",type:"Shipped product · Product + front-end",description:"Designed and built a responsive ordering and catering experience from UX/UI through reusable components, CMS delivery and production deployment.",outcome:"Shipped client product · Next.js + Sanity",image:"/img/kitchen-v2.webp",href:"/projects/ma-adjo-s-kitchen"},
-  {title:"Mobile Mechanic",type:"AI product · Mobile UX/UI",description:"An AI-assisted roadside-help experience designed around fast requests, mechanic matching, trust, recovery and low-cognitive-load interaction under pressure.",outcome:"End-to-end UX, design system + motion prototype",image:"/img/mobile.webp",href:"/projects/mobile-mechanic-app"},
-  {title:"ShiftFlow",type:"B2B SaaS · Complex workflow",description:"A role-based workforce flow that moves from unexpected absence to eligible staff matching, confirmed cover, rota updates and team notification.",outcome:"Research-led product concept · Multi-state UX",image:"/img/shift-coverage.png",href:"/projects/short-notice-shift-coverage"},
-];
+export const revalidate = 300;
 
-const services = [
-  {icon:"◎",title:"UX/UI Audit",price:"From £150",description:"A low-risk first step for improving an existing website, feature or customer journey.",items:["Review of up to 8 key screens","Prioritised usability and accessibility findings","Annotated recommendations and 30-minute call"],href:"/services/ux-audit"},
-  {icon:"◇",title:"Figma UI Design Sprint",price:"From £450",description:"Turn one feature or early idea into a clear flow and polished interface ready for validation.",items:["User flow and wireframes","5–8 responsive high-fidelity screens","Prototype, reusable components and one revision"],href:"/services/ui-ux-design"},
-  {icon:"↗",title:"Website Design & Build",price:"From £950",description:"A responsive business website designed and built to generate clearer enquiries, bookings or orders.",items:["UX, responsive UI and Next.js build","CMS, contact or enquiry journey","Basic SEO, deployment and handover"],href:"/services/website-design-norwich"},
-];
-
-const skills = [
-  {title:"Product Strategy & UX",items:["Discovery & requirements","Problem framing","UX research","Information architecture","Complex user flows","Usability testing"]},
-  {title:"UI, Motion & Systems",items:["Responsive UI design","Interaction states","Motion-aware prototyping","Component systems","Auto Layout & variants","Accessible design"]},
-  {title:"Brand & Visual Systems",items:["Identity direction","Typography & colour","Visual hierarchy","Brand consistency","Digital applications","Adobe Creative Cloud"]},
-  {title:"Design Engineering",items:["React","Next.js","TypeScript","Tailwind CSS","Git & GitHub","Sanity + Vercel"]},
-];
-
-type ModalType = "contact"|"quote"|"review"|null;
-type Review = {_id:string;name:string;company?:string;role?:string;rating:number;review:string};
-type CookiePreferences = {necessary:true;analytics:boolean;marketing:boolean;savedAt:string};
-const COOKIE_KEY = "bisacomCookiePreferences";
-
-function Field({label,name,type="text",required=true,children}:{label:string;name:string;type?:string;required?:boolean;children?:React.ReactNode}) {
-  return <label className="grid gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200"><span>{label}{required&&<b className="text-blue-600"> *</b>}</span>{children??<input name={name} type={type} required={required} className="form-control"/>}</label>;
-}
-
-function FormModal({type,onClose}:{type:Exclude<ModalType,null>;onClose:()=>void}) {
-  const [status,setStatus]=useState<"idle"|"sending"|"success"|"error">("idle");
-  const quote=type==="quote", review=type==="review";
-  async function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();setStatus("sending");const form=e.currentTarget;const data=Object.fromEntries(new FormData(form).entries());try{const r=await fetch(review?"/api/reviews":"/api/contact",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...data,enquiryType:type})});if(!r.ok)throw new Error();setStatus("success");form.reset();}catch{setStatus("error");}}
-  return <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title" onMouseDown={e=>e.target===e.currentTarget&&onClose()}><div className="modal-card"><button onClick={onClose} className="modal-close focus-ring" aria-label="Close">×</button><p className="eyebrow">{review?"Client review":quote?"New project":"Get in touch"}</p><h2 id="modal-title" className="mt-2 text-3xl font-black text-slate-950 dark:text-white">{review?"Share your experience":quote?"Request a project quote":"Let’s talk about your goals"}</h2><p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{review?"Reviews are checked before appearing publicly.":"Tell me what you need. I usually reply within one working day."}</p>{status==="success"?<div className="mt-8 rounded-2xl border border-green-200 bg-green-50 p-6 text-green-900"><b>Thank you — it’s been received.</b><p className="mt-2 text-sm">{review?"Your review will appear after approval.":"I’ll reply via the email you provided."}</p></div>:<form className="mt-7 grid gap-5" onSubmit={submit}><div className="grid gap-5 sm:grid-cols-2"><Field label="Full name" name="name"/><Field label="Email" name="email" type="email"/></div>{review?<><div className="grid gap-5 sm:grid-cols-2"><Field label="Company" name="company" required={false}/><Field label="Role" name="role" required={false}/></div><Field label="Rating" name="rating"><select name="rating" defaultValue="5" required className="form-control">{[5,4,3,2,1].map(n=><option key={n} value={n}>{n} — {n===5?"Excellent":"stars"}</option>)}</select></Field><Field label="Your review" name="review"><textarea name="review" required minLength={20} maxLength={800} rows={5} className="form-control"/></Field></>:<>{quote&&<><div className="grid gap-5 sm:grid-cols-2"><Field label="Business or organisation" name="business"/><Field label="Current website" name="currentWebsite" required={false}/></div><div className="grid gap-5 sm:grid-cols-2"><Field label="Service" name="service"><select name="service" defaultValue="" required className="form-control"><option value="" disabled>Select a service</option>{services.map(s=><option key={s.title}>{s.title}</option>)}</select></Field><Field label="Estimated budget" name="budget"><select name="budget" defaultValue="" required className="form-control"><option value="" disabled>Select a range</option><option>Under £500</option><option>£500–£1,000</option><option>£1,000–£2,000</option><option>£2,000+</option><option>Not sure yet</option></select></Field></div><Field label="Desired launch date or timeline" name="timeline" required={false}/></>}<Field label={quote?"Project goals and current challenge":"How can I help?"} name="message"><textarea name="message" required minLength={20} maxLength={2000} rows={5} className="form-control"/></Field></>}<input name="website" tabIndex={-1} autoComplete="off" className="hidden"/>{status==="error"&&<p role="alert" className="text-sm font-bold text-red-600">Something went wrong. Please email hello@bisacom.dev.</p>}<button disabled={status==="sending"} className="focus-ring btn-lift rounded-xl bg-[#2D5BFF] px-6 py-4 text-sm font-bold text-white disabled:opacity-60">{status==="sending"?"Sending…":review?"Submit review":quote?"Request my quote":"Send message"}</button></form>}</div></div>;
-}
-
-function CookieModal({preferences,onSave,onClose}:{preferences:CookiePreferences|null;onSave:(analytics:boolean,marketing:boolean)=>void;onClose:()=>void}){
-  const [analytics,setAnalytics]=useState(Boolean(preferences?.analytics));
-  const [marketing,setMarketing]=useState(Boolean(preferences?.marketing));
-  return <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cookie-title" onMouseDown={e=>e.target===e.currentTarget&&onClose()}><div className="modal-card max-w-xl"><button onClick={onClose} className="modal-close focus-ring" aria-label="Close cookie preferences">×</button><p className="eyebrow">Cookie control</p><h2 id="cookie-title" className="mt-2 text-3xl font-black text-slate-950 dark:text-white">Manage cookie preferences</h2><p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">Choose which optional cookies you allow. Necessary storage keeps essential preferences and cannot be switched off.</p><div className="mt-7 grid gap-3"><div className="cookie-option"><div><b>Strictly necessary</b><p>Required for theme, cookie choices and core site functions.</p></div><span className="cookie-status">Always on</span></div><label className="cookie-option"><div><b>Analytics</b><p>Helps understand how the portfolio is used and improved.</p></div><input type="checkbox" checked={analytics} onChange={e=>setAnalytics(e.target.checked)} className="cookie-toggle"/></label><label className="cookie-option"><div><b>Marketing</b><p>Allows embedded social or campaign content when added.</p></div><input type="checkbox" checked={marketing} onChange={e=>setMarketing(e.target.checked)} className="cookie-toggle"/></label></div><div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"><button onClick={()=>onSave(false,false)} className="focus-ring rounded-xl border border-slate-300 px-5 py-3 text-sm font-bold dark:border-white/15">Reject optional</button><button onClick={()=>onSave(analytics,marketing)} className="focus-ring rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white">Save preferences</button></div></div></div>;
-}
-
-export default function Page(){
-  const [menu,setMenu]=useState(false),[dark,setDark]=useState(false),[modal,setModal]=useState<ModalType>(null),[reviews,setReviews]=useState<Review[]>([]),[cookies,setCookies]=useState<CookiePreferences|null>(null),[cookieReady,setCookieReady]=useState(false),[cookieOpen,setCookieOpen]=useState(false);
-  useEffect(()=>{const s=localStorage.getItem("bisacomTheme");setDark(s==="dark"||(!s&&matchMedia("(prefers-color-scheme: dark)").matches));try{const saved=localStorage.getItem(COOKIE_KEY);setCookies(saved?JSON.parse(saved):null)}catch{localStorage.removeItem(COOKIE_KEY)}setCookieReady(true);fetch("/api/reviews").then(r=>r.ok?r.json():[]).then(setReviews).catch(()=>{});},[]);
-  useEffect(()=>{document.documentElement.classList.add("reveal-ready");const items=[...document.querySelectorAll<HTMLElement>("[data-reveal]")];const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("is-visible");observer.unobserve(entry.target)}}),{threshold:.12,rootMargin:"0px 0px -8% 0px"});items.forEach(item=>observer.observe(item));return()=>{observer.disconnect();document.documentElement.classList.remove("reveal-ready")}},[]);
-  useEffect(()=>{document.documentElement.classList.toggle("dark",dark);localStorage.setItem("bisacomTheme",dark?"dark":"light")},[dark]);
-  useEffect(()=>{document.body.style.overflow=modal||cookieOpen?"hidden":"";const close=(e:KeyboardEvent)=>{if(e.key==="Escape"){setModal(null);setCookieOpen(false)}};document.addEventListener("keydown",close);return()=>{document.removeEventListener("keydown",close);document.body.style.overflow=""}},[modal,cookieOpen]);
-  function saveCookies(analytics:boolean,marketing:boolean){const next:CookiePreferences={necessary:true,analytics,marketing,savedAt:new Date().toISOString()};localStorage.setItem(COOKIE_KEY,JSON.stringify(next));setCookies(next);setCookieOpen(false)}
-  const nav=[
-    {label:'Projects',href:'#projects'},
-    {label:'Motion',href:'#motion'},
-    {label:'About',href:'#about'},
-    {label:'Capabilities',href:'#skills'},
-    {label:'Book',href:'/from-beginner-to-hired'},
-    {label:'Contact',href:'#contact'},
+  const workflow = [
+  {phase: "Understand", steps: ["Product discovery", "UX research", "Problem definition"], note: "What is the real problem, for whom, and what does the business need?"},
+  {phase: "Shape", steps: ["User flows", "Interaction design", "Design systems"], note: "How does it work across every state, including the unhappy paths?"},
+  {phase: "Build", steps: ["Prototyping", "Front-end development", "Testing and delivery"], note: "Does it hold up in code, on real devices, for real people?"},
   ];
-  return <>
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-white/10 bg-[#050914]/90 text-white backdrop-blur-xl"><div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8"><a href="#home" className="focus-ring flex items-center gap-3 rounded-lg"><Image src="/img/Bisacom.webp" width={36} height={36} className="rounded-lg" alt="Bisacom brand mark" priority/><b className="text-xl">Bisacom</b></a><nav className="hidden items-center gap-7 text-sm text-slate-300 lg:flex" aria-label="Primary navigation">{nav.map(item=><a key={item.href} href={item.href} className="nav-link hover:text-white">{item.label}</a>)}</nav><div className="hidden gap-3 lg:flex"><button onClick={()=>setDark(!dark)} className="focus-ring h-11 w-11 rounded-xl border border-white/15" aria-label={`Switch to ${dark?"light":"dark"} mode`} aria-pressed={dark}>{dark?"☀":"☾"}</button><button onClick={()=>setModal("contact")} className="focus-ring btn-lift rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold">Let&apos;s Connect ＋</button></div><button onClick={()=>setMenu(!menu)} className={`focus-ring grid h-11 w-11 place-items-center rounded-xl border border-white/15 lg:hidden ${menu?"menu-open":""}`} aria-expanded={menu} aria-controls="mobileMenu"><span className="sr-only">Menu</span><span className="grid gap-[5px]"><i className="hamburger-line"/><i className="hamburger-line"/><i className="hamburger-line"/></span></button></div><nav id="mobileMenu" className={`mobile-menu-panel border-t border-white/10 px-5 lg:hidden ${menu?"is-open":""}`}><div className="grid gap-1 py-4">{nav.map(item=><a key={item.href} href={item.href} onClick={()=>setMenu(false)} className="rounded-xl px-4 py-3 text-sm font-bold text-slate-200 hover:bg-white/10">{item.label}</a>)}<button onClick={()=>setDark(!dark)} className="mt-2 flex items-center justify-between rounded-xl border border-white/15 px-4 py-3 text-left text-sm font-bold" aria-label={`Switch to ${dark?"light":"dark"} mode`} aria-pressed={dark}><span>{dark?"Light mode":"Dark mode"}</span><span aria-hidden="true">{dark?"☀":"☾"}</span></button><button onClick={()=>{setMenu(false);setModal("contact")}} className="mt-2 rounded-xl bg-blue-600 px-4 py-3 text-left text-sm font-bold">Let&apos;s Connect</button></div></nav></header>
 
-    <main id="main-content">
-      <section id="home" className="relative isolate overflow-hidden bg-[#050914] pt-28 text-white"><HeroBackground/><div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_25%,rgba(45,91,255,.22),transparent_32%),radial-gradient(circle_at_80%_20%,rgba(34,197,94,.08),transparent_28%)]"/><div className="mx-auto grid min-h-[760px] max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-[.95fr_1.05fr] lg:px-8"><div className="hero-copy max-w-2xl"><p className="eyebrow text-blue-400">Product Designer + Design Engineer · Norwich, UK</p><h1 className="mt-6 text-4xl font-black leading-[1.04] tracking-[-.055em] sm:text-5xl md:text-6xl xl:text-7xl">I design products that move from <span className="bg-gradient-to-r from-[#5C7CFF] to-[#8DA2FF] bg-clip-text text-transparent">Figma to production.</span></h1><p className="mt-7 max-w-xl text-base leading-8 text-slate-300 md:text-lg">AI products, SaaS workflows, brand systems and responsive interfaces — designed with visual craft and grounded in React/Next.js implementation.</p><div className="mt-9 flex flex-col gap-4 sm:flex-row"><a href="#projects" className="focus-ring btn-lift rounded-xl bg-blue-600 px-7 py-4 text-center text-sm font-bold shadow-xl shadow-blue-500/25">View selected work →</a><button onClick={()=>setModal("contact")} className="focus-ring btn-lift rounded-xl border border-white/15 bg-white/[.04] px-7 py-4 text-sm font-bold">Let&apos;s connect</button></div><div className="mt-10 flex flex-wrap gap-3 text-sm text-slate-300"><span className="hero-pill">Shipped products</span><span className="hero-pill">Brand + product design</span><span className="hero-pill">Figma + React/Next.js</span><span className="hero-pill">Open to Product Designer & Design Engineer opportunities</span></div></div><div className="hero-visual relative"><div className="absolute inset-10 rounded-full bg-blue-500/20 blur-3xl"/><Image src="/img/hero-product-design-v2.png" width={1586} height={992} sizes="(max-width:1024px) 100vw,52vw" className="relative h-auto w-full rounded-[2rem] border border-white/10 shadow-2xl shadow-black/60" alt="Product design workspace with web and mobile interface concepts" priority/><div className="hero-build-flow" aria-hidden="true"><span>Figma</span><i/><span>Design system</span><i/><span>React</span></div></div></div></section>
+const capabilities = [
+  {
+    title: "Product Strategy and UX",
+    does: "Discovery, problem framing, UX research, information architecture and complex user flows.",
+    solves: "Unclear requirements, and journeys that lose people before they finish.",
+    benefit: "Teams commit to the right problem before spending engineering time on it.",
+    tools: ["Usability testing", "FigJam", "Figma"],
+  },
+  {
+    title: "UI Design, Interaction and Design Systems",
+    does: "Responsive interfaces, interaction states, motion-aware prototypes and reusable component systems.",
+    solves: "Inconsistent interfaces, missing states and slow handover.",
+    benefit: "A product that stays coherent as it grows, with less rework for developers.",
+    tools: ["Figma", "Auto Layout and variants", "Accessible design"],
+  },
+  {
+    title: "Brand and Visual Systems",
+    does: "Identity direction, typography, colour, visual hierarchy and digital applications.",
+    solves: "Products that function but do not feel credible or recognisable.",
+    benefit: "One consistent brand across the product and every other touchpoint.",
+    tools: ["Adobe Creative Cloud", "Figma"],
+  },
+  {
+    title: "Design Engineering",
+    does: "Production front-end work, design-to-code workflows and content-managed builds.",
+    solves: "Designs that lose their intent in build, or never get built at all.",
+    benefit: "Realistic designs, and a designer who can ship or work closely with engineers.",
+    tools: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Git and GitHub", "Sanity", "Vercel"],
+  },
+];
 
-      <section aria-label="Product design strengths" className="border-b border-slate-200 bg-white dark:border-white/10 dark:bg-[#080D1A]"><div className="mx-auto grid max-w-7xl divide-y divide-slate-200 px-6 sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-white/10 lg:px-8">{[["Shipped product experience","Real client delivery alongside deeper product case studies."],["AI + complex workflows","Interaction design for AI-assisted and multi-state product experiences."],["Brand + product + code","Visual systems backed by design-system and front-end fluency."]].map(([title,copy])=><div key={title} className="py-6 sm:px-6 first:pl-0 last:pr-0"><b className="text-slate-950 dark:text-white">{title}</b><p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">{copy}</p></div>)}</div></section>
+const journey = [
+  {title: "Graphic design and brand identity", text: "Where I learned visual hierarchy, typography, colour, composition and how a brand should feel across every touchpoint."},
+  {title: "Product design", text: "Bringing that discipline to user flows, interfaces and design systems, starting from user needs and business goals."},
+  {title: "Design engineering", text: "Building with React and Next.js, so what I design is realistic to implement and carries through to production."},
+];
 
-      <section data-reveal="section" id="projects" className="scroll-mt-24 bg-white py-20 dark:bg-[#050914]"><div className="mx-auto max-w-7xl px-6 lg:px-8"><p className="eyebrow">Selected work</p><div className="mt-3 flex items-end justify-between gap-6"><div><h2 className="text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Product, AI, SaaS and brand work — with delivery behind the pixels.</h2><p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">A focused set showing shipped work, complex interaction design, motion thinking and brand-system capability.</p></div><a href="/projects" className="hidden text-sm font-bold text-blue-600 sm:inline">View all projects →</a></div><div className="mt-10 grid gap-6 md:grid-cols-2">{projects.map(p=><article key={p.title} className="group card-hover overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/10 dark:bg-[#0B1120]"><div className="relative h-64 overflow-hidden bg-slate-100 dark:bg-[#070B16]">{'preview' in p&&p.preview==="brand"?<BrandShowcasePreview/>:<Image src={p.image!} fill sizes="(max-width:768px) 100vw,50vw" className="project-img object-cover" alt={`${p.title} case study preview`}/>}</div><div className="p-6"><p className="eyebrow">{p.type}</p><h3 className="mt-3 text-xl font-black text-slate-950 dark:text-white">{p.title}</h3><p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{p.description}</p><p className="mt-4 rounded-xl bg-slate-50 px-4 py-3 text-xs font-bold text-slate-700 dark:bg-white/[.04] dark:text-slate-300">{p.outcome}</p><div className="mt-5"><a href={p.href} className="text-sm font-bold text-blue-600 dark:text-blue-400">{'preview' in p&&p.preview==="brand"?"View brand work →":"View case study →"}</a></div></div></article>)}</div></div></section>
+export default async function Page() {
+  const reviews = await getApprovedReviews();
 
-      <MotionPrototype/>
+  return (
+    <>
+      <section className="border-b border-line">
+        <div className="page-shell grid items-center gap-12 py-14 lg:grid-cols-[1.15fr_.85fr] lg:gap-16 lg:py-24">
+          <div>
+            <p className="eyebrow">{siteConfig.personName} · Product Designer + Design Engineer</p>
+            <h1 className="mt-6 font-display text-[clamp(2.75rem,1.9rem+3.5vw,5rem)] font-bold leading-[.98] tracking-[-.035em]">
+              I design products that move from <span className="underline decoration-accent decoration-[.08em] underline-offset-[.12em] [text-decoration-skip-ink:none]">Figma to production.</span>
+            </h1>
+            <p className="mt-7 max-w-xl text-lg leading-8 text-muted">
+              Product design for SaaS, web applications and AI-assisted products, backed by design systems and front-end implementation in React and Next.js.
+            </p>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link href="/#projects" className="btn btn-primary">Explore Projects</Link>
+              <Link href="/#contact" className="btn btn-secondary">Contact Me</Link>
+            </div>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+              {siteConfig.availability.open && <p className="status-tag status-tag--available">{siteConfig.availability.label}</p>}
+              <a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className="text-link">View LinkedIn profile</a>
+            </div>
+          </div>
+          <DesignToCode />
+        </div>
+      </section>
 
-      <section data-reveal="section" id="about" className="scroll-mt-24 border-y border-slate-200 bg-white py-16 dark:border-white/10 dark:bg-[#080D1A]"><div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[.72fr_1.28fr] lg:px-8"><div><p className="eyebrow">About</p><h2 className="mt-3 text-3xl font-black text-slate-950 dark:text-white">A visual designer who grew into product design and design engineering.</h2></div><div><p className="text-lg leading-8 text-slate-600 dark:text-slate-300">I’m Bismark Apenkwah, a Product Designer and Design Engineer based in Norwich, UK. My foundation is in graphic design and brand identity, where I learned to think carefully about visual hierarchy, typography, colour, composition and how a brand should feel across every touchpoint. I now bring that visual discipline into product design — shaping user flows, interfaces and design systems — and into front-end implementation with React and Next.js.</p><p className="mt-5 text-base leading-8 text-slate-600 dark:text-slate-300">That combination lets me work across the full path from idea to interface: understanding the problem, designing the experience in Figma, building reusable UI patterns and carrying the intent into production. For product teams, that means a designer who understands implementation constraints; for clients, it means brand-aware digital experiences that are coherent, usable and ready to ship.</p><div className="mt-8 grid gap-6 sm:grid-cols-2">{[["Product design","Research, information architecture, flows, interaction states and usability decisions."],["Graphic & brand design","Visual identity, typography, colour, composition and brand consistency across digital touchpoints."],["Design systems","Reusable components, responsive states, accessibility considerations and scalable interface patterns."],["Design engineering","Figma-to-code workflows grounded in React, Next.js, TypeScript and implementation feasibility."]].map(([t,d],i)=><article key={t} className="flex gap-4"><span className="icon-box">{["○","◇","↗","<>"][i]}</span><div><h3 className="font-bold text-slate-950 dark:text-white">{t}</h3><p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">{d}</p></div></article>)}</div></div></div></section>
+      <section id="projects" aria-labelledby="projects-title" className="page-shell py-20 lg:py-28">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="eyebrow">Selected projects</p>
+            <h2 id="projects-title" className="section-title mt-4 max-w-3xl">One shipped product. Two concepts that go deep.</h2>
+          </div>
+          <Link href="/projects" className="text-link shrink-0">All projects</Link>
+        </div>
 
-      <section data-reveal="section" id="process" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]"><div className="mx-auto max-w-7xl px-6 lg:px-8"><p className="eyebrow">My process</p><h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">A clear path from uncertainty to delivery</h2><div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">{["Discover","Define","Design","Build","Deliver"].map((s,i)=><article key={s} data-reveal="card" className="process-card rounded-2xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-[#0B1120]"><p className="text-xs font-black text-blue-600">0{i+1}</p><h3 className="mt-4 font-black dark:text-white">{s}</h3><p className="mt-3 text-xs leading-6 text-slate-600 dark:text-slate-400">{["Understand users, goals and constraints.","Turn evidence into a focused problem.","Explore, prototype and refine.","Create scalable production UI.","Test, document and support launch."][i]}</p></article>)}</div></div></section>
+        <div className="mt-14 grid gap-20">
+          {featuredProjects.map((project, index) => (
+            <article key={project.slug} className="project-row grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
+              <Link href={`/projects/${project.slug}`} aria-hidden="true" tabIndex={-1} className={`project-media block lg:col-span-7 ${index % 2 ? "lg:order-2" : ""}`}>
+                <Image src={project.image} alt={project.imageAlt} width={project.imageWidth} height={project.imageHeight} sizes="(max-width: 1024px) 100vw, 58vw" className="h-auto w-full" />
+              </Link>
+              <div className={`lg:col-span-5 ${index % 2 ? "lg:order-1" : ""}`}>
+                <div className="flex flex-wrap gap-2">
+                  {project.statuses.map((status) => <span key={status} className={`status-tag status-tag--${status}`}>{statusLabels[status]}</span>)}
+                </div>
+                <h3 className="mt-5 text-4xl font-bold leading-tight">{project.title}</h3>
+                <p className="mt-1 font-medium text-muted">{project.category}</p>
+                <p className="mt-4 leading-7 text-muted">{project.description}</p>
+                <dl className="mt-6 grid gap-3 border-t border-line pt-5 text-sm leading-6">
+                  <div><dt className="inline font-semibold">Problem: </dt><dd className="inline text-muted">{project.problem}</dd></div>
+                  <div><dt className="inline font-semibold">Approach: </dt><dd className="inline text-muted">{project.approach}</dd></div>
+                  <div><dt className="inline font-semibold">Outcome: </dt><dd className="inline text-muted">{project.outcome}</dd></div>
+                  <div><dt className="inline font-semibold">Role: </dt><dd className="inline text-muted">{project.role}</dd></div>
+                </dl>
+                <p className="mono-note mt-4 text-muted">{project.tools.join(" · ")}</p>
+                <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+                  <Link href={`/projects/${project.slug}`} className="btn btn-secondary" aria-label={`Read the ${project.title} case study`}>Read the case study</Link>
+                  {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-link">Visit the live site</a>}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
 
-      <section data-reveal="section" id="skills" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]"><div className="mx-auto max-w-7xl px-6 lg:px-8"><div className="text-center"><p className="eyebrow">Core capabilities</p><h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Product, brand and code — connected by one system</h2></div><div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">{skills.map((s,i)=><article key={s.title} data-reveal="card" className="skill-card" style={{animationDelay:`${i*90}ms`}}><span className="skill-orb">0{i+1}</span><h3 className="mt-6 text-lg font-black text-slate-950 dark:text-white">{s.title}</h3><ul className="mt-5 space-y-3">{s.items.map(x=><li key={x} className="flex gap-3 text-sm text-slate-600 dark:text-slate-300"><i className="mt-2 h-1.5 w-1.5 rounded-full bg-blue-600"/>{x}</li>)}</ul></article>)}</div></div></section>
+        {reviews.length > 0 && (
+          <div className="mt-24 border-t border-line pt-10">
+            <h3 className="eyebrow">From clients I’ve worked with</h3>
+            <div className="mt-6 grid gap-10 md:grid-cols-3">
+              {reviews.map((review) => (
+                <figure key={review._id}>
+                  <blockquote className="leading-7">“{review.review}”</blockquote>
+                  <figcaption className="mt-4 text-sm"><b className="font-semibold">{review.name}</b><span className="block text-muted">{[review.role, review.company].filter(Boolean).join(" · ")}</span></figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
 
-      <section data-reveal="section" id="insights" className="scroll-mt-24 bg-white py-20 dark:bg-[#050914]"><div className="mx-auto max-w-7xl px-6 lg:px-8"><div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"><div><p className="eyebrow">Insights</p><h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Practical thinking for better digital products</h2><p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">UX, product design and SaaS guidance for startups and small businesses.</p></div><a href="/blog" className="text-sm font-bold text-blue-600 dark:text-blue-400">View all insights →</a></div><div className="mt-10 grid gap-6 md:grid-cols-3">{blogPosts.slice(0,3).map(post=><article key={post.slug} className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-[#0B1120]"><p className="eyebrow">{post.category}</p><h3 className="mt-3 text-xl font-black leading-tight text-slate-950 dark:text-white"><a href={`/blog/${post.slug}`} className="hover:text-blue-600 dark:hover:text-blue-400">{post.title}</a></h3><p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{post.excerpt}</p><div className="mt-5 flex items-center justify-between gap-4"><span className="text-xs text-slate-500">{post.readTime}</span><a href={`/blog/${post.slug}`} className="text-sm font-bold text-blue-600 dark:text-blue-400">Read article →</a></div></article>)}</div></div></section>
+      <section id="process" aria-labelledby="process-title" className="border-y border-line bg-surface-muted py-20 lg:py-28">
+        <div className="page-shell grid gap-12 lg:grid-cols-[1.2fr_.8fr] lg:gap-16">
+          <div>
+            <p className="eyebrow">Product design and engineering</p>
+            <h2 id="process-title" className="section-title mt-4">From the first question to the working interface.</h2>
+            <ol className="mt-12 grid gap-px overflow-hidden rounded-xl border border-line bg-line">
+              {workflow.map((stage, index) => (
+                <li key={stage.phase} className="grid gap-4 bg-background p-6 sm:grid-cols-[10rem_1fr] lg:p-7">
+                  <div>
+                    <span className="mono-note text-accent-ink">{String(index + 1).padStart(2, "0")}</span>
+                    <h3 className="mt-1 text-2xl font-bold">{stage.phase}</h3>
+                  </div>
+                  <div>
+                    <ul className="flex flex-wrap gap-x-2 gap-y-1 font-medium">
+                      {stage.steps.map((step, stepIndex) => <li key={step}>{step}{stepIndex < stage.steps.length - 1 && <span aria-hidden="true" className="ml-2 text-accent-ink">→</span>}</li>)}
+                    </ul>
+                    <p className="mt-2 text-sm leading-6 text-muted">{stage.note}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <figure>
+            <MotionDemo />
+            <figcaption className="mt-4 text-sm leading-6 text-muted">
+              Interaction design, shown in motion: system feedback from request to live tracking in the Mobile Mechanic concept.{" "}
+              <Link href="/projects/mobile-mechanic-app" className="text-link text-foreground">See the case study</Link>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
 
-      <BookLaunchStrip />
+      <section id="about" aria-labelledby="about-title" className="page-shell grid gap-12 py-20 lg:grid-cols-[.9fr_1.1fr] lg:gap-20 lg:py-28">
+        <div>
+          <p className="eyebrow">About</p>
+          <h2 id="about-title" className="section-title mt-4">A brand designer’s eye. A product designer’s process. A developer’s constraints.</h2>
+        </div>
+        <div>
+          <p className="text-lg leading-8">I’m Bismark Apenkwah, a Product Designer and Design Engineer based in Norwich, UK. I work across the full path from idea to interface: understanding the problem, designing the experience in Figma, building reusable UI patterns and carrying the intent into production.</p>
+          <p className="mt-5 leading-7 text-muted">For product teams, that means a designer who understands implementation constraints. For clients, it means brand-aware digital experiences that are coherent, usable and ready to ship.</p>
+          <ol className="mt-10 border-l-2 border-accent">
+            {journey.map((step) => (
+              <li key={step.title} className="pb-7 pl-6 last:pb-0">
+                <h3 className="text-xl font-bold">{step.title}</h3>
+                <p className="mt-1 leading-7 text-muted">{step.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
 
-      <section data-reveal="section" id="reviews" className="scroll-mt-24 bg-white py-20 dark:bg-[#050914]"><div className="mx-auto max-w-7xl px-6 lg:px-8"><div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"><div><p className="eyebrow">Client feedback</p><h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Trusted collaboration, clearly delivered</h2></div><a href="/review" className="focus-ring rounded-xl border border-slate-300 px-5 py-3 text-center text-sm font-bold dark:border-white/15">Leave a review</a></div>{reviews.length?<div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">{reviews.map(r=><article key={r._id} className="rounded-2xl border border-slate-200 p-6 dark:border-white/10 dark:bg-[#0B1120]"><p className="text-amber-500" aria-label={`${r.rating} out of 5 stars`}>{"★".repeat(r.rating)}<span className="text-slate-300">{"★".repeat(5-r.rating)}</span></p><blockquote className="mt-4 text-sm leading-7 text-slate-700 dark:text-slate-300">“{r.review}”</blockquote><b className="mt-5 block text-slate-950 dark:text-white">{r.name}</b><p className="text-xs text-slate-500">{[r.role,r.company].filter(Boolean).join(" · ")}</p></article>)}</div>:<div className="mt-10 rounded-2xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-600 dark:border-white/15 dark:text-slate-400">Approved client reviews will appear here.</div>}</div></section>
+      <section id="capabilities" aria-labelledby="capabilities-title" className="border-t border-line py-20 lg:py-28">
+        <div className="page-shell">
+          <p className="eyebrow">Capabilities</p>
+          <h2 id="capabilities-title" className="section-title mt-4 max-w-3xl">Product, brand and code, connected by one system.</h2>
+          <div className="mt-12">
+            {capabilities.map((capability, index) => (
+              <article key={capability.title} className="grid gap-5 border-t border-line py-8 lg:grid-cols-[1.1fr_1fr_1fr_1fr] lg:gap-8">
+                <div>
+                  <span className="mono-note text-accent-ink">{String(index + 1).padStart(2, "0")}</span>
+                  <h3 className="mt-1 text-2xl font-bold leading-tight">{capability.title}</h3>
+                  <p className="mono-note mt-3 text-muted">{capability.tools.join(" · ")}</p>
+                </div>
+                {[["What I do", capability.does], ["Problems I help solve", capability.solves], ["What your team gets", capability.benefit]].map(([label, text]) => (
+                  <div key={label}>
+                    <h4 className="font-sans text-sm font-semibold tracking-normal">{label}</h4>
+                    <p className="mt-1 leading-7 text-muted">{text}</p>
+                  </div>
+                ))}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <section data-reveal="section" id="contact" className="scroll-mt-24 bg-white px-6 pb-20 dark:bg-[#050914] lg:px-8"><div className="mx-auto grid max-w-7xl gap-8 rounded-3xl bg-[linear-gradient(135deg,#050914,#21115C)] p-8 text-white shadow-2xl md:grid-cols-[1fr_auto] md:items-center lg:p-12"><div><p className="eyebrow text-blue-300">Open to full-time Product Design opportunities</p><h2 className="mt-3 max-w-3xl text-3xl font-black md:text-4xl">Looking for a Product Designer who can work across product, brand and implementation?</h2><p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300">I’m available for full-time remote Product Design and Design Engineering roles, with immediate availability from the UK. If you’re building AI, SaaS or digital products and need someone who can bridge Figma and production, let’s talk.</p></div><div className="flex flex-col gap-3"><button onClick={()=>setModal("contact")} className="focus-ring btn-lift rounded-xl bg-blue-600 px-7 py-4 text-sm font-bold">Discuss a role</button><a href="https://uk.linkedin.com/in/bismarkapenkwah" target="_blank" rel="noreferrer" className="focus-ring rounded-xl border border-white/15 px-7 py-4 text-center text-sm font-bold">View LinkedIn</a><a href="mailto:hello@bisacom.dev" className="text-center text-sm font-bold text-slate-300 underline underline-offset-4">Email hello@bisacom.dev</a></div></div></section>
-    </main>
-    <footer className="bg-[#070B16] px-6 py-12 text-white"><div className="mx-auto flex max-w-7xl flex-col gap-6 border-b border-white/10 pb-8 sm:flex-row sm:items-center sm:justify-between"><div><a href="#home" className="inline-flex items-center gap-3 font-black"><Image src="/img/Bisacom.webp" width={40} height={40} className="rounded-xl" alt=""/>Bisacom</a><p className="mt-3 max-w-xl text-sm text-slate-400">Norwich-based Product Designer + Design Engineer creating accessible products, brand systems and production-ready interfaces.</p></div><div className="flex gap-5 text-sm text-slate-300"><a href="/from-beginner-to-hired">Book</a><a href="https://uk.linkedin.com/in/bismarkapenkwah" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://github.com/Bisacom-prog" target="_blank" rel="noreferrer">GitHub</a><a href="mailto:hello@bisacom.dev">Email</a></div></div><div className="mx-auto mt-8 flex max-w-7xl flex-col gap-3 text-xs text-slate-500 sm:flex-row sm:justify-between"><p>© 2026 Bisacom.</p><p><a href="/privacy-policy">Privacy</a> · <a href="/terms-of-use">Terms</a> · <button type="button" onClick={()=>setCookieOpen(true)} className="underline decoration-slate-700 underline-offset-4 hover:text-white">Manage cookies</button></p></div></footer>
-    {modal&&<FormModal type={modal} onClose={()=>setModal(null)}/>} 
-    {cookieReady&&!cookies&&!cookieOpen&&<aside className="cookie-banner" aria-label="Cookie notice"><div><b className="text-slate-950 dark:text-white">Your privacy choices</b><p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">I use necessary storage for site preferences. Optional analytics and marketing cookies are only enabled with your choice.</p></div><div className="flex flex-wrap gap-2"><button onClick={()=>saveCookies(false,false)} className="focus-ring rounded-xl border border-slate-300 px-4 py-2 text-sm font-bold dark:border-white/15">Necessary only</button><button onClick={()=>setCookieOpen(true)} className="focus-ring rounded-xl border border-blue-200 px-4 py-2 text-sm font-bold text-blue-700 dark:border-blue-500/30 dark:text-blue-300">Manage</button><button onClick={()=>saveCookies(true,true)} className="focus-ring rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white">Accept all</button></div></aside>}
-    {cookieOpen&&<CookieModal preferences={cookies} onSave={saveCookies} onClose={()=>setCookieOpen(false)}/>} 
-  </>;
+      <section id="books" aria-labelledby="books-title" className="border-t border-line bg-surface-muted py-20 lg:py-28">
+        <div className="page-shell">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="eyebrow">Books</p>
+              <h2 id="books-title" className="section-title mt-4 max-w-3xl">Writing what I’ve learned.</h2>
+            </div>
+            <Link href="/books" className="text-link shrink-0">All books</Link>
+          </div>
+          <div className="mt-14"><BookGrid books={books.slice(0, 3)} /></div>
+        </div>
+      </section>
+
+      <section aria-labelledby="insights-title" className="page-shell grid gap-8 py-16 lg:grid-cols-[.6fr_1.4fr] lg:gap-16">
+        <div>
+          <p className="eyebrow">Insights</p>
+          <h2 id="insights-title" className="mt-3 text-3xl font-bold">Practical thinking for better digital products.</h2>
+          <Link href="/blog" className="text-link mt-4 inline-block">All insights</Link>
+        </div>
+        <ul>
+          {blogPosts.slice(0, 3).map((post) => (
+            <li key={post.slug} className="border-b border-line first:border-t">
+              <Link href={`/blog/${post.slug}`} className="flex flex-col gap-1 py-4 hover:text-accent-ink sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+                <span className="font-display text-lg font-semibold tracking-tight">{post.title}</span>
+                <span className="mono-note shrink-0 text-muted">{post.readTime}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <ContactSection />
+    </>
+  );
 }

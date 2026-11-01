@@ -12,7 +12,7 @@ function renderSpan(child: SanityPortableTextChild, block: SanityPortableTextBlo
   for (const mark of marks) {
     if (mark === "strong") content = <strong>{content}</strong>;
     else if (mark === "em") content = <em>{content}</em>;
-    else if (mark === "code") content = <code className="rounded bg-slate-100 px-1.5 py-0.5 text-[.9em] dark:bg-white/10">{content}</code>;
+    else if (mark === "code") content = <code className="rounded bg-surface-muted px-1.5 py-0.5 text-[.9em]">{content}</code>;
     else {
       const def = block.markDefs?.find((item) => item._key === mark);
       if (def?._type === "link" && def.href) {
@@ -22,7 +22,7 @@ function renderSpan(child: SanityPortableTextChild, block: SanityPortableTextBlo
             href={def.href}
             target={external ? "_blank" : undefined}
             rel={external ? "noreferrer" : undefined}
-            className="font-semibold text-blue-600 underline decoration-blue-300 underline-offset-4 hover:text-blue-700 dark:text-blue-400"
+            className="font-semibold text-accent-ink underline decoration-accent underline-offset-4 hover:text-accent-ink"
           >
             {content}
           </a>
@@ -38,16 +38,16 @@ function renderTextBlock(block: SanityPortableTextBlock) {
   const children = block.children?.map((child) => renderSpan(child, block));
 
   if (block.style === "h2") {
-    return <h2 className="mt-12 text-2xl font-black tracking-tight md:text-3xl">{children}</h2>;
+    return <h2 className="mt-12 text-2xl font-bold tracking-tight md:text-3xl">{children}</h2>;
   }
   if (block.style === "h3") {
-    return <h3 className="mt-9 text-xl font-black tracking-tight md:text-2xl">{children}</h3>;
+    return <h3 className="mt-9 text-xl font-bold tracking-tight md:text-2xl">{children}</h3>;
   }
   if (block.style === "blockquote") {
-    return <blockquote className="mt-7 border-l-4 border-blue-500 pl-5 text-xl font-semibold leading-8 text-slate-700 dark:text-slate-200">{children}</blockquote>;
+    return <blockquote className="mt-7 border-l-4 border-accent pl-5 text-xl font-semibold leading-8 text-foreground">{children}</blockquote>;
   }
 
-  return <p className="mt-5 text-[1.05rem] leading-8 text-slate-700 dark:text-slate-300">{children}</p>;
+  return <p className="mt-5 text-[1.05rem] leading-8 text-foreground">{children}</p>;
 }
 
 export function SanityArticleBody({body}: {body: SanityBlogBodyBlock[]}) {
@@ -71,7 +71,7 @@ export function SanityArticleBody({body}: {body: SanityBlogBodyBlock[]}) {
       }
 
       const listItems = items.map((item) => (
-        <li key={item._key} className="leading-7 text-slate-700 dark:text-slate-300">
+        <li key={item._key} className="leading-7 text-foreground">
           {item.children?.map((child) => renderSpan(child, item))}
         </li>
       ));
@@ -101,9 +101,9 @@ export function SanityArticleBody({body}: {body: SanityBlogBodyBlock[]}) {
             alt={block.alt ?? "Article image"}
             width={1400}
             height={900}
-            className="h-auto w-full rounded-2xl border border-slate-200 object-cover dark:border-white/10"
+            className="h-auto w-full rounded-2xl border border-line object-cover"
           />
-          {block.caption && <figcaption className="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">{block.caption}</figcaption>}
+          {block.caption && <figcaption className="mt-3 text-sm leading-6 text-muted">{block.caption}</figcaption>}
         </figure>,
       );
       continue;
@@ -111,10 +111,10 @@ export function SanityArticleBody({body}: {body: SanityBlogBodyBlock[]}) {
 
     if (block._type === "callout") {
       output.push(
-        <aside key={block._key ?? `callout-${i}`} className="mt-8 rounded-2xl border border-blue-200 bg-blue-50 p-6 dark:border-blue-500/20 dark:bg-blue-500/[.08]">
-          <p className="text-xs font-black uppercase tracking-[.14em] text-blue-700 dark:text-blue-300">{block.tone ?? "Insight"}</p>
-          {block.title && <h3 className="mt-2 text-xl font-black">{block.title}</h3>}
-          {block.text && <p className="mt-3 leading-7 text-slate-700 dark:text-slate-300">{block.text}</p>}
+        <aside key={block._key ?? `callout-${i}`} className="mt-8 rounded-2xl border border-line bg-surface-muted p-6">
+          <p className="text-xs font-bold uppercase tracking-[.14em] text-accent-ink">{block.tone ?? "Insight"}</p>
+          {block.title && <h3 className="mt-2 text-xl font-bold">{block.title}</h3>}
+          {block.text && <p className="mt-3 leading-7 text-foreground">{block.text}</p>}
         </aside>,
       );
     }

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import EbookWaitlist from "@/components/EbookWaitlist";
 import PlannerBookUpsell from "@/components/PlannerBookUpsell";
 
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
-    url: "https://bisacom.dev/free-planner",
+    url: "https://www.bisacom.dev/free-planner",
     type: "website",
     images: [{ url: "/img/From-beginner.webp", alt: "From Beginner to Hired book cover" }],
   },
@@ -28,20 +27,13 @@ export const metadata: Metadata = {
 
 export default function FreePlannerPage() {
   return (
-    <main id="main-content" className="min-h-screen bg-slate-50 dark:bg-[#0B1120]">
-      <header className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 pt-6 lg:px-8">
-        <Link href="/" className="focus-ring font-bold text-slate-950 dark:text-white">
-          BISACOM
-        </Link>
-        <Link href="/" className="focus-ring text-sm text-blue-700 underline underline-offset-4 dark:text-blue-300">
-          Explore my portfolio
-        </Link>
-      </header>
-      <h1 className="sr-only">{title}</h1>
+      <div className="min-h-screen bg-surface-muted">
+ 
+ <h1 className="sr-only">{title}</h1>
       <EbookWaitlist />
-      <div className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
+ <div className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
         <PlannerBookUpsell />
       </div>
-    </main>
+    </div>
   );
 }

@@ -103,11 +103,11 @@ export default async function BlogArticle({params}: {params: Promise<{slug: stri
           <>
             {localPost.sections.map((section, index) => (
               <section key={`${section.heading ?? "intro"}-${index}`} className={index === 0 ? "" : "mt-12"}>
-                {section.heading && <h2 className="text-2xl font-black tracking-tight md:text-3xl">{section.heading}</h2>}
-                {section.paragraphs?.map((paragraph) => <p key={paragraph} className="mt-5 text-[1.05rem] leading-8 text-slate-700 dark:text-slate-300">{paragraph}</p>)}
-                {section.bullets && <ul className="mt-6 grid list-disc gap-3 pl-6">{section.bullets.map((item) => <li key={item} className="leading-7 text-slate-700 dark:text-slate-300">{item}</li>)}</ul>}
-                {section.numbered && <ol className="mt-6 grid list-decimal gap-3 pl-6">{section.numbered.map((item) => <li key={item} className="leading-7 text-slate-700 dark:text-slate-300">{item}</li>)}</ol>}
-                {section.example && <div className="mt-7 rounded-2xl border border-slate-200 bg-slate-50 p-6 dark:border-white/10 dark:bg-white/[.04]"><p className="text-xs font-black uppercase tracking-[.14em] text-slate-500">{section.example.label}</p>{section.example.weak && <p className="mt-3"><b>Weak:</b> {section.example.weak}</p>}{section.example.better && <p className="mt-2"><b>Better:</b> {section.example.better}</p>}</div>}
+                {section.heading && <h2 className="text-2xl font-bold tracking-tight md:text-3xl">{section.heading}</h2>}
+                {section.paragraphs?.map((paragraph) => <p key={paragraph} className="mt-5 text-[1.05rem] leading-8 text-foreground">{paragraph}</p>)}
+                {section.bullets && <ul className="mt-6 grid list-disc gap-3 pl-6">{section.bullets.map((item) => <li key={item} className="leading-7 text-foreground">{item}</li>)}</ul>}
+                {section.numbered && <ol className="mt-6 grid list-decimal gap-3 pl-6">{section.numbered.map((item) => <li key={item} className="leading-7 text-foreground">{item}</li>)}</ol>}
+                {section.example && <div className="mt-7 rounded-2xl border border-line bg-surface-muted p-6"><p className="text-xs font-bold uppercase tracking-[.14em] text-muted">{section.example.label}</p>{section.example.weak && <p className="mt-3"><b>Weak:</b> {section.example.weak}</p>}{section.example.better && <p className="mt-2"><b>Better:</b> {section.example.better}</p>}</div>}
               </section>
             ))}
           </>
@@ -189,21 +189,16 @@ function ArticleShell({
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify(schema)}} />
-      <header className="border-b border-white/10 bg-[#050914] text-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5 lg:px-8">
-          <Link href="/" className="text-xl font-black">Bisacom</Link>
-          <Link href="/blog" className="text-sm font-bold text-slate-300 hover:text-white">All insights</Link>
-        </div>
-      </header>
+ 
 
-      <main id="main-content" className="bg-white text-slate-950 dark:bg-[#050914] dark:text-white">
+        <div className="bg-surface text-foreground">
         <article>
-          <header className="border-b border-slate-200 bg-[#f7f9fc] py-16 dark:border-white/10 dark:bg-[#080D1A] md:py-24">
+          <header className="border-b border-line bg-surface-muted py-16 md:py-24">
             <div className="mx-auto max-w-4xl px-6">
-              <p className="text-xs font-black uppercase tracking-[.16em] text-blue-600 dark:text-blue-400">{category}</p>
-              <h1 className="mt-5 text-4xl font-black leading-[1.05] tracking-tight md:text-6xl">{title}</h1>
-              <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-600 dark:text-slate-300">{excerpt}</p>
-              <div className="mt-7 flex flex-wrap gap-3 text-sm text-slate-500 dark:text-slate-400">
+              <p className="text-xs font-bold uppercase tracking-[.16em] text-accent-ink">{category}</p>
+              <h1 className="mt-5 text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl">{title}</h1>
+              <p className="mt-6 max-w-3xl text-lg leading-8 text-muted">{excerpt}</p>
+              <div className="mt-7 flex flex-wrap gap-3 text-sm text-muted">
                 <span>By {author}{authorRole ? ` · ${authorRole}` : ""}</span><span>•</span>
                 <time dateTime={publishedAt}>{new Date(publishedAt).toLocaleDateString("en-GB", {day:"numeric", month:"long", year:"numeric"})}</time>
                 {readTime && <><span>•</span><span>{readTime}</span></>}
@@ -214,39 +209,39 @@ function ArticleShell({
           <div className="mx-auto max-w-4xl px-6 py-14 md:py-20">
             {featuredImage && (
               <figure className="mb-14">
-                <Image src={featuredImage} alt={featuredImageAlt ?? title} width={1600} height={900} className="h-auto w-full rounded-3xl border border-slate-200 object-cover dark:border-white/10" priority />
-                {featuredImageCaption && <figcaption className="mt-3 text-sm text-slate-500 dark:text-slate-400">{featuredImageCaption}</figcaption>}
+                <Image src={featuredImage} alt={featuredImageAlt ?? title} width={1600} height={900} className="h-auto w-full rounded-xl border border-line object-cover" priority />
+                {featuredImageCaption && <figcaption className="mt-3 text-sm text-muted">{featuredImageCaption}</figcaption>}
               </figure>
             )}
 
             <div className="max-w-3xl">{body}</div>
 
             {relatedPosts && relatedPosts.length > 0 && (
-              <section className="mt-16 border-t border-slate-200 pt-10 dark:border-white/10">
+              <section className="mt-16 border-t border-line pt-10">
                 <p className="eyebrow">Related insights</p>
                 <div className="mt-6 grid gap-4 md:grid-cols-3">
                   {relatedPosts.map((related) => (
-                    <Link key={related._id} href={`/blog/${related.slug}`} className="rounded-2xl border border-slate-200 p-5 transition hover:-translate-y-1 hover:shadow-lg dark:border-white/10">
-                      <p className="text-xs font-bold uppercase tracking-[.12em] text-blue-600 dark:text-blue-400">{related.category ?? "Insight"}</p>
-                      <h2 className="mt-2 font-black leading-6">{related.title}</h2>
+                    <Link key={related._id} href={`/blog/${related.slug}`} className="rounded-2xl border border-line p-5 transition hover:-translate-y-1 hover:">
+                      <p className="text-xs font-bold uppercase tracking-[.12em] text-accent-ink">{related.category ?? "Insight"}</p>
+                      <h2 className="mt-2 font-bold leading-6">{related.title}</h2>
                     </Link>
                   ))}
                 </div>
               </section>
             )}
 
-            <section className="mt-16 rounded-3xl bg-[linear-gradient(135deg,#050914,#21115C)] p-8 text-white md:p-10">
-              <p className="text-xs font-black uppercase tracking-[.15em] text-blue-300">Work with Bisacom</p>
-              <h2 className="mt-3 text-3xl font-black">Need a clearer digital experience?</h2>
-              <p className="mt-4 max-w-2xl leading-7 text-slate-300">I help startups and businesses improve UX, simplify complex journeys and create developer-ready web, SaaS and mobile experiences.</p>
+            <section className="mt-16 rounded-xl bg-navy p-8 text-white md:p-10">
+              <p className="text-xs font-bold uppercase tracking-[.15em] text-accent-bright">Work with Bisacom</p>
+              <h2 className="mt-3 text-3xl font-bold">Need a clearer digital experience?</h2>
+              <p className="mt-4 max-w-2xl leading-7 text-on-navy-muted">I help startups and businesses improve UX, simplify complex journeys and create developer-ready web, SaaS and mobile experiences.</p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <Link href="/#contact" className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-black">Start a project</Link>
-                <Link href="/projects" className="rounded-xl border border-white/15 px-6 py-3 text-sm font-black">View selected work</Link>
+                <Link href="/#contact" className="rounded-xl bg-accent px-6 py-3 text-sm font-bold text-on-accent">Start a project</Link>
+                <Link href="/projects" className="rounded-xl border border-white/15 px-6 py-3 text-sm font-bold">View selected work</Link>
               </div>
             </section>
           </div>
         </article>
-      </main>
+      </div>
     </>
   );
 }

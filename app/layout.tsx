@@ -1,6 +1,17 @@
 import type { Metadata, Viewport } from "next";
+import { Bricolage_Grotesque, Inter, JetBrains_Mono } from "next/font/google";
+import CookieConsent from "@/components/site/CookieConsent";
+import SiteFooter from "@/components/site/SiteFooter";
+import SiteHeader from "@/components/site/SiteHeader";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
+
+  const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-bricolage", display: "swap" });
+const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains", display: "swap", weight: ["400", "600"] });
+
+// Applies the saved theme before first paint so dark mode does not flash.
+const themeScript = `try{var t=localStorage.getItem("bisacomTheme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.classList.add("dark")}catch(e){}`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -38,15 +49,15 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", title: siteConfig.title, description: siteConfig.description, images: ["/img/hero-product-design-v2.png"] },
   robots: { index: true, follow: true },
-};
+  };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   colorScheme: "light dark",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f9fc" },
-    { media: "(prefers-color-scheme: dark)", color: "#070b14" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#061a2e" },
   ],
 };
 
@@ -111,11 +122,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     ],
   };
   return (
-    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className="min-h-screen bg-background text-foreground selection:bg-brand/20 selection:text-foreground">
+    <html lang="en-GB" className={`h-full antialiased ${inter.variable} ${bricolage.variable} ${jetbrains.variable}`} suppressHydrationWarning>
+      <body className="min-h-screen bg-background text-foreground">
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
         <a href="#main-content" className="skip-link">Skip to main content</a>
-        {children}
+        <SiteHeader />
+        <main id="main-content" tabIndex={-1} className="outline-none">{children}</main>
+        <SiteFooter />
+        <CookieConsent />
       </body>
     </html>
   );

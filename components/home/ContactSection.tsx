@@ -1,0 +1,113 @@
+"use client";
+
+import Link from "next/link";
+import {FormEvent, useRef, useState} from "react";
+import {siteConfig} from "@/lib/site";
+
+type Pathway = "role" | "project";
+
+const copy: Record<Pathway, {submit: string; prompt: string; success: string}> = {
+  role: {submit: "Send role details", prompt: "Tell me about the role and team", success: "I’ll reply to the email you provided."},
+  project: {submit: "Send project details", prompt: "What are you building, and where are you stuck?", success: "I’ll reply to the email you provided."},
+};
+
+export default function ContactSection() {
+  const [pathway, setPathway] = useState<Pathway>("role");
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const nameRef = useRef<HTMLInputElement>(null);
+
+  function choose(next: Pathway) {
+    setPathway(next);
+    setStatus("idle");
+    nameRef.current?.focus();
+  }
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setStatus("sending");
+    const form = event.currentTarget;
+    const data = Object.fromEntries(new FormData(form).entries());
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({...data, enquiryType: pathway === "project" ? "quote" : "role"}),
+      });
+      if (!response.ok) throw new Error();
+      form.reset();
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  return (
+    <section id="contact" aria-labelledby="contact-title" className="on-navy bg-navy py-20 text-on-navy lg:py-28">
+      <div className="page-shell">
+        <p className="eyebrow">Contact</p>
+        <h2 id="contact-title" className="section-title mt-4 max-w-3xl">Hiring, or building something? Let’s talk.</h2>
+
+        <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-navy-line bg-navy-line md:grid-cols-2">
+          <article className="flex flex-col bg-navy p-7 lg:p-9">
+            <h3 className="text-2xl font-bold">Recruiters and hiring managers</h3>
+            <p className="mt-3 flex-1 leading-7 text-on-navy-muted">
+              Discuss a Product Designer or Design Engineer opportunity.{siteConfig.availability.open ? ` ${siteConfig.availability.detail}` : ""}
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <button type="button" onClick={() => choose("role")} className="btn btn-primary">Discuss a role</button>
+              <a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className="text-link">LinkedIn profile</a>
+              <a href={`mailto:${siteConfig.email}?subject=Product%20design%20opportunity`} className="text-link">{siteConfig.email}</a>
+            </div>
+          </article>
+          <article className="flex flex-col bg-navy p-7 lg:p-9">
+            <h3 className="text-2xl font-bold">Founders and businesses</h3>
+            <p className="mt-3 flex-1 leading-7 text-on-navy-muted">
+              Discuss a new product, website, SaaS application or digital experience. I can take an idea from concept through UX and interface design to a working implementation.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <button type="button" onClick={() => choose("project")} className="btn btn-primary">Discuss a project</button>
+              <Link href="/services" className="text-link">See services and starting prices</Link>
+            </div>
+          </article>
+        </div>
+
+        <div className="mt-12 max-w-3xl">
+          {status === "success" ? (
+            <div role="status" className="rounded-lg border border-navy-line p-6">
+              <b>Thank you, your message has been received.</b>
+              <p className="mt-2 text-sm text-on-navy-muted">{copy[pathway].success}</p>
+            </div>
+          ) : (
+            <form onSubmit={submit} className="grid gap-5" aria-busy={status === "sending"}>
+              <fieldset>
+                <legend className="text-sm font-semibold">I’m getting in touch about</legend>
+                <div className="mt-2 flex flex-wrap gap-x-6">
+                  {([["role", "A role"], ["project", "A project"]] as const).map(([value, label]) => (
+                    <label key={value} className="inline-flex min-h-11 items-center gap-2">
+                      <input type="radio" name="pathway" value={value} checked={pathway === value} onChange={() => setPathway(value)} className="h-5 w-5 accent-[#ff6b35]" />
+                      {label}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <label className="grid gap-2 text-sm font-semibold">Full name
+                  <input ref={nameRef} name="name" required autoComplete="name" className="form-control font-normal" />
+                </label>
+                <label className="grid gap-2 text-sm font-semibold">Email
+                  <input name="email" type="email" required autoComplete="email" className="form-control font-normal" />
+                </label>
+              </div>
+              <label className="grid gap-2 text-sm font-semibold">{copy[pathway].prompt}
+                <textarea name="message" required minLength={20} maxLength={2000} rows={5} className="form-control font-normal" />
+              </label>
+              <div hidden aria-hidden="true"><label>Leave this empty<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
+              {status === "error" && <p role="alert" className="text-sm font-semibold text-accent-bright">The message could not be sent. Please email <a href={`mailto:${siteConfig.email}`} className="underline">{siteConfig.email}</a>.</p>}
+              <div><button disabled={status === "sending"} className="btn btn-primary disabled:opacity-60">{status === "sending" ? "Sending…" : copy[pathway].submit}</button></div>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}

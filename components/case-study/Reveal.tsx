@@ -24,7 +24,7 @@ export default function Reveal({
           observer.disconnect()
         }
       },
-      {threshold: 0.12},
+      {threshold: 0.01},
     )
     observer.observe(node)
     return () => observer.disconnect()

@@ -1,0 +1,86 @@
+﻿export type ProjectStatus = "shipped" | "concept" | "research" | "prototype";
+
+export const statusLabels: Record<ProjectStatus, string> = {
+  shipped: "Shipped client product",
+  concept: "Concept product",
+  research: "Research-led concept",
+  prototype: "Interactive prototype",
+};
+
+export type FeaturedProject = {
+  slug: string;
+  title: string;
+  category: string;
+  statuses: ProjectStatus[];
+  description: string;
+  role: string;
+  tools: string[];
+  problem: string;
+  approach: string;
+  outcome: string;
+  image: string;
+  imageAlt: string;
+  imageWidth: number;
+  imageHeight: number;
+  liveUrl?: string;
+};
+
+// Copy is drawn from the published case studies in Sanity. Keep outcome statements verifiable.
+export const featuredProjects: FeaturedProject[] = [
+  {
+    slug: "ma-adjo-s-kitchen",
+    title: "Ma Adjoâ€™s Kitchen",
+    category: "Responsive ordering and catering website",
+    statuses: ["shipped"],
+    description: "A mobile-first ordering and catering website for a Norwich-based food business, designed and built solo from UX through to production.",
+    role: "Product Designer & Front-End Developer",
+    tools: ["Figma", "Next.js", "TypeScript", "Tailwind CSS", "Sanity", "Vercel"],
+    problem: "Ordering relied on a phone-only journey, with no structured way to browse a menu, check allergens or enquire about catering.",
+    approach: "Structured ordering, allergen guidance and event enquiries, with the owner controlling menu content directly through the CMS.",
+    outcome: "Live and in use. Customer usage data is not yet available, so no conversion figures are claimed.",
+    image: "/img/cards/kitchen.webp",
+    imageAlt: "Ma Adjoâ€™s Kitchen website shown on desktop and mobile, with the Authentic African Home Cooking hero and menu categories",
+    imageWidth: 1025,
+    imageHeight: 760,
+    liveUrl: "https://ma-adjos-kitchen.vercel.app/",
+  },
+  {
+    slug: "mobile-mechanic-app",
+    title: "Mobile Mechanic",
+    category: "AI-assisted roadside help, iOS",
+    statuses: ["concept", "prototype"],
+    description: "A roadside app that lets stranded drivers request help in two steps. A mechanic is dispatched first, while AI gathers diagnostic details during the wait.",
+    role: "Product Designer",
+    tools: ["Figma", "FigJam", "Photoshop"],
+    problem: "Drivers asking for help are stressed and short of time, so every extra decision works against them.",
+    approach: "Dispatch before diagnosis, low-cognitive-load interaction, and clear feedback from request through to live tracking.",
+    outcome: "End-to-end UX, design system and motion prototype. A solo concept that has not been launched.",
+    image: "/img/cards/mobile.webp",
+    imageAlt: "Three Mobile Mechanic iPhone screens showing the splash screen, the assigned mechanic with AI vehicle diagnosis, and mechanic accepted",
+    imageWidth: 935,
+    imageHeight: 695,
+  },
+  {
+    slug: "short-notice-shift-coverage",
+    title: "ShiftFlow",
+    category: "B2B SaaS, complex workflow",
+    statuses: ["research", "prototype"],
+    description: "A role-based workflow that takes shift-based teams from an unexpected absence to a confirmed replacement, with everyone affected notified.",
+    role: "Product Designer",
+    tools: ["Figma", "FigJam"],
+    problem: "Short-notice absence is a recurring operational problem in shift-based work, and finding cover spreads across too many steps.",
+    approach: "One workflow connecting absence reporting, suitable-staff matching, cover requests, manager confirmation and rota updates.",
+    outcome: "Defined MVP and interactive prototype. Not tested in a live organisation, so no business impact is claimed.",
+    image: "/img/cards/shift.webp",
+    imageAlt: "Shift coverage dashboard showing one uncovered shift that requires attention and a table of recent coverage activity",
+    imageWidth: 937,
+    imageHeight: 700,
+  },
+];
+
+export function statusesForCaseStudy(slug: string, projectType?: string): ProjectStatus[] {
+  const featured = featuredProjects.find((project) => project.slug === slug);
+  if (featured) return featured.statuses;
+  if (projectType === "client" || projectType === "freelance") return ["shipped"];
+  return ["concept"];
+}

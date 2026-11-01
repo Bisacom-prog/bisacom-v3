@@ -44,14 +44,14 @@ export default function LightboxGallery({
                 : "group text-left"
             }
           >
-            <figure className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm transition duration-300 group-hover:-translate-y-1 group-hover:shadow-xl dark:border-white/10 dark:bg-white/[0.04]">
+            <figure className="overflow-hidden rounded-xl border border-line bg-surface transition duration-300 group-hover:-translate-y-1 group-hover:">
               <img
                 src={item.src}
                 alt={item.alt}
                 className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
               />
               {item.caption && (
-                <figcaption className="border-t border-slate-200 px-5 py-4 text-sm text-slate-600 dark:border-white/10 dark:text-slate-400">
+                <figcaption className="border-t border-line px-5 py-4 text-sm text-muted">
                   {item.caption}
                 </figcaption>
               )}
@@ -89,7 +89,7 @@ export default function LightboxGallery({
               className="max-h-[82vh] w-auto rounded-2xl object-contain"
             />
             {items[active].caption && (
-              <p className="mt-4 text-center text-sm text-slate-300">
+              <p className="mt-4 text-center text-sm text-on-navy-muted">
                 {items[active].caption}
               </p>
             )}

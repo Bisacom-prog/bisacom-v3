@@ -1,121 +1,82 @@
+import Image from "next/image"
+import Link from "next/link"
+import type {Metadata} from "next"
 import {client} from "../../sanity/lib/client"
 import {projectsIndexQuery} from "../../sanity/lib/queries"
-import type {Metadata} from "next"
+import {featuredProjects, statusLabels, statusesForCaseStudy} from "@/lib/projects"
 
 export const metadata: Metadata = {
-  title: "Product Design & Design Engineering",
-  description: "Explore shipped product work, AI and SaaS case studies, and design engineering work by Bismark Apenkwah.",
+  title: "Projects",
+  description: "Shipped product work, AI and SaaS case studies, and design engineering by Bismark Apenkwah. Each project states whether it is shipped or a concept.",
   alternates: {canonical: "/projects"},
   openGraph: {
-    title: "Product Design & Design Engineering",
-    description: "Explore shipped product work, AI and SaaS case studies, and design engineering work by Bismark Apenkwah.",
+    title: "Projects | Bisacom",
+    description: "Shipped product work, AI and SaaS case studies, and design engineering by Bismark Apenkwah.",
     url: "/projects",
     type: "website",
   },
 }
 
-type ProjectCard = {
-  _id?: string
-  title: string
-  slug?: string
-  summary?: string
-  projectType?: string
-  platform?: string
-  heroImageUrl?: string
-  heroImageAlt?: string
-  type?: string
-  description?: string
-  image?: string
-  href?: string
-}
-
-const fallbackProjects: ProjectCard[] = [
-  {
-    title: "Ma Adjo’s Kitchen",
-    type: "Live Client Project · Responsive Web",
-    description:
-      "A shipped ordering and catering website that replaces a phone-only journey with structured WhatsApp ordering, allergen guidance and event enquiries.",
-    image: "/img/kitchen-v2.webp",
-    href: "/projects/ma-adjo-s-kitchen",
-  },
-  {
-    title: "Mobile Mechanic App",
-    type: "Product Design · Mobile App",
-    description:
-      "AI-assisted roadside support concept focused on fast help requests, mechanic matching and resilient mobile flows.",
-    image: "/img/mobile.webp",
-    href: "/projects/mobile-mechanic-app",
-  },
-
-]
+type SanityCard = {_id: string; title: string; slug: string; summary?: string; projectType?: string; heroImageUrl?: string; heroImageAlt?: string}
 
 export const revalidate = 60
 
+async function otherProjects() {
+  try {
+    const all = await client.fetch<SanityCard[]>(projectsIndexQuery)
+    return all.filter((project) => !featuredProjects.some((featured) => featured.slug === project.slug))
+  } catch {
+    return []
+  }
+}
+
 export default async function ProjectsPage() {
-  const sanityProjects = await client.fetch<ProjectCard[]>(projectsIndexQuery)
-  const sanitySlugs = new Set(sanityProjects.map((project) => project.slug))
-  const order = ["Ma Adjo’s Kitchen", "Mobile Mechanic App", "Short-Notice Shift Coverage"]
-  const projects = [
-    ...sanityProjects,
-    ...fallbackProjects.filter((project) => {
-      const slug = project.href?.split("/").filter(Boolean).at(-1)
-      return !slug || !sanitySlugs.has(slug)
-    }),
-  ].sort((a,b)=>{
-    const ai=order.indexOf(a.title), bi=order.indexOf(b.title)
-    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi)
-  })
+  const others = await otherProjects()
 
   return (
-    <main className="min-h-screen bg-[#F8FAFC] px-6 py-24 text-slate-950 dark:bg-[#050914] dark:text-white lg:px-8">
-      <section className="mx-auto max-w-7xl">
-        <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-600 dark:text-blue-400">
-          Selected Work
-        </p>
-        <div className="mt-3 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h1 className="text-4xl font-black tracking-[-0.04em] md:text-6xl">
-              Product & design engineering
-            </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">
-              Selected work spanning shipped product delivery, AI and SaaS UX, motion thinking and front-end implementation.
-            </p>
-          </div>
-          <a href="/" className="text-sm font-bold text-blue-600 dark:text-blue-400">
-            ← Back home
-          </a>
-        </div>
+    <div className="page-shell py-16 lg:py-24">
+      <p className="eyebrow">Projects</p>
+      <h1 className="section-title mt-4 max-w-3xl">Product design and design engineering.</h1>
+      <p className="mt-5 max-w-2xl text-lg leading-8 text-muted">Shipped client work and concept products. Each project states clearly which it is, so you know what has been built and what is still a design proposal.</p>
 
-        <div className="mt-14 grid gap-8 md:grid-cols-2">
-          {projects.map((project) => (
-            <article
-              key={project._id ?? project.title}
-              className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0B1120]"
-            >
-              <img
-                src={project.heroImageUrl ?? project.image ?? "/img/mockup.webp"}
-                alt={project.heroImageAlt ?? `${project.title} case study preview`}
-                className="h-72 w-full object-cover"
-              />
-              <div className="p-7">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">
-                  {project.projectType ?? project.type ?? "Product Design"}
-                </p>
-                <h2 className="mt-3 text-2xl font-black">{project.title}</h2>
-                <p className="mt-4 leading-7 text-slate-600 dark:text-slate-300">
-                  {project.summary ?? project.description}
-                </p>
-                <a
-                  href={project.slug ? `/projects/${project.slug}` : project.href ?? "/projects"}
-                  className="mt-6 inline-flex rounded-xl bg-[#2D5BFF] px-5 py-3 text-sm font-bold text-white"
-                >
-                  View Case Study →
-                </a>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-    </main>
+      <ul className="mt-14 grid gap-x-8 gap-y-14 md:grid-cols-2">
+        {featuredProjects.map((project) => (
+          <li key={project.slug} className="project-row flex flex-col">
+            <Link href={`/projects/${project.slug}`} aria-hidden="true" tabIndex={-1} className="project-media block">
+              <Image src={project.image} alt={project.imageAlt} width={project.imageWidth} height={project.imageHeight} sizes="(max-width: 768px) 100vw, 50vw" className="h-auto w-full" />
+            </Link>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {project.statuses.map((status) => <span key={status} className={`status-tag status-tag--${status}`}>{statusLabels[status]}</span>)}
+            </div>
+            <h2 className="mt-4 text-3xl font-bold">{project.title}</h2>
+            <p className="mt-1 font-medium text-muted">{project.category}</p>
+            <p className="mt-3 flex-1 leading-7 text-muted">{project.description}</p>
+            <p className="mono-note mt-4 text-muted">{project.role}</p>
+            <Link href={`/projects/${project.slug}`} className="text-link mt-4 self-start" aria-label={`Read the ${project.title} case study`}>Read the case study</Link>
+          </li>
+        ))}
+        {others.map((project) => (
+          <li key={project._id} className="project-row flex flex-col">
+            {project.heroImageUrl && (
+              <Link href={`/projects/${project.slug}`} aria-hidden="true" tabIndex={-1} className="project-media relative block aspect-[4/3]">
+                <Image src={project.heroImageUrl} alt={project.heroImageAlt ?? ""} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover object-top" />
+              </Link>
+            )}
+            <div className="mt-5 flex flex-wrap gap-2">
+              {statusesForCaseStudy(project.slug, project.projectType).map((status) => <span key={status} className={`status-tag status-tag--${status}`}>{statusLabels[status]}</span>)}
+            </div>
+            <h2 className="mt-4 text-3xl font-bold">{project.title}</h2>
+            <p className="mt-3 flex-1 leading-7 text-muted">{project.summary}</p>
+            <Link href={`/projects/${project.slug}`} className="text-link mt-4 self-start">Read the case study</Link>
+          </li>
+        ))}
+      </ul>
+
+      <aside className="mt-20 border-t border-line pt-8">
+        <h2 className="text-2xl font-bold">Brand and visual systems</h2>
+        <p className="mt-2 max-w-2xl leading-7 text-muted">Identity work from my foundation in graphic design.</p>
+        <Link href="/projects/brand-systems" className="text-link mt-3 inline-block">See the brand work</Link>
+      </aside>
+    </div>
   )
 }

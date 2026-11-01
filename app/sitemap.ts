@@ -2,6 +2,7 @@ import type {MetadataRoute} from "next";
 import {client} from "@/sanity/lib/client";
 import {siteConfig} from "@/lib/site";
 import {blogPosts} from "@/lib/blog-posts";
+import {books} from "@/lib/books";
 import {getSanityBlogSlugs} from "@/lib/sanity-blog";
 
 type SitemapProject = {
@@ -18,7 +19,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {url: `${siteConfig.url}/services/ui-ux-design`, changeFrequency: "monthly", priority: 0.8},
     {url: `${siteConfig.url}/services/website-design-norwich`, changeFrequency: "monthly", priority: 0.85},
     {url: `${siteConfig.url}/blog`, changeFrequency: "weekly", priority: 0.8},
-    {url: `${siteConfig.url}/from-beginner-to-hired`, changeFrequency: "monthly", priority: 0.9},
+    {url: `${siteConfig.url}/books`, changeFrequency: "monthly", priority: 0.85},
+    ...books.map((book) => ({
+      url: `${siteConfig.url}/books/${book.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: book.status === "available" ? 0.9 : 0.5,
+    })),
     {url: `${siteConfig.url}/free-planner`, changeFrequency: "monthly", priority: 0.75},
     {url: `${siteConfig.url}/privacy-policy`, changeFrequency: "yearly", priority: 0.2},
     {url: `${siteConfig.url}/terms-of-use`, changeFrequency: "yearly", priority: 0.2},
