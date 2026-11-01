@@ -23,7 +23,6 @@ export default function SiteFooter() {
           <ul>
             {primaryNav.map((item) => <li key={item.href}><Link href={item.href} className={linkClass}>{item.label}</Link></li>)}
             <li><Link href="/services" className={linkClass}>Services</Link></li>
-            <li><Link href="/blog" className={linkClass}>Insights</Link></li>
           </ul>
         </nav>
         <nav aria-label="Footer: books" className="text-sm text-on-navy-muted">

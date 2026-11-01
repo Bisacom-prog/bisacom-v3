@@ -5,7 +5,6 @@ import ContactSection from "@/components/home/ContactSection";
 import HeroBackground from "@/components/HeroBackground";
 import MotionPrototype from "@/components/MotionPrototype";
 import {books} from "@/lib/books";
-import {blogPosts} from "@/lib/blog-posts";
 import {featuredProjects, statusLabels} from "@/lib/projects";
 import {getApprovedReviews} from "@/lib/reviews";
 import {siteConfig} from "@/lib/site";
@@ -191,29 +190,6 @@ export default async function Page() {
             <Link href="/books" className="text-link text-sm">View all books →</Link>
           </div>
           <div className="mt-10"><BookGrid books={books.slice(0, 3)} /></div>
-        </div>
-      </section>
-
-      <section id="insights" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="eyebrow">Insights</p>
-              <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Practical thinking for better digital products</h2>
-              <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">UX, product design and SaaS guidance for startups and small businesses.</p>
-            </div>
-            <Link href="/blog" className="text-link text-sm">View all insights →</Link>
-          </div>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {blogPosts.slice(0, 3).map((post) => (
-              <article key={post.slug} className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-[#0B1120]">
-                <p className="eyebrow">{post.category}</p>
-                <h3 className="mt-3 text-xl font-black leading-tight text-slate-950 dark:text-white"><Link href={`/blog/${post.slug}`} className="hover:text-blue-600 dark:hover:text-blue-400">{post.title}</Link></h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{post.excerpt}</p>
-                <p className="mt-5 text-xs text-slate-600 dark:text-slate-400">{post.readTime}</p>
-              </article>
-            ))}
-          </div>
         </div>
       </section>
 

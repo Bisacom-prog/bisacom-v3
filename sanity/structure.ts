@@ -16,34 +16,6 @@ export const structure: StructureResolver = (S) =>
         ),
       S.divider(),
       S.listItem()
-        .title('Insights / Blog')
-        .child(
-          S.list()
-            .title('Insights / Blog')
-            .items([
-              S.listItem()
-                .title('All Posts')
-                .child(
-                  S.documentList()
-                    .title('All Posts')
-                    .filter('_type == "post"')
-                    .defaultOrdering([{field: 'publishedAt', direction: 'desc'}]),
-                ),
-              S.listItem()
-                .title('Featured Posts')
-                .child(
-                  S.documentList()
-                    .title('Featured Posts')
-                    .filter('_type == "post" && featured == true')
-                    .defaultOrdering([{field: 'publishedAt', direction: 'desc'}]),
-                ),
-              S.divider(),
-              S.documentTypeListItem('blogCategory').title('Categories'),
-              S.documentTypeListItem('author').title('Authors'),
-            ]),
-        ),
-      S.divider(),
-      S.listItem()
         .title('Client Reviews')
         .child(
           S.documentList()
