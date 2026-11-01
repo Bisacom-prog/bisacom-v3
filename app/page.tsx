@@ -59,11 +59,15 @@ export default async function Page() {
               <a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center font-bold text-blue-300 hover:text-white">View LinkedIn profile →</a>
             </div>
           </div>
-          <div className="hero-visual relative">
-            <div className="absolute inset-10 rounded-full bg-blue-500/20 blur-3xl" />
-            <Image src="/img/hero-product-design-v2.png" width={1586} height={992} sizes="(max-width:1024px) 100vw,52vw" className="relative h-auto w-full rounded-[2rem] border border-white/10 shadow-2xl shadow-black/60" alt="Product design workspace with web and mobile interface concepts" priority />
-            <div className="hero-build-flow" aria-hidden="true"><span>Figma</span><i /><span>Design system</span><i /><span>React</span></div>
-          </div>
+          <figure>
+            <div className="hero-visual relative">
+              <div className="absolute inset-10 rounded-full bg-blue-500/20 blur-3xl" />
+              <Image src="/img/Hero.webp" width={6400} height={4267} sizes="(max-width:1024px) 100vw,48vw" className="relative h-auto w-full rounded-[2rem] border border-white/10 shadow-2xl shadow-black/60" alt="Three Mobile Mechanic app screens: the splash screen, an assigned mechanic with live map and AI vehicle diagnosis, and a mechanic accepted confirmation with arrival time" priority />
+            </div>
+            <figcaption className="mt-4 text-center text-sm text-slate-300">
+              <Link href="/projects/mobile-mechanic-app" className="font-bold text-blue-300 hover:text-white">Mobile Mechanic</Link> · concept product
+            </figcaption>
+          </figure>
         </div>
       </section>
 
