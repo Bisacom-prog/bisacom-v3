@@ -42,13 +42,13 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="on-navy bg-navy py-20 text-on-navy lg:py-28">
+    <section id="contact" aria-labelledby="contact-title" className="on-navy scroll-mt-24 bg-[linear-gradient(135deg,#050914,#21115C)] py-20 text-on-navy">
       <div className="page-shell">
         <p className="eyebrow">Contact</p>
-        <h2 id="contact-title" className="section-title mt-4 max-w-3xl">Hiring, or building something? Let’s talk.</h2>
+        <h2 id="contact-title" className="mt-3 max-w-3xl text-3xl font-black md:text-4xl">Hiring, or building something? Let’s talk.</h2>
 
         <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-navy-line bg-navy-line md:grid-cols-2">
-          <article className="flex flex-col bg-navy p-7 lg:p-9">
+          <article className="flex flex-col bg-[#070B16] p-7 lg:p-9">
             <h3 className="text-2xl font-bold">Recruiters and hiring managers</h3>
             <p className="mt-3 flex-1 leading-7 text-on-navy-muted">
               Discuss a Product Designer or Design Engineer opportunity.{siteConfig.availability.open ? ` ${siteConfig.availability.detail}` : ""}
@@ -59,7 +59,7 @@ export default function ContactSection() {
               <a href={`mailto:${siteConfig.email}?subject=Product%20design%20opportunity`} className="text-link">{siteConfig.email}</a>
             </div>
           </article>
-          <article className="flex flex-col bg-navy p-7 lg:p-9">
+          <article className="flex flex-col bg-[#070B16] p-7 lg:p-9">
             <h3 className="text-2xl font-bold">Founders and businesses</h3>
             <p className="mt-3 flex-1 leading-7 text-on-navy-muted">
               Discuss a new product, website, SaaS application or digital experience. I can take an idea from concept through UX and interface design to a working implementation.
@@ -84,7 +84,7 @@ export default function ContactSection() {
                 <div className="mt-2 flex flex-wrap gap-x-6">
                   {([["role", "A role"], ["project", "A project"]] as const).map(([value, label]) => (
                     <label key={value} className="inline-flex min-h-11 items-center gap-2">
-                      <input type="radio" name="pathway" value={value} checked={pathway === value} onChange={() => setPathway(value)} className="h-5 w-5 accent-[#ff6b35]" />
+                      <input type="radio" name="pathway" value={value} checked={pathway === value} onChange={() => setPathway(value)} className="h-5 w-5 accent-[#7d9aff]" />
                       {label}
                     </label>
                   ))}

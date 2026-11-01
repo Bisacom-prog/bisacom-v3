@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import BookGrid from "@/components/books/BookGrid";
 import ContactSection from "@/components/home/ContactSection";
-import DesignToCode from "@/components/home/DesignToCode";
-import {MotionDemo} from "@/components/MotionPrototype";
+import HeroBackground from "@/components/HeroBackground";
+import MotionPrototype from "@/components/MotionPrototype";
 import {books} from "@/lib/books";
 import {blogPosts} from "@/lib/blog-posts";
 import {featuredProjects, statusLabels} from "@/lib/projects";
@@ -12,47 +12,26 @@ import {siteConfig} from "@/lib/site";
 
 export const revalidate = 300;
 
-  const workflow = [
-  {phase: "Understand", steps: ["Product discovery", "UX research", "Problem definition"], note: "What is the real problem, for whom, and what does the business need?"},
-  {phase: "Shape", steps: ["User flows", "Interaction design", "Design systems"], note: "How does it work across every state, including the unhappy paths?"},
-  {phase: "Build", steps: ["Prototyping", "Front-end development", "Testing and delivery"], note: "Does it hold up in code, on real devices, for real people?"},
-  ];
-
-const capabilities = [
-  {
-    title: "Product Strategy and UX",
-    does: "Discovery, problem framing, UX research, information architecture and complex user flows.",
-    solves: "Unclear requirements, and journeys that lose people before they finish.",
-    benefit: "Teams commit to the right problem before spending engineering time on it.",
-    tools: ["Usability testing", "FigJam", "Figma"],
-  },
-  {
-    title: "UI Design, Interaction and Design Systems",
-    does: "Responsive interfaces, interaction states, motion-aware prototypes and reusable component systems.",
-    solves: "Inconsistent interfaces, missing states and slow handover.",
-    benefit: "A product that stays coherent as it grows, with less rework for developers.",
-    tools: ["Figma", "Auto Layout and variants", "Accessible design"],
-  },
-  {
-    title: "Brand and Visual Systems",
-    does: "Identity direction, typography, colour, visual hierarchy and digital applications.",
-    solves: "Products that function but do not feel credible or recognisable.",
-    benefit: "One consistent brand across the product and every other touchpoint.",
-    tools: ["Adobe Creative Cloud", "Figma"],
-  },
-  {
-    title: "Design Engineering",
-    does: "Production front-end work, design-to-code workflows and content-managed builds.",
-    solves: "Designs that lose their intent in build, or never get built at all.",
-    benefit: "Realistic designs, and a designer who can ship or work closely with engineers.",
-    tools: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Git and GitHub", "Sanity", "Vercel"],
-  },
+const process = [
+  ["Discover", "Product discovery, UX research and understanding users, goals and constraints."],
+  ["Define", "Turn evidence into a focused problem and clear user flows."],
+  ["Design", "Interaction design, design systems and prototypes, explored and refined."],
+  ["Build", "Create scalable, production-ready UI with front-end development."],
+  ["Deliver", "Test, document and support launch."],
 ];
 
-const journey = [
-  {title: "Graphic design and brand identity", text: "Where I learned visual hierarchy, typography, colour, composition and how a brand should feel across every touchpoint."},
-  {title: "Product design", text: "Bringing that discipline to user flows, interfaces and design systems, starting from user needs and business goals."},
-  {title: "Design engineering", text: "Building with React and Next.js, so what I design is realistic to implement and carries through to production."},
+const capabilities = [
+  {title: "Product Strategy and UX", does: "Turns unclear requirements into a focused problem and journeys people can finish.", items: ["Discovery & requirements", "Problem framing", "UX research", "Information architecture", "Complex user flows", "Usability testing"]},
+  {title: "UI Design, Interaction and Design Systems", does: "Keeps a product coherent as it grows, with less rework for developers.", items: ["Responsive UI design", "Interaction states", "Motion-aware prototyping", "Component systems", "Auto Layout & variants", "Accessible design"]},
+  {title: "Brand and Visual Systems", does: "Makes products feel credible and recognisable across every touchpoint.", items: ["Identity direction", "Typography & colour", "Visual hierarchy", "Brand consistency", "Digital applications", "Adobe Creative Cloud"]},
+  {title: "Design Engineering", does: "Carries design intent into production, or works closely with the engineers who do.", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Git & GitHub", "Sanity + Vercel"]},
+];
+
+const disciplines = [
+  ["Product design", "Research, information architecture, flows, interaction states and usability decisions."],
+  ["Graphic & brand design", "Visual identity, typography, colour, composition and brand consistency across digital touchpoints."],
+  ["Design systems", "Reusable components, responsive states, accessibility considerations and scalable interface patterns."],
+  ["Design engineering", "Figma-to-code workflows grounded in React, Next.js, TypeScript and implementation feasibility."],
 ];
 
 export default async function Page() {
@@ -60,187 +39,202 @@ export default async function Page() {
 
   return (
     <>
-      <section className="border-b border-line">
-        <div className="page-shell grid items-center gap-12 py-14 lg:grid-cols-[1.15fr_.85fr] lg:gap-16 lg:py-24">
-          <div>
-            <p className="eyebrow">{siteConfig.personName} · Product Designer + Design Engineer</p>
-            <h1 className="mt-6 font-display text-[clamp(2.75rem,1.9rem+3.5vw,5rem)] font-bold leading-[.98] tracking-[-.035em]">
-              I design products that move from <span className="underline decoration-accent decoration-[.08em] underline-offset-[.12em] [text-decoration-skip-ink:none]">Figma to production.</span>
+      <section id="home" className="relative isolate overflow-hidden bg-[#050914] text-white">
+        <HeroBackground />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_25%,rgba(45,91,255,.22),transparent_32%),radial-gradient(circle_at_80%_20%,rgba(34,197,94,.08),transparent_28%)]" />
+        <div className="mx-auto grid min-h-[720px] max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-[.95fr_1.05fr] lg:px-8">
+          <div className="hero-copy max-w-2xl">
+            <p className="eyebrow !text-blue-400">Product Designer + Design Engineer · Norwich, UK</p>
+            <h1 className="mt-6 text-4xl font-black leading-[1.04] tracking-[-.055em] sm:text-5xl md:text-6xl xl:text-7xl">
+              I design products that move from <span className="bg-gradient-to-r from-[#5C7CFF] to-[#8DA2FF] bg-clip-text text-transparent">Figma to production.</span>
             </h1>
-            <p className="mt-7 max-w-xl text-lg leading-8 text-muted">
-              Product design for SaaS, web applications and AI-assisted products, backed by design systems and front-end implementation in React and Next.js.
+            <p className="mt-7 max-w-xl text-base leading-8 text-slate-300 md:text-lg">
+              AI products, SaaS workflows, design systems and responsive interfaces, designed with visual craft and grounded in React/Next.js implementation.
             </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Link href="/#projects" className="btn btn-primary">Explore Projects</Link>
-              <Link href="/#contact" className="btn btn-secondary">Contact Me</Link>
+            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+              <Link href="/#projects" className="focus-ring btn-lift rounded-xl bg-blue-600 px-7 py-4 text-center text-sm font-bold shadow-xl shadow-blue-500/25">Explore Projects →</Link>
+              <Link href="/#contact" className="focus-ring btn-lift rounded-xl border border-white/15 bg-white/[.04] px-7 py-4 text-center text-sm font-bold">Contact Me</Link>
             </div>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
-              {siteConfig.availability.open && <p className="status-tag status-tag--available">{siteConfig.availability.label}</p>}
-              <a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className="text-link">View LinkedIn profile</a>
+            <div className="mt-10 flex flex-wrap items-center gap-3 text-sm text-slate-300">
+              <span className="hero-pill">Shipped products</span>
+              <span className="hero-pill">Brand + product design</span>
+              <span className="hero-pill">Figma + React/Next.js</span>
+              {siteConfig.availability.open && <span className="hero-pill">{siteConfig.availability.label}</span>}
+              <a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className="px-2 py-2 font-bold text-blue-300 hover:text-white">LinkedIn profile →</a>
             </div>
           </div>
-          <DesignToCode />
+          <div className="hero-visual relative">
+            <div className="absolute inset-10 rounded-full bg-blue-500/20 blur-3xl" />
+            <Image src="/img/hero-product-design-v2.png" width={1586} height={992} sizes="(max-width:1024px) 100vw,52vw" className="relative h-auto w-full rounded-[2rem] border border-white/10 shadow-2xl shadow-black/60" alt="Product design workspace with web and mobile interface concepts" priority />
+            <div className="hero-build-flow" aria-hidden="true"><span>Figma</span><i /><span>Design system</span><i /><span>React</span></div>
+          </div>
         </div>
       </section>
 
-      <section id="projects" aria-labelledby="projects-title" className="page-shell py-20 lg:py-28">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="eyebrow">Selected projects</p>
-            <h2 id="projects-title" className="section-title mt-4 max-w-3xl">One shipped product. Two concepts that go deep.</h2>
-          </div>
-          <Link href="/projects" className="text-link shrink-0">All projects</Link>
-        </div>
-
-        <div className="mt-14 grid gap-20">
-          {featuredProjects.map((project, index) => (
-            <article key={project.slug} className="project-row grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
-              <Link href={`/projects/${project.slug}`} aria-hidden="true" tabIndex={-1} className={`project-media block lg:col-span-7 ${index % 2 ? "lg:order-2" : ""}`}>
-                <Image src={project.image} alt={project.imageAlt} width={project.imageWidth} height={project.imageHeight} sizes="(max-width: 1024px) 100vw, 58vw" className="h-auto w-full" />
-              </Link>
-              <div className={`lg:col-span-5 ${index % 2 ? "lg:order-1" : ""}`}>
-                <div className="flex flex-wrap gap-2">
-                  {project.statuses.map((status) => <span key={status} className={`status-tag status-tag--${status}`}>{statusLabels[status]}</span>)}
-                </div>
-                <h3 className="mt-5 text-4xl font-bold leading-tight">{project.title}</h3>
-                <p className="mt-1 font-medium text-muted">{project.category}</p>
-                <p className="mt-4 leading-7 text-muted">{project.description}</p>
-                <dl className="mt-6 grid gap-3 border-t border-line pt-5 text-sm leading-6">
-                  <div><dt className="inline font-semibold">Problem: </dt><dd className="inline text-muted">{project.problem}</dd></div>
-                  <div><dt className="inline font-semibold">Approach: </dt><dd className="inline text-muted">{project.approach}</dd></div>
-                  <div><dt className="inline font-semibold">Outcome: </dt><dd className="inline text-muted">{project.outcome}</dd></div>
-                  <div><dt className="inline font-semibold">Role: </dt><dd className="inline text-muted">{project.role}</dd></div>
-                </dl>
-                <p className="mono-note mt-4 text-muted">{project.tools.join(" · ")}</p>
-                <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
-                  <Link href={`/projects/${project.slug}`} className="btn btn-secondary" aria-label={`Read the ${project.title} case study`}>Read the case study</Link>
-                  {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-link">Visit the live site</a>}
-                </div>
-              </div>
-            </article>
+      <section aria-label="Product design strengths" className="border-b border-slate-200 bg-white dark:border-white/10 dark:bg-[#080D1A]">
+        <div className="mx-auto grid max-w-7xl divide-y divide-slate-200 px-6 sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-white/10 lg:px-8">
+          {[["Shipped product experience", "Real client delivery alongside deeper product case studies."], ["AI + complex workflows", "Interaction design for AI-assisted and multi-state product experiences."], ["Brand + product + code", "Visual systems backed by design-system and front-end fluency."]].map(([title, copy]) => (
+            <div key={title} className="py-6 sm:px-6 first:pl-0 last:pr-0">
+              <b className="text-slate-950 dark:text-white">{title}</b>
+              <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">{copy}</p>
+            </div>
           ))}
         </div>
+      </section>
 
-        {reviews.length > 0 && (
-          <div className="mt-24 border-t border-line pt-10">
-            <h3 className="eyebrow">From clients I’ve worked with</h3>
-            <div className="mt-6 grid gap-10 md:grid-cols-3">
-              {reviews.map((review) => (
-                <figure key={review._id}>
-                  <blockquote className="leading-7">“{review.review}”</blockquote>
-                  <figcaption className="mt-4 text-sm"><b className="font-semibold">{review.name}</b><span className="block text-muted">{[review.role, review.company].filter(Boolean).join(" · ")}</span></figcaption>
-                </figure>
-              ))}
+      <section id="projects" className="scroll-mt-24 bg-white py-20 dark:bg-[#050914]">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <p className="eyebrow">Selected work</p>
+          <div className="mt-3 flex items-end justify-between gap-6">
+            <div>
+              <h2 className="text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Product, AI and SaaS work, with delivery behind the pixels.</h2>
+              <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">A focused set showing shipped work, complex interaction design and motion thinking.</p>
             </div>
+            <Link href="/projects" className="text-link hidden shrink-0 text-sm sm:inline">View all projects →</Link>
           </div>
-        )}
-      </section>
-
-      <section id="process" aria-labelledby="process-title" className="border-y border-line bg-surface-muted py-20 lg:py-28">
-        <div className="page-shell grid gap-12 lg:grid-cols-[1.2fr_.8fr] lg:gap-16">
-          <div>
-            <p className="eyebrow">Product design and engineering</p>
-            <h2 id="process-title" className="section-title mt-4">From the first question to the working interface.</h2>
-            <ol className="mt-12 grid gap-px overflow-hidden rounded-xl border border-line bg-line">
-              {workflow.map((stage, index) => (
-                <li key={stage.phase} className="grid gap-4 bg-background p-6 sm:grid-cols-[10rem_1fr] lg:p-7">
-                  <div>
-                    <span className="mono-note text-accent-ink">{String(index + 1).padStart(2, "0")}</span>
-                    <h3 className="mt-1 text-2xl font-bold">{stage.phase}</h3>
-                  </div>
-                  <div>
-                    <ul className="flex flex-wrap gap-x-2 gap-y-1 font-medium">
-                      {stage.steps.map((step, stepIndex) => <li key={step}>{step}{stepIndex < stage.steps.length - 1 && <span aria-hidden="true" className="ml-2 text-accent-ink">→</span>}</li>)}
-                    </ul>
-                    <p className="mt-2 text-sm leading-6 text-muted">{stage.note}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-          <figure>
-            <MotionDemo />
-            <figcaption className="mt-4 text-sm leading-6 text-muted">
-              Interaction design, shown in motion: system feedback from request to live tracking in the Mobile Mechanic concept.{" "}
-              <Link href="/projects/mobile-mechanic-app" className="text-link text-foreground">See the case study</Link>
-            </figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <section id="about" aria-labelledby="about-title" className="page-shell grid gap-12 py-20 lg:grid-cols-[.9fr_1.1fr] lg:gap-20 lg:py-28">
-        <div>
-          <p className="eyebrow">About</p>
-          <h2 id="about-title" className="section-title mt-4">A brand designer’s eye. A product designer’s process. A developer’s constraints.</h2>
-        </div>
-        <div>
-          <p className="text-lg leading-8">I’m Bismark Apenkwah, a Product Designer and Design Engineer based in Norwich, UK. I work across the full path from idea to interface: understanding the problem, designing the experience in Figma, building reusable UI patterns and carrying the intent into production.</p>
-          <p className="mt-5 leading-7 text-muted">For product teams, that means a designer who understands implementation constraints. For clients, it means brand-aware digital experiences that are coherent, usable and ready to ship.</p>
-          <ol className="mt-10 border-l-2 border-accent">
-            {journey.map((step) => (
-              <li key={step.title} className="pb-7 pl-6 last:pb-0">
-                <h3 className="text-xl font-bold">{step.title}</h3>
-                <p className="mt-1 leading-7 text-muted">{step.text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section id="capabilities" aria-labelledby="capabilities-title" className="border-t border-line py-20 lg:py-28">
-        <div className="page-shell">
-          <p className="eyebrow">Capabilities</p>
-          <h2 id="capabilities-title" className="section-title mt-4 max-w-3xl">Product, brand and code, connected by one system.</h2>
-          <div className="mt-12">
-            {capabilities.map((capability, index) => (
-              <article key={capability.title} className="grid gap-5 border-t border-line py-8 lg:grid-cols-[1.1fr_1fr_1fr_1fr] lg:gap-8">
-                <div>
-                  <span className="mono-note text-accent-ink">{String(index + 1).padStart(2, "0")}</span>
-                  <h3 className="mt-1 text-2xl font-bold leading-tight">{capability.title}</h3>
-                  <p className="mono-note mt-3 text-muted">{capability.tools.join(" · ")}</p>
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            {featuredProjects.map((project) => (
+              <article key={project.slug} className="group card-hover overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/10 dark:bg-[#0B1120]">
+                <div className="relative h-64 overflow-hidden bg-slate-100 dark:bg-[#070B16]">
+                  <Image src={project.image} fill sizes="(max-width:768px) 100vw,50vw" className="project-img object-cover" alt={project.imageAlt} />
                 </div>
-                {[["What I do", capability.does], ["Problems I help solve", capability.solves], ["What your team gets", capability.benefit]].map(([label, text]) => (
-                  <div key={label}>
-                    <h4 className="font-sans text-sm font-semibold tracking-normal">{label}</h4>
-                    <p className="mt-1 leading-7 text-muted">{text}</p>
+                <div className="p-6">
+                  <div className="flex flex-wrap gap-2 text-slate-700 dark:text-slate-200">
+                    {project.statuses.map((status) => <span key={status} className={`status-tag status-tag--${status}`}>{statusLabels[status]}</span>)}
                   </div>
-                ))}
+                  <h3 className="mt-4 text-xl font-black text-slate-950 dark:text-white">{project.title}</h3>
+                  <p className="mt-1 text-sm font-semibold text-slate-600 dark:text-slate-400">{project.category}</p>
+                  <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{project.description}</p>
+                  <dl className="mt-4 grid gap-1 rounded-xl bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-700 dark:bg-white/[.04] dark:text-slate-300">
+                    <div><dt className="inline font-bold">Role: </dt><dd className="inline">{project.role}</dd></div>
+                    <div><dt className="inline font-bold">Outcome: </dt><dd className="inline">{project.outcome}</dd></div>
+                    <div><dt className="inline font-bold">Tools: </dt><dd className="inline">{project.tools.join(", ")}</dd></div>
+                  </dl>
+                  <div className="mt-5"><Link href={`/projects/${project.slug}`} className="text-link text-sm" aria-label={`View the ${project.title} case study`}>View case study →</Link></div>
+                </div>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="books" aria-labelledby="books-title" className="border-t border-line bg-surface-muted py-20 lg:py-28">
-        <div className="page-shell">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="eyebrow">Books</p>
-              <h2 id="books-title" className="section-title mt-4 max-w-3xl">Writing what I’ve learned.</h2>
-            </div>
-            <Link href="/books" className="text-link shrink-0">All books</Link>
+      <MotionPrototype />
+
+      <section id="about" className="scroll-mt-24 border-y border-slate-200 bg-white py-16 dark:border-white/10 dark:bg-[#080D1A]">
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[.72fr_1.28fr] lg:px-8">
+          <div>
+            <p className="eyebrow">About</p>
+            <h2 className="mt-3 text-3xl font-black text-slate-950 dark:text-white">A visual designer who grew into product design and design engineering.</h2>
           </div>
-          <div className="mt-14"><BookGrid books={books.slice(0, 3)} /></div>
+          <div>
+            <p className="text-lg leading-8 text-slate-600 dark:text-slate-300">I’m Bismark Apenkwah, a Product Designer and Design Engineer based in Norwich, UK. My foundation is in graphic design and brand identity, where I learned to think carefully about visual hierarchy, typography, colour, composition and how a brand should feel across every touchpoint. I now bring that visual discipline into product design — shaping user flows, interfaces and design systems — and into front-end implementation with React and Next.js.</p>
+            <p className="mt-5 text-base leading-8 text-slate-600 dark:text-slate-300">That combination lets me work across the full path from idea to interface: understanding the problem, designing the experience in Figma, building reusable UI patterns and carrying the intent into production. For product teams, that means a designer who understands implementation constraints; for clients, it means brand-aware digital experiences that are coherent, usable and ready to ship.</p>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2">
+              {disciplines.map(([title, copy], index) => (
+                <article key={title} className="flex gap-4">
+                  <span className="icon-box" aria-hidden="true">{["○", "◇", "↗", "<>"][index]}</span>
+                  <div>
+                    <h3 className="font-bold text-slate-950 dark:text-white">{title}</h3>
+                    <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">{copy}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      <section aria-labelledby="insights-title" className="page-shell grid gap-8 py-16 lg:grid-cols-[.6fr_1.4fr] lg:gap-16">
-        <div>
-          <p className="eyebrow">Insights</p>
-          <h2 id="insights-title" className="mt-3 text-3xl font-bold">Practical thinking for better digital products.</h2>
-          <Link href="/blog" className="text-link mt-4 inline-block">All insights</Link>
+      <section id="process" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <p className="eyebrow">Product design and engineering</p>
+          <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">A clear path from uncertainty to delivery</h2>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+            {process.map(([step, copy], index) => (
+              <article key={step} className="process-card rounded-2xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-[#0B1120]">
+                <p className="text-xs font-black text-blue-600">0{index + 1}</p>
+                <h3 className="mt-4 font-black text-slate-950 dark:text-white">{step}</h3>
+                <p className="mt-3 text-xs leading-6 text-slate-600 dark:text-slate-400">{copy}</p>
+              </article>
+            ))}
+          </div>
         </div>
-        <ul>
-          {blogPosts.slice(0, 3).map((post) => (
-            <li key={post.slug} className="border-b border-line first:border-t">
-              <Link href={`/blog/${post.slug}`} className="flex flex-col gap-1 py-4 hover:text-accent-ink sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-                <span className="font-display text-lg font-semibold tracking-tight">{post.title}</span>
-                <span className="mono-note shrink-0 text-muted">{post.readTime}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
       </section>
+
+      <section id="capabilities" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="text-center">
+            <p className="eyebrow">Core capabilities</p>
+            <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Product, brand and code — connected by one system</h2>
+          </div>
+          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {capabilities.map((capability, index) => (
+              <article key={capability.title} className="skill-card" style={{animationDelay: `${index * 90}ms`}}>
+                <span className="skill-orb">0{index + 1}</span>
+                <h3 className="mt-6 text-lg font-black text-slate-950 dark:text-white">{capability.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{capability.does}</p>
+                <ul className="mt-5 space-y-3">
+                  {capability.items.map((item) => <li key={item} className="flex gap-3 text-sm text-slate-600 dark:text-slate-300"><i className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-600" />{item}</li>)}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="books" className="scroll-mt-24 bg-white py-20 dark:bg-[#050914]">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="eyebrow">Books</p>
+              <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Practical writing, published through Bisacom</h2>
+            </div>
+            <Link href="/books" className="text-link text-sm">View all books →</Link>
+          </div>
+          <div className="mt-10"><BookGrid books={books.slice(0, 3)} /></div>
+        </div>
+      </section>
+
+      <section id="insights" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="eyebrow">Insights</p>
+              <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Practical thinking for better digital products</h2>
+              <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">UX, product design and SaaS guidance for startups and small businesses.</p>
+            </div>
+            <Link href="/blog" className="text-link text-sm">View all insights →</Link>
+          </div>
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
+            {blogPosts.slice(0, 3).map((post) => (
+              <article key={post.slug} className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-white/10 dark:bg-[#0B1120]">
+                <p className="eyebrow">{post.category}</p>
+                <h3 className="mt-3 text-xl font-black leading-tight text-slate-950 dark:text-white"><Link href={`/blog/${post.slug}`} className="hover:text-blue-600 dark:hover:text-blue-400">{post.title}</Link></h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{post.excerpt}</p>
+                <p className="mt-5 text-xs text-slate-600 dark:text-slate-400">{post.readTime}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {reviews.length > 0 && (
+        <section id="reviews" className="scroll-mt-24 bg-white py-20 dark:bg-[#050914]">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <p className="eyebrow">Client feedback</p>
+            <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Trusted collaboration, clearly delivered</h2>
+            <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {reviews.map((review) => (
+                <article key={review._id} className="rounded-2xl border border-slate-200 p-6 dark:border-white/10 dark:bg-[#0B1120]">
+                  <p className="text-amber-600 dark:text-amber-400" role="img" aria-label={`${review.rating} out of 5 stars`}>{"★".repeat(review.rating)}<span className="text-slate-300">{"★".repeat(5 - review.rating)}</span></p>
+                  <blockquote className="mt-4 text-sm leading-7 text-slate-700 dark:text-slate-300">“{review.review}”</blockquote>
+                  <b className="mt-5 block text-slate-950 dark:text-white">{review.name}</b>
+                  <p className="text-xs text-slate-600 dark:text-slate-400">{[review.role, review.company].filter(Boolean).join(" · ")}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <ContactSection />
     </>

@@ -10,7 +10,7 @@ export default function BookCover({book, sizes, priority = false}: {book: Book; 
       <p className="mono-note text-on-navy-muted">Cover coming soon</p>
       <div>
         <i className="mb-4 block h-1 w-10 bg-accent" />
-        <p className="font-display text-2xl font-bold leading-tight tracking-tight">{book.title}</p>
+        <p className="text-2xl font-black leading-tight tracking-tight">{book.title}</p>
         <p className="mono-note mt-3 text-on-navy-muted">Bismark Apenkwah</p>
       </div>
     </div>

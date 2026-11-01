@@ -1,4 +1,4 @@
-﻿export type ProjectStatus = "shipped" | "concept" | "research" | "prototype";
+export type ProjectStatus = "shipped" | "concept" | "research" | "prototype";
 
 export const statusLabels: Record<ProjectStatus, string> = {
   shipped: "Shipped client product",
@@ -20,8 +20,6 @@ export type FeaturedProject = {
   outcome: string;
   image: string;
   imageAlt: string;
-  imageWidth: number;
-  imageHeight: number;
   liveUrl?: string;
 };
 
@@ -29,7 +27,7 @@ export type FeaturedProject = {
 export const featuredProjects: FeaturedProject[] = [
   {
     slug: "ma-adjo-s-kitchen",
-    title: "Ma Adjoâ€™s Kitchen",
+    title: "Ma Adjo’s Kitchen",
     category: "Responsive ordering and catering website",
     statuses: ["shipped"],
     description: "A mobile-first ordering and catering website for a Norwich-based food business, designed and built solo from UX through to production.",
@@ -38,10 +36,8 @@ export const featuredProjects: FeaturedProject[] = [
     problem: "Ordering relied on a phone-only journey, with no structured way to browse a menu, check allergens or enquire about catering.",
     approach: "Structured ordering, allergen guidance and event enquiries, with the owner controlling menu content directly through the CMS.",
     outcome: "Live and in use. Customer usage data is not yet available, so no conversion figures are claimed.",
-    image: "/img/cards/kitchen.webp",
-    imageAlt: "Ma Adjoâ€™s Kitchen website shown on desktop and mobile, with the Authentic African Home Cooking hero and menu categories",
-    imageWidth: 1025,
-    imageHeight: 760,
+    image: "/img/kitchen-v2.webp",
+    imageAlt: "Ma Adjo’s Kitchen website shown on desktop and mobile, with the Authentic African Home Cooking hero and menu categories",
     liveUrl: "https://ma-adjos-kitchen.vercel.app/",
   },
   {
@@ -55,10 +51,8 @@ export const featuredProjects: FeaturedProject[] = [
     problem: "Drivers asking for help are stressed and short of time, so every extra decision works against them.",
     approach: "Dispatch before diagnosis, low-cognitive-load interaction, and clear feedback from request through to live tracking.",
     outcome: "End-to-end UX, design system and motion prototype. A solo concept that has not been launched.",
-    image: "/img/cards/mobile.webp",
+    image: "/img/mobile.webp",
     imageAlt: "Three Mobile Mechanic iPhone screens showing the splash screen, the assigned mechanic with AI vehicle diagnosis, and mechanic accepted",
-    imageWidth: 935,
-    imageHeight: 695,
   },
   {
     slug: "short-notice-shift-coverage",
@@ -71,10 +65,8 @@ export const featuredProjects: FeaturedProject[] = [
     problem: "Short-notice absence is a recurring operational problem in shift-based work, and finding cover spreads across too many steps.",
     approach: "One workflow connecting absence reporting, suitable-staff matching, cover requests, manager confirmation and rota updates.",
     outcome: "Defined MVP and interactive prototype. Not tested in a live organisation, so no business impact is claimed.",
-    image: "/img/cards/shift.webp",
+    image: "/img/shift-coverage.png",
     imageAlt: "Shift coverage dashboard showing one uncovered shift that requires attention and a table of recent coverage activity",
-    imageWidth: 937,
-    imageHeight: 700,
   },
 ];
 

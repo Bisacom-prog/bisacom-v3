@@ -70,7 +70,7 @@ export default async function BookPage({params}: {params: Promise<{slug: string}
             <nav aria-label="Breadcrumb" className="mono-note text-muted"><Link href="/books" className="underline underline-offset-4 hover:text-foreground">Books</Link> / {book.title}</nav>
             <p className={`status-tag status-tag--${book.status} mt-8`}>{book.statusLabel}</p>
             {book.series && <p className="eyebrow mt-6">{book.series}</p>}
-            <h1 className="mt-4 font-display text-[clamp(2.75rem,2rem+4vw,5.5rem)] font-bold leading-[.98]">{book.title}</h1>
+            <h1 className="mt-4 text-[clamp(2.75rem,2rem+4vw,5.5rem)] font-black leading-[.98] tracking-[-.055em]">{book.title}</h1>
             {book.subtitle && <p className="mt-6 max-w-2xl font-display text-xl font-semibold leading-snug sm:text-2xl">{book.subtitle}</p>}
             <p className="mt-5 max-w-2xl text-lg leading-8 text-muted">{book.description}</p>
             <p className="mt-4 max-w-2xl leading-7"><b className="font-semibold">For:</b> <span className="text-muted">{book.audience}</span></p>

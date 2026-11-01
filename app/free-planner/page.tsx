@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
-    url: "https://www.bisacom.dev/free-planner",
+    url: "https://bisacom.dev/free-planner",
     type: "website",
     images: [{ url: "/img/From-beginner.webp", alt: "From Beginner to Hired book cover" }],
   },
@@ -27,11 +27,11 @@ export const metadata: Metadata = {
 
 export default function FreePlannerPage() {
   return (
-      <div className="min-h-screen bg-surface-muted">
- 
- <h1 className="sr-only">{title}</h1>
+    <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120]">
+      
+      <h1 className="sr-only">{title}</h1>
       <EbookWaitlist />
- <div className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
         <PlannerBookUpsell />
       </div>
     </div>

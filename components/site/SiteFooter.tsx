@@ -13,7 +13,7 @@ export default function SiteFooter() {
         <div>
           <Link href="/" className="inline-flex items-center gap-3">
             <Image src="/img/Bisacom.webp" width={36} height={39} className="rounded-md bg-white" alt="" />
-            <span className="font-display text-xl font-bold">Bisacom</span>
+            <span className="text-xl font-black">Bisacom</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-6 text-on-navy-muted">The portfolio of {siteConfig.personName}, Product Designer and Design Engineer in Norwich, UK.</p>
           <a href={`mailto:${siteConfig.email}`} className="text-link mt-4 inline-block text-sm">{siteConfig.email}</a>

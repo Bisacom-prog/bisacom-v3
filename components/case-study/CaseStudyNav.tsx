@@ -27,8 +27,8 @@ export default function CaseStudyNav({items}: {items: Item[]}) {
   if (!items.length) return null
 
   return (
-    <div className="sticky top-[4.5rem] z-30 border-y border-line bg-background ">
-      <div className="mx-auto max-w-7xl overflow-x-auto px-6 [scrollbar-width:none] lg:px-8">
+    <div className="sticky top-[4.5rem] z-30 border-y border-slate-200/80 bg-white/85 backdrop-blur-xl dark:border-white/10 dark:bg-[#070B16]/85">
+      <div className="mx-auto max-w-7xl overflow-x-auto px-6 lg:px-8">
         <nav className="flex min-w-max gap-2 py-3" aria-label="Case study sections">
           {items.map((item) => (
             <a
@@ -36,8 +36,8 @@ export default function CaseStudyNav({items}: {items: Item[]}) {
               href={`#${item.id}`}
               className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                 active === item.id
-                  ? "bg-accent text-on-accent"
-                  : "text-muted hover:bg-surface-muted"
+                  ? "bg-[#2D5BFF] text-white"
+                  : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
               }`}
             >
               {item.label}

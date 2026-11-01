@@ -58,35 +58,35 @@ export default async function BlogPage() {
 
   return (
     <>
- 
+      
 
-        <div className="bg-surface-muted text-foreground">
-        <section className="border-b border-line bg-surface py-20">
+      <div className="bg-[#f7f9fc] text-slate-950 dark:bg-[#050914] dark:text-white">
+        <section className="border-b border-slate-200 bg-white py-20 dark:border-white/10 dark:bg-[#080D1A]">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <p className="eyebrow">Insights</p>
-            <h1 className="mt-4 max-w-4xl text-4xl font-bold tracking-tight md:text-6xl">Practical thinking for better digital products.</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-muted">UX, product design and SaaS guidance focused on clearer journeys, better business outcomes and products that are easier to use.</p>
+            <h1 className="mt-4 max-w-4xl text-4xl font-black tracking-tight md:text-6xl">Practical thinking for better digital products.</h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300">UX, product design and SaaS guidance focused on clearer journeys, better business outcomes and products that are easier to use.</p>
           </div>
         </section>
 
         <section className="py-20">
           <div className="mx-auto grid max-w-7xl gap-6 px-6 md:grid-cols-2 lg:px-8">
             {posts.map((post) => (
-              <article key={post.slug} className="overflow-hidden rounded-xl border border-line bg-surface transition hover:-translate-y-1 hover:">
+              <article key={post.slug} className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl dark:border-white/10 dark:bg-[#0B1120]">
                 {post.featuredImageUrl && (
-                  <div className="relative aspect-[16/9] overflow-hidden border-b border-line">
+                  <div className="relative aspect-[16/9] overflow-hidden border-b border-slate-200 dark:border-white/10">
                     <Image src={post.featuredImageUrl} alt={post.featuredImageAlt ?? post.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                   </div>
                 )}
                 <div className="p-7">
-                  <div className="flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[.12em] text-accent-ink">
-                    <span>{post.category}</span><span className="text-muted">•</span>
+                  <div className="flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[.12em] text-blue-600 dark:text-blue-400">
+                    <span>{post.category}</span><span className="text-slate-400">•</span>
                     <time dateTime={post.publishedAt}>{new Date(post.publishedAt).toLocaleDateString("en-GB", {day:"numeric", month:"short", year:"numeric"})}</time>
-                    {post.readTime && <><span className="text-muted">•</span><span>{post.readTime}</span></>}
+                    {post.readTime && <><span className="text-slate-400">•</span><span>{post.readTime}</span></>}
                   </div>
-                  <h2 className="mt-5 text-2xl font-bold leading-tight"><Link href={`/blog/${post.slug}`} className="hover:text-accent-ink">{post.title}</Link></h2>
-                  <p className="mt-4 leading-7 text-muted">{post.excerpt}</p>
-                  <Link href={`/blog/${post.slug}`} className="mt-7 inline-flex text-sm font-bold text-accent-ink">Read article →</Link>
+                  <h2 className="mt-5 text-2xl font-black leading-tight"><Link href={`/blog/${post.slug}`} className="hover:text-blue-600 dark:hover:text-blue-400">{post.title}</Link></h2>
+                  <p className="mt-4 leading-7 text-slate-600 dark:text-slate-300">{post.excerpt}</p>
+                  <Link href={`/blog/${post.slug}`} className="mt-7 inline-flex text-sm font-black text-blue-600 dark:text-blue-400">Read article →</Link>
                 </div>
               </article>
             ))}
@@ -94,7 +94,7 @@ export default async function BlogPage() {
         </section>
       </div>
 
- 
+      
     </>
   );
 }
