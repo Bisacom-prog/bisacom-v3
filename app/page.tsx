@@ -41,25 +41,22 @@ export default async function Page() {
       <section id="home" className="relative isolate overflow-hidden bg-[#050914] text-white">
         <HeroBackground />
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_25%,rgba(45,91,255,.22),transparent_32%),radial-gradient(circle_at_80%_20%,rgba(34,197,94,.08),transparent_28%)]" />
-        <div className="mx-auto grid min-h-[720px] max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-[.95fr_1.05fr] lg:px-8">
+        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[1.05fr_.95fr] lg:px-8">
           <div className="hero-copy max-w-2xl">
-            <p className="eyebrow !text-blue-400">Product Designer + Design Engineer · Norwich, UK</p>
-            <h1 className="mt-6 text-4xl font-black leading-[1.04] tracking-[-.055em] sm:text-5xl md:text-6xl xl:text-7xl">
+            <p className="eyebrow !text-blue-300">Bismark Apenkwah · Product Designer + Design Engineer</p>
+            <h1 className="mt-6 text-4xl font-black leading-[1.04] tracking-[-.05em] sm:text-5xl md:text-6xl xl:text-[4.25rem]">
               I design products that move from <span className="bg-gradient-to-r from-[#5C7CFF] to-[#8DA2FF] bg-clip-text text-transparent">Figma to production.</span>
             </h1>
             <p className="mt-7 max-w-xl text-base leading-8 text-slate-300 md:text-lg">
-              AI products, SaaS workflows, design systems and responsive interfaces, designed with visual craft and grounded in React/Next.js implementation.
+              I design and build SaaS platforms, web applications and AI-assisted products, from product thinking and design systems through to front-end code in React and Next.js.
             </p>
             <div className="mt-9 flex flex-col gap-4 sm:flex-row">
               <Link href="/#projects" className="focus-ring btn-lift rounded-xl bg-blue-600 px-7 py-4 text-center text-sm font-bold shadow-xl shadow-blue-500/25">Explore Projects →</Link>
               <Link href="/#contact" className="focus-ring btn-lift rounded-xl border border-white/15 bg-white/[.04] px-7 py-4 text-center text-sm font-bold">Contact Me</Link>
             </div>
-            <div className="mt-10 flex flex-wrap items-center gap-3 text-sm text-slate-300">
-              <span className="hero-pill">Shipped products</span>
-              <span className="hero-pill">Brand + product design</span>
-              <span className="hero-pill">Figma + React/Next.js</span>
-              {siteConfig.availability.open && <span className="hero-pill">{siteConfig.availability.label}</span>}
-              <a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className="px-2 py-2 font-bold text-blue-300 hover:text-white">LinkedIn profile →</a>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-300">
+              {siteConfig.availability.open && <p className="flex items-center gap-2"><i className="h-2 w-2 shrink-0 rounded-full bg-green-400" aria-hidden="true" />{siteConfig.availability.label}</p>}
+              <a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center font-bold text-blue-300 hover:text-white">View LinkedIn profile →</a>
             </div>
           </div>
           <div className="hero-visual relative">
