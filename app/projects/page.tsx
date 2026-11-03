@@ -56,7 +56,7 @@ export const revalidate = 60
 export default async function ProjectsPage() {
   const sanityProjects = await client.fetch<ProjectCard[]>(projectsIndexQuery).catch(() => [] as ProjectCard[])
   const sanitySlugs = new Set(sanityProjects.map((project) => project.slug))
-  const order = ["Ma Adjo’s Kitchen", "Mobile Mechanic App", "Short-Notice Shift Coverage"]
+  const order = ["Ma Adjo’s Kitchen", "NextAge Consult", "Mobile Mechanic App", "Short-Notice Shift Coverage"]
   const projects = [
     ...sanityProjects,
     ...fallbackProjects.filter((project) => {
@@ -64,7 +64,9 @@ export default async function ProjectsPage() {
       return !slug || !sanitySlugs.has(slug)
     }),
   ].sort((a,b)=>{
-    const ai=order.indexOf(a.title), bi=order.indexOf(b.title)
+    // Sanity titles may use a straight apostrophe where this list uses a curly one.
+    const rank = (title: string) => order.indexOf(title.replace(/'/g, "’"))
+    const ai=rank(a.title), bi=rank(b.title)
     return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi)
   })
 
