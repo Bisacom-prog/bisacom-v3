@@ -643,3 +643,7 @@ html { scroll-padding-top: 5.5rem; }
 .nav-link::after { bottom: .35rem; }
 .nav-link[aria-current="page"]::after { transform: scaleX(1); }
 .hero-pill { font-size: .875rem; }
+
+/* Client reviews carousel: progress bar fills over each slide's display time */
+@keyframes review-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.review-progress { transform-origin: left; animation-name: review-progress; animation-timing-function: linear; animation-fill-mode: forwards; }

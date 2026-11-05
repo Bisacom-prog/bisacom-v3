@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BookGrid from "@/components/books/BookGrid";
 import ContactSection from "@/components/home/ContactSection";
+import ReviewCarousel from "@/components/home/ReviewCarousel";
 import HeroBackground from "@/components/HeroBackground";
 import MotionPrototype from "@/components/MotionPrototype";
 import {books} from "@/lib/books";
@@ -197,20 +198,10 @@ export default async function Page() {
       </section>
 
       {reviews.length > 0 && (
-        <section id="reviews" className="scroll-mt-24 bg-white py-20 dark:bg-[#050914]">
+        <section id="reviews" className="scroll-mt-24 bg-white py-20 md:py-28 dark:bg-[#050914]">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <p className="eyebrow">Client feedback</p>
-            <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Trusted collaboration, clearly delivered</h2>
-            <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {reviews.map((review) => (
-                <article key={review._id} className="rounded-2xl border border-slate-200 p-6 dark:border-white/10 dark:bg-[#0B1120]">
-                  <p className="text-amber-600 dark:text-amber-400" role="img" aria-label={`${review.rating} out of 5 stars`}>{"★".repeat(review.rating)}<span className="text-slate-300">{"★".repeat(5 - review.rating)}</span></p>
-                  <blockquote className="mt-4 text-sm leading-7 text-slate-700 dark:text-slate-300">“{review.review}”</blockquote>
-                  <b className="mt-5 block text-slate-950 dark:text-white">{review.name}</b>
-                  <p className="text-xs text-slate-600 dark:text-slate-400">{[review.role, review.company].filter(Boolean).join(" · ")}</p>
-                </article>
-              ))}
-            </div>
+            <p className="eyebrow text-center">Client feedback</p>
+            <div className="mt-5"><ReviewCarousel reviews={reviews} /></div>
           </div>
         </section>
       )}
