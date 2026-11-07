@@ -9,10 +9,9 @@ export const siteConfig = {
   locale: "en_GB",
   linkedIn: "https://uk.linkedin.com/in/bismarkapenkwah",
   github: "https://github.com/Bisacom-prog",
-  // Points at LinkedIn until a CV PDF is added. Drop the file at public/cv/Bismark-Apenkwah-CV.pdf
-  // and change this to "/cv/Bismark-Apenkwah-CV.pdf"; every "Download CV" button updates.
-  cvUrl: "https://uk.linkedin.com/in/bismarkapenkwah",
-  cvIsPdf: false,
+  // Replace public/cv/Bismark-Apenkwah-CV.pdf to update the CV; every "Download CV" button uses this.
+  cvUrl: "/cv/Bismark-Apenkwah-CV.pdf",
+  cvIsPdf: true,
   designingSince: 2020,
   responseTime: "within 1 working day",
   // No booking tool yet, so the "15-minute call" buttons open a pre-filled email.
