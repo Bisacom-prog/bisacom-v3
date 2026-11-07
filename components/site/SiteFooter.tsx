@@ -22,7 +22,6 @@ export default function SiteFooter() {
           <p className="mono-note mb-3 text-on-navy">Site</p>
           <ul>
             {primaryNav.map((item) => <li key={item.href}><Link href={item.href} className={linkClass}>{item.label}</Link></li>)}
-            <li><Link href="/services" className={linkClass}>Services</Link></li>
           </ul>
         </nav>
         <nav aria-label="Footer: books" className="text-sm text-on-navy-muted">
