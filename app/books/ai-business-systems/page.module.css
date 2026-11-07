@@ -43,11 +43,20 @@
 
 /* Buttons */
 .buy {
-  display: inline-flex; align-items: center; justify-content: center; min-height: 54px; padding: 0 28px;
-  background: var(--orange); color: var(--navy); border-radius: 8px; font-size: 17px; font-weight: 800; text-decoration: none;
-  box-shadow: 0 6px 18px rgba(255, 107, 53, 0.28); transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 62px; padding: 0 34px;
+  background: var(--orange); color: var(--navy); border-radius: 10px; font-size: 19px; font-weight: 800; letter-spacing: -0.01em; text-decoration: none;
+  box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.22), 0 12px 30px rgba(255, 107, 53, 0.42);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
-.buy:hover { background: #ff7c4c; transform: translateY(-1px); box-shadow: 0 10px 24px rgba(255, 107, 53, 0.34); }
+.buy:hover { background: #ff7c4c; transform: translateY(-2px); box-shadow: 0 0 0 6px rgba(255, 107, 53, 0.26), 0 16px 36px rgba(255, 107, 53, 0.5); }
+.buyArrow { flex-shrink: 0; transition: transform 0.15s ease; }
+.buy:hover .buyArrow { transform: translateX(4px); }
+@media (prefers-reduced-motion: reduce) {
+  .buy, .buy:hover, .buyArrow, .buy:hover .buyArrow { transition: none; transform: none; }
+}
+/* In the price card the button spans the column so it is the clear next step. */
+.priceBody .buyGroup, .priceBody .buy { width: 100%; }
+.priceBody .buy { min-height: 66px; font-size: 20px; }
 /* A white and navy double ring stays visible on both light and navy sections. */
 .buy:focus-visible, .ghost:focus-visible { outline: 3px solid transparent; box-shadow: 0 0 0 3px #fff, 0 0 0 6px var(--navy); }
 .buyGroup { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -183,4 +192,11 @@
 @media (prefers-reduced-motion: reduce) {
   .buy { transition: none; }
   .buy:hover { transform: none; }
+}
+
+/* On phones the buy button fills the width so it reads as the main action. */
+@media (max-width: 560px) {
+  .heroActions .buyGroup, .heroActions .buy, .final .buyGroup, .final .buy { width: 100%; }
+  .heroActions .ghost { width: 100%; justify-content: center; }
+  .buy, .priceBody .buy { padding: 0 20px; font-size: 18px; white-space: nowrap; }
 }
