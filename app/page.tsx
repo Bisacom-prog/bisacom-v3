@@ -2,7 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import BookGrid from "@/components/books/BookGrid";
 import ContactSection from "@/components/home/ContactSection";
-import ReviewGrid, {averageRating} from "@/components/home/ReviewGrid";
+import ReviewCarousel from "@/components/home/ReviewCarousel";
+import {averageRating} from "@/components/home/ReviewGrid";
 import HeroBackground from "@/components/HeroBackground";
 import MotionPrototype from "@/components/MotionPrototype";
 import {books} from "@/lib/books";
@@ -168,8 +169,8 @@ export default async function Page() {
       {reviews.length > 0 && (
         <section id="reviews" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <p className="eyebrow">Client feedback</p>
-            <div className="mt-3"><ReviewGrid reviews={reviews} /></div>
+            <p className="eyebrow text-center">Client feedback</p>
+            <div className="mt-5"><ReviewCarousel reviews={reviews} /></div>
           </div>
         </section>
       )}
