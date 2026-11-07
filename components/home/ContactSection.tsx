@@ -46,6 +46,7 @@ export default function ContactSection() {
       <div className="page-shell">
         <p className="eyebrow">Contact</p>
         <h2 id="contact-title" className="mt-3 max-w-3xl text-3xl font-black md:text-4xl">Hiring, or building something? Let’s talk.</h2>
+        <p className="mt-3 text-on-navy-muted">I reply {siteConfig.responseTime}.</p>
 
         <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-navy-line bg-navy-line md:grid-cols-2">
           <article className="flex flex-col bg-[#070B16] p-7 lg:p-9">
@@ -55,6 +56,7 @@ export default function ContactSection() {
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
               <button type="button" onClick={() => choose("role")} className="btn btn-primary">Discuss a role</button>
+              {siteConfig.cvIsPdf && <a href={siteConfig.cvUrl} download className="text-link">Download CV</a>}
               <a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className="text-link">LinkedIn profile</a>
               <a href={`mailto:${siteConfig.email}?subject=Product%20design%20opportunity`} className="text-link">{siteConfig.email}</a>
             </div>
@@ -66,7 +68,8 @@ export default function ContactSection() {
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
               <button type="button" onClick={() => choose("project")} className="btn btn-primary">Discuss a project</button>
-              <Link href="/services" className="text-link">See services and starting prices</Link>
+              <Link href="/services" className="text-link">Services and prices</Link>
+              <a href={siteConfig.callHref} className="text-link">Book a 15-minute call</a>
             </div>
           </article>
         </div>

@@ -11,6 +11,7 @@ import type {
   SanityImage,
 } from "@/components/case-study/types"
 import CaseStudyNav from "@/components/case-study/CaseStudyNav"
+import AtAGlance from "@/components/case-study/AtAGlance"
 import Reveal from "@/components/case-study/Reveal"
 import LightboxGallery from "@/components/case-study/LightboxGallery"
 import PhoneRail from "@/components/case-study/PhoneRail"
@@ -411,6 +412,8 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
           </div>
         )}
       </section>
+
+      <AtAGlance slug={slug} />
 
       <CaseStudyNav items={sections} />
 

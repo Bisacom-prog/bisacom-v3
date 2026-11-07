@@ -2,12 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import BookGrid from "@/components/books/BookGrid";
 import ContactSection from "@/components/home/ContactSection";
-import ReviewCarousel from "@/components/home/ReviewCarousel";
+import ReviewGrid, {averageRating} from "@/components/home/ReviewGrid";
 import HeroBackground from "@/components/HeroBackground";
 import MotionPrototype from "@/components/MotionPrototype";
 import {books} from "@/lib/books";
 import {featuredProjects, statusLabels} from "@/lib/projects";
 import {getApprovedReviews} from "@/lib/reviews";
+import {serviceDetails} from "@/lib/services";
 import {siteConfig} from "@/lib/site";
 
 export const revalidate = 300;
@@ -34,8 +35,16 @@ const principles = [
   ["Say what’s proven", "I separate what’s been tested from what’s still an assumption, which is why my concept projects are labelled as concepts."],
 ];
 
+const clients = ["Ma Adjo’s Kitchen", "NextAge Consult", "Flower Bar GH", "AddoBees Consultancy"];
+
+const cvLinkProps = siteConfig.cvIsPdf ? {download: true} : {target: "_blank", rel: "noreferrer"};
+
 export default async function Page() {
   const reviews = await getApprovedReviews();
+  const average = averageRating(reviews);
+  const shippedProjects = featuredProjects.filter((p) => p.statuses.includes("shipped"));
+  const conceptProjects = featuredProjects.filter((p) => !p.statuses.includes("shipped"));
+  const heroProject = shippedProjects[0];
 
   return (
     <>
@@ -44,42 +53,48 @@ export default async function Page() {
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_25%,rgba(45,91,255,.22),transparent_32%),radial-gradient(circle_at_80%_20%,rgba(34,197,94,.08),transparent_28%)]" />
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-[1.05fr_.95fr] lg:px-8">
           <div className="hero-copy max-w-2xl">
-            <p className="eyebrow !text-blue-300">Bismark Apenkwah · Product Designer + Design Engineer</p>
+            {siteConfig.availability.open && (
+              <p className="hero-pill inline-flex items-center gap-2 text-sm text-slate-200">
+                <i className="h-2 w-2 shrink-0 rounded-full bg-green-400" aria-hidden="true" />
+                {siteConfig.availability.label} · UK or remote
+              </p>
+            )}
             <h1 className="mt-6 text-4xl font-black leading-[1.04] tracking-[-.05em] sm:text-5xl md:text-6xl xl:text-[4.25rem]">
               I design products that move from <span className="bg-gradient-to-r from-[#5C7CFF] to-[#8DA2FF] bg-clip-text text-transparent">Figma to production.</span>
             </h1>
             <p className="mt-7 max-w-xl text-base leading-8 text-slate-300 md:text-lg">
-              I design and build SaaS platforms, web applications and AI-assisted products, from product thinking and design systems through to front-end code in React and Next.js.
+              I’m Bismark Apenkwah, a Product Designer and Design Engineer in Norwich, UK. I design and build SaaS platforms, web applications and AI-assisted products, from product thinking and design systems through to front-end code in React and Next.js.
             </p>
             <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-              <Link href="/#projects" className="focus-ring btn-lift rounded-xl bg-blue-600 px-7 py-4 text-center text-sm font-bold shadow-xl shadow-blue-500/25">Explore Projects →</Link>
-              <Link href="/#contact" className="focus-ring btn-lift rounded-xl border border-white/15 bg-white/[.04] px-7 py-4 text-center text-sm font-bold">Contact Me</Link>
+              <Link href="/#projects" className="focus-ring btn-lift rounded-xl bg-blue-600 px-7 py-4 text-center text-sm font-bold shadow-xl shadow-blue-500/25">See shipped work →</Link>
+              <a href={siteConfig.cvUrl} {...cvLinkProps} className="focus-ring btn-lift rounded-xl border border-white/15 bg-white/[.04] px-7 py-4 text-center text-sm font-bold">{siteConfig.cvIsPdf ? "Download CV (PDF)" : "View CV on LinkedIn"}</a>
             </div>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-300">
-              {siteConfig.availability.open && <p className="flex items-center gap-2"><i className="h-2 w-2 shrink-0 rounded-full bg-green-400" aria-hidden="true" />{siteConfig.availability.label}</p>}
-              <a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center font-bold text-blue-300 hover:text-white">View LinkedIn profile →</a>
-            </div>
+            <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4 text-sm text-slate-400">
+              <div><dt className="sr-only">Live client products</dt><dd><b className="block text-2xl font-black text-white">{shippedProjects.length}</b>live client products</dd></div>
+              {reviews.length > 0 && <div><dt className="sr-only">Client rating</dt><dd><b className="block text-2xl font-black text-white">{average.toFixed(1)}<span className="text-amber-400" aria-hidden="true"> ★</span></b>from {reviews.length} client reviews</dd></div>}
+              <div><dt className="sr-only">Designing since</dt><dd><b className="block text-2xl font-black text-white">{siteConfig.designingSince}</b>designing since</dd></div>
+            </dl>
           </div>
-          <figure>
-            <div className="hero-visual relative">
-              <div className="absolute inset-10 rounded-full bg-blue-500/20 blur-3xl" />
-              <Image src="/img/Hero.webp" width={6400} height={4267} sizes="(max-width:1024px) 100vw,48vw" className="relative h-auto w-full rounded-[2rem] border border-white/10 shadow-2xl shadow-black/60" alt="Three Mobile Mechanic app screens: the splash screen, an assigned mechanic with live map and AI vehicle diagnosis, and a mechanic accepted confirmation with arrival time" priority />
-            </div>
-            <figcaption className="mt-4 text-center text-sm text-slate-300">
-              <Link href="/projects/mobile-mechanic-app" className="font-bold text-blue-300 hover:text-white">Mobile Mechanic</Link> · concept product
-            </figcaption>
-          </figure>
+          {heroProject && (
+            <figure>
+              <div className="hero-visual relative">
+                <div className="absolute inset-10 rounded-full bg-blue-500/20 blur-3xl" />
+                <Image src={heroProject.image} width={heroProject.imageSize?.[0] ?? 1600} height={heroProject.imageSize?.[1] ?? 1000} sizes="(max-width:1024px) 100vw,48vw" className="relative h-auto w-full rounded-[2rem] border border-white/10 shadow-2xl shadow-black/60" alt={heroProject.imageAlt} priority />
+              </div>
+              <figcaption className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm text-slate-300">
+                <span className="inline-flex items-center gap-2 font-bold text-green-400"><i className="h-2 w-2 rounded-full bg-green-400" aria-hidden="true" />Shipped</span>
+                <span>{heroProject.title}, Norwich</span>
+                <Link href={`/projects/${heroProject.slug}`} className="font-bold text-blue-300 hover:text-white">Read case study →</Link>
+              </figcaption>
+            </figure>
+          )}
         </div>
       </section>
 
-      <section aria-label="Product design strengths" className="border-b border-slate-200 bg-white dark:border-white/10 dark:bg-[#080D1A]">
-        <div className="mx-auto grid max-w-7xl divide-y divide-slate-200 px-6 sm:grid-cols-3 sm:divide-x sm:divide-y-0 dark:divide-white/10 lg:px-8">
-          {[["Shipped product experience", "Real client delivery alongside deeper product case studies."], ["AI + complex workflows", "Interaction design for AI-assisted and multi-state product experiences."], ["Brand + product + code", "Visual systems backed by design-system and front-end fluency."]].map(([title, copy]) => (
-            <div key={title} className="py-6 sm:px-6 first:pl-0 last:pr-0">
-              <b className="text-slate-950 dark:text-white">{title}</b>
-              <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">{copy}</p>
-            </div>
-          ))}
+      <section aria-label="Clients" className="border-b border-slate-200 bg-white dark:border-white/10 dark:bg-[#080D1A]">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-10 gap-y-3 px-6 py-6 lg:px-8">
+          <span className="text-xs font-bold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">Delivered for</span>
+          {clients.map((name) => <span key={name} className="text-base font-black text-slate-700 dark:text-slate-300">{name}</span>)}
         </div>
       </section>
 
@@ -88,47 +103,86 @@ export default async function Page() {
           <p className="eyebrow">Selected work</p>
           <div className="mt-3 flex items-end justify-between gap-6">
             <div>
-              <h2 className="text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Product, AI and SaaS work, with delivery behind the pixels.</h2>
-              <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">A focused set showing shipped work, complex interaction design and motion thinking.</p>
+              <h2 className="text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Shipped first. Concepts clearly labelled.</h2>
+              <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">Live client products I designed and built, followed by deeper product concepts showing complex interaction design.</p>
             </div>
             <Link href="/projects" className="text-link hidden shrink-0 text-sm sm:inline">View all projects →</Link>
           </div>
+
           <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {featuredProjects.map((project) => (
-              <article key={project.slug} className="group card-hover overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/10 dark:bg-[#0B1120]">
+            {shippedProjects.map((project) => (
+              <article key={project.slug} className="group card-hover flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/10 dark:bg-[#0B1120]">
                 <div className="relative h-64 overflow-hidden bg-slate-100 dark:bg-[#070B16]">
                   <Image src={project.image} fill sizes="(max-width:768px) 100vw,50vw" className="project-img object-cover" alt={project.imageAlt} />
                 </div>
-                <div className="p-6">
-                  <div className="flex flex-wrap gap-2 text-slate-700 dark:text-slate-200">
-                    {project.statuses.map((status) => <span key={status} className={`status-tag status-tag--${status}`}>{statusLabels[status]}</span>)}
+                <div className="flex flex-1 flex-col p-6">
+                  <p className="inline-flex items-center gap-2 text-xs font-bold text-green-700 dark:text-green-400"><i className="h-2 w-2 rounded-full bg-green-500" aria-hidden="true" />{statusLabels.shipped} · {project.role}</p>
+                  <h3 className="mt-3 text-2xl font-black text-slate-950 dark:text-white">{project.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{project.description}</p>
+                  {project.evidence && (
+                    <dl className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                      {project.evidence.map((item) => (
+                        <div key={item.value} className="flex flex-col rounded-xl bg-slate-50 px-4 py-3 dark:bg-white/[.05]">
+                          <dt className="text-xs text-slate-600 dark:text-slate-400">{item.label}</dt>
+                          <dd className="order-first font-black text-slate-950 dark:text-white">{item.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  )}
+                  {project.quote && (
+                    <blockquote className="mt-5 border-l-2 border-slate-300 pl-4 text-sm italic text-slate-700 dark:border-white/20 dark:text-slate-300">“{project.quote.text}” <span className="not-italic text-slate-500 dark:text-slate-400">— {project.quote.author}</span></blockquote>
+                  )}
+                  <p className="mt-5 text-xs text-slate-500 dark:text-slate-400">{project.tools.join(" · ")}</p>
+                  <div className="mt-auto flex flex-wrap gap-x-6 gap-y-2 pt-5 text-sm">
+                    <Link href={`/projects/${project.slug}`} className="text-link" aria-label={`Read the ${project.title} case study`}>Read case study →</Link>
+                    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-link" aria-label={`Visit the live ${project.title} site`}>Visit live site ↗</a>}
                   </div>
-                  <h3 className="mt-4 text-xl font-black text-slate-950 dark:text-white">{project.title}</h3>
-                  <p className="mt-1 text-sm font-semibold text-slate-600 dark:text-slate-400">{project.category}</p>
-                  <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{project.description}</p>
-                  <dl className="mt-4 grid gap-1 rounded-xl bg-slate-50 px-4 py-3 text-xs leading-5 text-slate-700 dark:bg-white/[.04] dark:text-slate-300">
-                    <div><dt className="inline font-bold">Role: </dt><dd className="inline">{project.role}</dd></div>
-                    <div><dt className="inline font-bold">Outcome: </dt><dd className="inline">{project.outcome}</dd></div>
-                    <div><dt className="inline font-bold">Tools: </dt><dd className="inline">{project.tools.join(", ")}</dd></div>
-                  </dl>
-                  <div className="mt-5"><Link href={`/projects/${project.slug}`} className="text-link text-sm" aria-label={`View the ${project.title} case study`}>View case study →</Link></div>
                 </div>
               </article>
             ))}
           </div>
+
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            {conceptProjects.map((project) => (
+              <article key={project.slug} className="group card-hover flex flex-col gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:flex-row sm:items-center dark:border-white/10 dark:bg-[#080D1A]">
+                <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:h-36 sm:w-44 dark:bg-[#070B16]">
+                  <Image src={project.image} fill sizes="(max-width:640px) 100vw,176px" className="project-img object-cover" alt={project.imageAlt} />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex flex-wrap gap-2 text-slate-700 dark:text-slate-200">
+                    {project.statuses.map((status) => <span key={status} className={`status-tag status-tag--${status}`}>{statusLabels[status]}</span>)}
+                  </div>
+                  <h3 className="mt-3 text-xl font-black text-slate-950 dark:text-white">{project.title}</h3>
+                  <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">{project.category}. {project.approach}</p>
+                  <Link href={`/projects/${project.slug}`} className="text-link mt-3 inline-block text-sm" aria-label={`View the ${project.title} case study`}>View case study →</Link>
+                </div>
+              </article>
+            ))}
+          </div>
+          <Link href="/projects" className="text-link mt-8 inline-block text-sm sm:hidden">View all projects →</Link>
         </div>
       </section>
 
       <MotionPrototype />
 
-      <section id="about" className="scroll-mt-24 border-y border-slate-200 bg-white py-16 dark:border-white/10 dark:bg-[#080D1A]">
+      {reviews.length > 0 && (
+        <section id="reviews" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <p className="eyebrow">Client feedback</p>
+            <div className="mt-3"><ReviewGrid reviews={reviews} /></div>
+          </div>
+        </section>
+      )}
+
+      <section id="about" className="scroll-mt-24 border-y border-slate-200 bg-white py-16 dark:border-white/10 dark:bg-[#050914]">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[.72fr_1.28fr] lg:px-8">
           <div>
             <p className="eyebrow">About</p>
             <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">I design with the build in mind.</h2>
+            <a href={siteConfig.cvUrl} {...cvLinkProps} className="focus-ring mt-8 inline-flex min-h-11 items-center rounded-xl border border-slate-300 px-5 text-sm font-bold text-slate-950 hover:border-slate-500 dark:border-white/15 dark:text-white dark:hover:border-white/40">{siteConfig.cvIsPdf ? "Download CV (PDF) ↓" : "View CV on LinkedIn ↗"}</a>
           </div>
           <div>
-            <p className="text-lg leading-8 text-slate-600 dark:text-slate-300">I’m Bismark Apenkwah, a Product Designer and Design Engineer based in Norwich, UK. I started in graphic design and brand identity, which taught me hierarchy, typography and how a brand should feel. Product design added research, user flows and systems thinking. Learning React and Next.js changed how I design, because I now consider how a screen gets built while I’m still shaping it.</p>
+            <p className="text-lg leading-8 text-slate-600 dark:text-slate-300">I started in graphic design and brand identity, which taught me hierarchy, typography and how a brand should feel. Product design added research, user flows and systems thinking. Learning React and Next.js changed how I design, because I now consider how a screen gets built while I’m still shaping it.</p>
             <p className="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">On <Link href="/projects/ma-adjo-s-kitchen" className="text-link">Ma Adjo’s Kitchen</Link>, I took a client’s ordering journey from UX through to a live product on my own.</p>
             <h3 className="mt-10 font-bold text-slate-950 dark:text-white">How I work</h3>
             <div className="mt-5 grid gap-6 sm:grid-cols-2">
@@ -163,7 +217,7 @@ export default async function Page() {
         </div>
       </section>
 
-      <section id="capabilities" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]">
+      <section id="capabilities" className="scroll-mt-24 bg-slate-50 pb-20 dark:bg-[#080D1A]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center">
             <p className="eyebrow">Core capabilities</p>
@@ -184,6 +238,27 @@ export default async function Page() {
         </div>
       </section>
 
+      <section id="services" aria-labelledby="services-teaser-title" className="scroll-mt-24 bg-[#050914] py-20 text-white">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="eyebrow !text-blue-300">For founders and businesses</p>
+              <h2 id="services-teaser-title" className="mt-3 text-3xl font-black md:text-4xl">Need a product or website built?</h2>
+            </div>
+            <Link href="/services" className="text-sm font-bold text-blue-300 hover:text-white">Services and prices →</Link>
+          </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {Object.entries(serviceDetails).map(([slug, service]) => (
+              <Link key={slug} href={`/services/${slug}`} className={`focus-ring block rounded-2xl border p-6 transition hover:-translate-y-1 ${slug === "website-design-norwich" ? "border-blue-400/60 bg-white/[.06]" : "border-white/10 bg-white/[.03]"}`}>
+                <span className="text-sm text-slate-400">{service.price} · {service.duration.replace("Typically ", "")}</span>
+                <h3 className="mt-2 text-xl font-black">{service.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-300">{service.summary}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section id="books" className="scroll-mt-24 bg-white py-20 dark:bg-[#050914]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
@@ -196,15 +271,6 @@ export default async function Page() {
           <div className="mt-10"><BookGrid books={books.slice(0, 3)} /></div>
         </div>
       </section>
-
-      {reviews.length > 0 && (
-        <section id="reviews" className="scroll-mt-24 bg-white py-20 md:py-28 dark:bg-[#050914]">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <p className="eyebrow text-center">Client feedback</p>
-            <div className="mt-5"><ReviewCarousel reviews={reviews} /></div>
-          </div>
-        </section>
-      )}
 
       <ContactSection />
     </>

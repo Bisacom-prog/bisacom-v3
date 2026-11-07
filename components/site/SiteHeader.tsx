@@ -4,7 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {useEffect, useRef, useState, useSyncExternalStore} from "react";
-import {primaryNav} from "@/lib/site";
+import {primaryNav, siteConfig} from "@/lib/site";
+
+const cvLinkProps = siteConfig.cvIsPdf ? {download: true} : {target: "_blank", rel: "noreferrer"};
 
 function subscribeToTheme(onChange: () => void) {
   const observer = new MutationObserver(onChange);
@@ -56,7 +58,7 @@ export default function SiteHeader() {
           <span className="text-xl font-bold">Bisacom</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
           {primaryNav.map((item) => (
             <Link key={item.href} href={item.href} className="nav-link text-sm text-slate-300 hover:text-white" aria-current={pathname.startsWith(item.href) ? "page" : undefined}>
               {item.label}
@@ -64,7 +66,11 @@ export default function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex"><ThemeToggle /><Link href="/#contact" className="btn-lift rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold">Let&apos;s Connect ＋</Link></div>
+        <div className="hidden items-center gap-3 lg:flex">
+          <ThemeToggle className="lg:hidden xl:inline-flex" />
+          <a href={siteConfig.cvUrl} {...cvLinkProps} className="inline-flex min-h-11 items-center rounded-xl border border-white/15 px-4 text-sm font-bold hover:border-white/40">{siteConfig.cvIsPdf ? "Download CV" : "CV"}</a>
+          <Link href="/#contact" className="btn-lift rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold">Let&apos;s talk</Link>
+        </div>
 
         <button
           ref={toggleRef}
@@ -72,20 +78,22 @@ export default function SiteHeader() {
           onClick={() => setOpen(!open)}
           aria-expanded={open}
           aria-controls="mobile-menu"
-          className="inline-flex min-h-11 items-center rounded-xl border border-white/15 px-4 text-sm font-semibold md:hidden"
+          className="inline-flex min-h-11 items-center rounded-xl border border-white/15 px-4 text-sm font-semibold lg:hidden"
         >
           {open ? "Close" : "Menu"}
         </button>
       </div>
 
       {open && (
-        <div id="mobile-menu" className="border-t border-white/10 md:hidden">
+        <div id="mobile-menu" className="border-t border-white/10 lg:hidden">
           <nav className="page-shell grid py-3" aria-label="Primary mobile">
             {primaryNav.map((item) => (
               <Link key={item.href} href={item.href} onClick={() => setOpen(false)} className="flex min-h-12 items-center rounded-xl px-4 text-sm font-bold text-slate-200 hover:bg-white/10">
                 {item.label}
               </Link>
             ))}
+            <a href={siteConfig.cvUrl} {...cvLinkProps} onClick={() => setOpen(false)} className="flex min-h-12 items-center rounded-xl px-4 text-sm font-bold text-slate-200 hover:bg-white/10">{siteConfig.cvIsPdf ? "Download CV" : "CV (LinkedIn)"}</a>
+            <Link href="/#contact" onClick={() => setOpen(false)} className="mt-3 flex min-h-12 items-center justify-center rounded-xl bg-blue-600 px-4 text-sm font-bold">Let&apos;s talk</Link>
             <ThemeToggle className="mt-4 justify-center" />
           </nav>
         </div>

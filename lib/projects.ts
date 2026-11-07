@@ -20,7 +20,12 @@ export type FeaturedProject = {
   outcome: string;
   image: string;
   imageAlt: string;
+  imageSize?: [number, number];
   liveUrl?: string;
+  // Evidence shown on cards and case studies. Only verifiable facts: what shipped, how fast, for whom.
+  evidence?: {value: string; label: string}[];
+  shipped?: string[];
+  quote?: {text: string; author: string};
 };
 
 // Copy is drawn from the published case studies in Sanity. Keep outcome statements verifiable.
@@ -37,8 +42,16 @@ export const featuredProjects: FeaturedProject[] = [
     approach: "Structured ordering, allergen guidance and event enquiries, with the owner controlling menu content directly through the CMS.",
     outcome: "Live and in use. Customer usage data is not yet available, so no conversion figures are claimed.",
     image: "/img/kitchen-v2.webp",
+    imageSize: [1800, 1292],
     imageAlt: "Ma Adjo’s Kitchen website shown on desktop and mobile, with the Authentic African Home Cooking hero and menu categories",
     liveUrl: "https://ma-adjos-kitchen.vercel.app/",
+    evidence: [
+      {value: "UX → live", label: "Designed and built solo"},
+      {value: "Owner-managed", label: "Menu edited in Sanity"},
+      {value: "Mobile-first", label: "Ordering + catering"},
+    ],
+    shipped: ["Browsable menu with allergen guidance", "Structured ordering journey", "Catering and event enquiry flow", "CMS so the owner updates the menu without a developer"],
+    quote: {text: "Makes ordering and catering enquiries easy.", author: "Ma Adjo, owner"},
   },
   {
     slug: "nextage-consult",
@@ -54,6 +67,12 @@ export const featuredProjects: FeaturedProject[] = [
     image: "/img/nextage.webp",
     imageAlt: "NextAge Consult home page with the Raising Solution Providers headline and a photo of learners with their mentor",
     liveUrl: "https://nextage-six.vercel.app",
+    evidence: [
+      {value: "2 weeks", label: "Design to launch, solo"},
+      {value: "Posters → forms", label: "Online registration"},
+      {value: "Inbox-ready", label: "Enquiries via Resend"},
+    ],
+    shipped: ["Programme catalogue", "Registration tied to the live programme list", "Enquiries delivered straight to the team’s inbox", "Embedded CMS so the team manages its own content"],
   },
   {
     slug: "mobile-mechanic-app",
