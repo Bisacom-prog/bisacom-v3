@@ -14,8 +14,8 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
     title: service.title,
     description: service.description,
     alternates: {canonical},
-    openGraph: {title: service.title, description: service.description, url: canonical, siteName: siteConfig.name, locale: siteConfig.locale, type: "website"},
-    twitter: {card: "summary_large_image", title: service.title, description: service.description},
+    openGraph: {title: service.title, description: service.description, url: canonical, siteName: siteConfig.name, locale: siteConfig.locale, type: "website", images: [{url: "/img/kitchen-v2.webp", width: 1800, height: 1292, alt: "Ma Adjo’s Kitchen website on desktop and mobile, designed and built by Bisacom"}]},
+    twitter: {card: "summary_large_image", title: service.title, description: service.description, images: ["/img/kitchen-v2.webp"]},
   };
 }
 

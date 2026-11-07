@@ -3,7 +3,7 @@ import Link from "next/link";
 import BookGrid from "@/components/books/BookGrid";
 import ContactSection from "@/components/home/ContactSection";
 import ReviewCarousel from "@/components/home/ReviewCarousel";
-import {averageRating} from "@/components/home/ReviewGrid";
+import {averageRating} from "@/components/home/Stars";
 import HeroBackground from "@/components/HeroBackground";
 import MotionPrototype from "@/components/MotionPrototype";
 import {books} from "@/lib/books";

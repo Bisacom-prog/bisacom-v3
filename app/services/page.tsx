@@ -1,6 +1,6 @@
 import type {Metadata} from "next";
 import Link from "next/link";
-import {Stars, averageRating} from "@/components/home/ReviewGrid";
+import {Stars, averageRating} from "@/components/home/Stars";
 import {getApprovedReviews} from "@/lib/reviews";
 import {serviceDetails, serviceFaqs} from "@/lib/services";
 import {siteConfig} from "@/lib/site";

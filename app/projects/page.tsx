@@ -14,6 +14,18 @@ export const metadata: Metadata = {
     url: "/projects",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Product Design & Design Engineering",
+    description: "Explore shipped product work, AI and SaaS case studies, and design engineering work by Bismark Apenkwah.",
+  },
+}
+
+// Sanity originals can be several thousand pixels wide; ask the CDN for a card-sized, modern-format copy.
+function cardImage(src?: string) {
+  if (!src) return "/img/hero-product-design-v2.png"
+  if (!src.startsWith("https://cdn.sanity.io/")) return src
+  return `${src}${src.includes("?") ? "&" : "?"}w=1200&h=864&fit=crop&auto=format&q=80`
 }
 
 type ProjectCard = {
@@ -89,14 +101,18 @@ export default async function ProjectsPage() {
         </div>
 
         <div className="mt-14 grid gap-8 md:grid-cols-2">
-          {projects.map((project) => (
+          {projects.map((project, index) => (
             <article
               key={project._id ?? project.title}
               className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0B1120]"
             >
               <img
-                src={project.heroImageUrl ?? project.image ?? "/img/mockup.webp"}
+                src={cardImage(project.heroImageUrl ?? project.image)}
                 alt={project.heroImageAlt ?? `${project.title} case study preview`}
+                width={1200}
+                height={864}
+                loading={index < 2 ? "eager" : "lazy"}
+                decoding="async"
                 className="h-72 w-full object-cover"
               />
               <div className="p-7">

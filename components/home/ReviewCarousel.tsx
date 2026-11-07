@@ -2,7 +2,7 @@
 
 import {useCallback, useEffect, useRef, useState} from "react";
 import type {Review} from "@/lib/reviews";
-import {Stars} from "@/components/home/ReviewGrid";
+import {Stars} from "@/components/home/Stars";
 
 const INTERVAL_MS = 6000;
 
