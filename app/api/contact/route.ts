@@ -1,7 +1,7 @@
 import {NextResponse} from "next/server";
 import {guardFormRequest} from "@/lib/request-guard";
 
-const EMAIL = "hello@bisacom.dev";
+const EMAIL = "bapenkwah@gmail.com";
 
 function text(value: unknown, max = 2000) {
   return typeof value === "string" ? value.trim().slice(0, max) : "";

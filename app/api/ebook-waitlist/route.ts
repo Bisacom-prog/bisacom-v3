@@ -28,13 +28,13 @@ export async function POST(request: Request) {
 
   // Inbox-based planner list: every successful request creates an email record.
   // Keep the payload stable so retries reuse the same Resend idempotency key.
-  const emails = [{from, to: ["hello@bisacom.dev"], reply_to: email,
+  const emails = [{from, to: ["bapenkwah@gmail.com"], reply_to: email,
     subject: "Free planner signup — From Beginner to Hired",
     text: `Email: ${email}\nConsent: ${ebookConsent}\nConsent version: 2026-09-13\nSource: /free-planner\nSubmission: ${body.requestId}\n\nKeep this email as the signup record. Remove this address from future updates if they unsubscribe.`,
   }];
-  if (ebook.plannerUrl) emails.push({from, to: [email], reply_to: "hello@bisacom.dev",
+  if (ebook.plannerUrl) emails.push({from, to: [email], reply_to: "bapenkwah@gmail.com",
     subject: "Your 30-Day Product Design Career Planner",
-    text: `Thanks for requesting the 30-Day Product Design Career Planner.\n\nDownload your free planner: ${ebook.plannerUrl}\n\nFrom Beginner to Hired is now available in Paperback and Kindle: https://bisacom.dev/from-beginner-to-hired\n\nBismark Apenkwah\nBisacom\n\nTo stop future updates, reply with “unsubscribe” or email hello@bisacom.dev.`,
+    text: `Thanks for requesting the 30-Day Product Design Career Planner.\n\nDownload your free planner: ${ebook.plannerUrl}\n\nFrom Beginner to Hired is now available in Paperback and Kindle: https://bisacom.dev/from-beginner-to-hired\n\nBismark Apenkwah\nBisacom\n\nTo stop future updates, reply with “unsubscribe” or email bapenkwah@gmail.com.`,
   });
   try {
     const response = await fetch("https://api.resend.com/emails/batch", {

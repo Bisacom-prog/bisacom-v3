@@ -74,7 +74,7 @@ export default function ReviewPage() {
                 <textarea className="form-control" name="review" rows={6} minLength={20} maxLength={800} required />
               </label>
               <input name="website" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
-              {status === "error" && <p className="text-sm font-bold text-red-600" role="alert">Your review could not be submitted. Please try again or email hello@bisacom.dev.</p>}
+              {status === "error" && <p className="text-sm font-bold text-red-600" role="alert">Your review could not be submitted. Please try again or email bapenkwah@gmail.com.</p>}
               <button className="btn-lift rounded-xl bg-[#2D5BFF] px-6 py-4 text-sm font-bold text-white disabled:opacity-60" disabled={status === "sending"}>
                 {status === "sending" ? "Submitting…" : "Submit review"}
               </button>

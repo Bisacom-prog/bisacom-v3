@@ -132,4 +132,4 @@ export const getBook = (slug: string) => books.find((book) => book.slug === slug
 export const bookHref = (book: Book) => `/books/${book.slug}`;
 
 export const notifyHref = (book: Book) =>
-  `mailto:hello@bisacom.dev?subject=${encodeURIComponent(`Tell me when ${book.title} is published`)}`;
+  `mailto:bapenkwah@gmail.com?subject=${encodeURIComponent(`Tell me when ${book.title} is published`)}`;

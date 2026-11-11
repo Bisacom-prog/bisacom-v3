@@ -4,7 +4,7 @@ export const siteConfig = {
   title: "Bismark Apenkwah | Product Designer + Design Engineer, UK",
   description: "Portfolio of Bismark Apenkwah, a Product Designer and Design Engineer in Norwich, UK, designing and building SaaS platforms, web applications, AI-assisted products and responsive websites.",
   url: "https://www.bisacom.dev",
-  email: "hello@bisacom.dev",
+  email: "bapenkwah@gmail.com",
   location: "Norwich, United Kingdom",
   locale: "en_GB",
   linkedIn: "https://uk.linkedin.com/in/bismarkapenkwah",
@@ -15,7 +15,7 @@ export const siteConfig = {
   designingSince: 2020,
   responseTime: "within 1 working day",
   // No booking tool yet, so the "15-minute call" buttons open a pre-filled email.
-  callHref: "mailto:hello@bisacom.dev?subject=Discovery%20call%20request&body=Hi%20Bismark%2C%20I%27d%20like%20to%20book%20a%2015-minute%20call.%20A%20few%20times%20that%20suit%20me%3A%20",
+  callHref: "mailto:bapenkwah@gmail.com?subject=Discovery%20call%20request&body=Hi%20Bismark%2C%20I%27d%20like%20to%20book%20a%2015-minute%20call.%20A%20few%20times%20that%20suit%20me%3A%20",
   whatsApp: "https://wa.me/447555824637?text=Hello%20Bismark%2C%20I%27d%20like%20to%20discuss%20a%20project.",
   // Set open to false to remove every availability statement from the site.
   availability: {

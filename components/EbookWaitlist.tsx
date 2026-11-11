@@ -77,8 +77,8 @@ export default function EbookWaitlist() {
                 <div hidden aria-hidden="true"><label>Leave this empty<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
                 <label className="mt-4 flex items-start gap-3 text-xs leading-5 text-slate-600 dark:text-slate-300"><input type="checkbox" name="consent" required disabled={status === "sending"} className="mt-0.5 h-4 w-4 shrink-0 accent-blue-600" /><span>{ebookConsent}</span></label>
                 <button type="submit" disabled={status === "sending"} className="focus-ring btn-lift mt-5 min-h-12 w-full rounded-xl bg-[#2D5BFF] px-5 py-4 text-sm font-bold text-white disabled:cursor-wait disabled:opacity-60">{status === "sending" ? "Sending…" : plannerReady ? "Email Me the Free Planner →" : "Send Me the Planner →"}</button>
-                {status === "error" && <p role="alert" className="mt-3 text-sm text-red-700 dark:text-red-300">{message} You can also email <a href="mailto:hello@bisacom.dev" className="underline">hello@bisacom.dev</a>.</p>}
-                <p className="mt-3 text-xs leading-5 text-slate-500 dark:text-slate-400">Occasional Product Design and book updates only. You can unsubscribe at any time by emailing hello@bisacom.dev. <a href="/privacy-policy" className="focus-ring underline underline-offset-2">Privacy policy</a></p>
+                {status === "error" && <p role="alert" className="mt-3 text-sm text-red-700 dark:text-red-300">{message} You can also email <a href="mailto:bapenkwah@gmail.com" className="underline">bapenkwah@gmail.com</a>.</p>}
+                <p className="mt-3 text-xs leading-5 text-slate-500 dark:text-slate-400">Occasional Product Design and book updates only. You can unsubscribe at any time by emailing bapenkwah@gmail.com. <a href="/privacy-policy" className="focus-ring underline underline-offset-2">Privacy policy</a></p>
               </form>}
           </div>
         </div>

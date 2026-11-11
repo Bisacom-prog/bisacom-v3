@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     if (!response.ok) return NextResponse.json({error:"Review could not be saved."},{status:502});
     // Keep the address privately in the owner's inbox. The review is already saved if this fails.
     if (process.env.RESEND_API_KEY) {
-      await fetch("https://api.resend.com/emails",{method:"POST",headers:{Authorization:`Bearer ${process.env.RESEND_API_KEY}`,"Content-Type":"application/json"},body:JSON.stringify({from:process.env.CONTACT_FROM_EMAIL||"Bisacom Portfolio <onboarding@resend.dev>",to:["hello@bisacom.dev"],reply_to:email,subject:`New review to approve from ${name}`,text:`Name: ${name}\nEmail: ${email}\nCompany: ${company}\nRole: ${role}\nRating: ${rating}\n\n${review}`}),signal:AbortSignal.timeout(10000)}).catch(()=>{});
+      await fetch("https://api.resend.com/emails",{method:"POST",headers:{Authorization:`Bearer ${process.env.RESEND_API_KEY}`,"Content-Type":"application/json"},body:JSON.stringify({from:process.env.CONTACT_FROM_EMAIL||"Bisacom Portfolio <onboarding@resend.dev>",to:["bapenkwah@gmail.com"],reply_to:email,subject:`New review to approve from ${name}`,text:`Name: ${name}\nEmail: ${email}\nCompany: ${company}\nRole: ${role}\nRating: ${rating}\n\n${review}`}),signal:AbortSignal.timeout(10000)}).catch(()=>{});
     }
     return NextResponse.json({ok:true});
   } catch { return NextResponse.json({error:"Invalid request."},{status:400}); }
