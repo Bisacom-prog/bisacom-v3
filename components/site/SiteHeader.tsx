@@ -69,7 +69,7 @@ export default function SiteHeader() {
         <div className="hidden items-center gap-3 lg:flex">
           <ThemeToggle className="lg:hidden xl:inline-flex" />
           <a href={siteConfig.cvUrl} {...cvLinkProps} className="inline-flex min-h-11 items-center rounded-xl border border-white/15 px-4 text-sm font-bold hover:border-white/40">{siteConfig.cvIsPdf ? "Download CV" : "CV"}</a>
-          <Link href="/#contact" className="btn-lift rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold">Let&apos;s talk</Link>
+          <Link href="/#contact" className="btn-lift rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold">Let&apos;s Connect</Link>
         </div>
 
         <button
@@ -93,7 +93,7 @@ export default function SiteHeader() {
               </Link>
             ))}
             <a href={siteConfig.cvUrl} {...cvLinkProps} onClick={() => setOpen(false)} className="flex min-h-12 items-center rounded-xl px-4 text-sm font-bold text-slate-200 hover:bg-white/10">{siteConfig.cvIsPdf ? "Download CV" : "CV (LinkedIn)"}</a>
-            <Link href="/#contact" onClick={() => setOpen(false)} className="mt-3 flex min-h-12 items-center justify-center rounded-xl bg-blue-600 px-4 text-sm font-bold">Let&apos;s talk</Link>
+            <Link href="/#contact" onClick={() => setOpen(false)} className="mt-3 flex min-h-12 items-center justify-center rounded-xl bg-blue-600 px-4 text-sm font-bold">Let&apos;s Connect</Link>
             <ThemeToggle className="mt-4 justify-center" />
           </nav>
         </div>

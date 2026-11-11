@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import BookGrid from "@/components/books/BookGrid";
 import ContactSection from "@/components/home/ContactSection";
 import ReviewCarousel from "@/components/home/ReviewCarousel";
 import {averageRating} from "@/components/home/Stars";
@@ -9,7 +8,6 @@ import MotionPrototype from "@/components/MotionPrototype";
 import {books} from "@/lib/books";
 import {featuredProjects, statusLabels} from "@/lib/projects";
 import {getApprovedReviews} from "@/lib/reviews";
-import {serviceDetails} from "@/lib/services";
 import {siteConfig} from "@/lib/site";
 
 export const revalidate = 300;
@@ -23,10 +21,10 @@ const process = [
 ];
 
 const capabilities = [
-  {title: "Product Strategy and UX", does: "Turns unclear requirements into a focused problem and journeys people can finish.", items: ["Discovery & requirements", "Problem framing", "UX research", "Information architecture", "Complex user flows", "Usability testing"]},
-  {title: "UI Design, Interaction and Design Systems", does: "Keeps a product coherent as it grows, with less rework for developers.", items: ["Responsive UI design", "Interaction states", "Motion-aware prototyping", "Component systems", "Auto Layout & variants", "Accessible design"]},
-  {title: "Brand and Visual Systems", does: "Makes products feel credible and recognisable across every touchpoint.", items: ["Identity direction", "Typography & colour", "Visual hierarchy", "Brand consistency", "Digital applications", "Adobe Creative Cloud"]},
-  {title: "Design Engineering", does: "Carries design intent into production, or works closely with the engineers who do.", items: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Git & GitHub", "Sanity + Vercel"]},
+  {title: "Product Design", does: "Turns unclear requirements into a focused problem, clear journeys and interfaces people can use.", items: ["Product discovery and problem framing", "User flows and information architecture", "Wireframing and prototyping", "UI and interaction design", "Responsive, accessible interfaces", "Design systems"]},
+  {title: "Design Engineering", does: "Carries design intent into production, or works closely with the engineers who do.", items: ["HTML, CSS and JavaScript", "React and Next.js", "TypeScript", "Tailwind CSS", "Figma-to-code, component-based builds", "Sanity CMS, Git and Vercel"]},
+  {title: "AI-assisted workflows", does: "Uses AI to explore and build faster, with design judgement kept in the loop.", items: ["AI-assisted ideation and prototyping", "AI-supported development workflows", "Designing AI features into products, as in Mobile Mechanic"]},
+  {title: "Brand and Visual Systems", does: "The visual communication background behind clear hierarchy and consistent interfaces.", items: ["Identity direction", "Typography and colour", "Visual hierarchy", "Brand consistency across touchpoints"]},
 ];
 
 const principles = [
@@ -60,15 +58,19 @@ export default async function Page() {
                 {siteConfig.availability.label} · UK or remote
               </p>
             )}
-            <h1 className="mt-6 text-4xl font-black leading-[1.04] tracking-[-.05em] sm:text-5xl md:text-6xl xl:text-[4.25rem]">
-              I design products that move from <span className="bg-gradient-to-r from-[#5C7CFF] to-[#8DA2FF] bg-clip-text text-transparent">Figma to production.</span>
+            <h1 className="mt-7">
+              <span className="block text-xl font-bold tracking-tight text-white md:text-2xl">{siteConfig.personName}</span>
+              <span className="mt-1 block text-xs font-semibold uppercase tracking-[0.12em] text-blue-200 sm:text-sm sm:tracking-[0.16em]">Product Designer + Design Engineer</span>
+              <span className="mt-6 block text-4xl font-black leading-[1.04] tracking-[-.05em] sm:text-5xl md:text-6xl xl:text-[4.25rem]">
+                I design products that move from <span className="bg-gradient-to-r from-[#5C7CFF] to-[#8DA2FF] bg-clip-text text-transparent">Figma to production.</span>
+              </span>
             </h1>
             <p className="mt-7 max-w-xl text-base leading-8 text-slate-300 md:text-lg">
-              I’m Bismark Apenkwah, a Product Designer and Design Engineer in Norwich, UK. I design and build SaaS platforms, web applications and AI-assisted products, from product thinking and design systems through to front-end code in React and Next.js.
+              I combine product thinking, interface design and front-end implementation to create useful digital experiences, from user flows and design systems through to working React and Next.js interfaces. Based in Norwich, UK.
             </p>
             <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-              <Link href="/#projects" className="focus-ring btn-lift rounded-xl bg-blue-600 px-7 py-4 text-center text-sm font-bold shadow-xl shadow-blue-500/25">See shipped work →</Link>
-              <a href={siteConfig.cvUrl} {...cvLinkProps} className="focus-ring btn-lift rounded-xl border border-white/15 bg-white/[.04] px-7 py-4 text-center text-sm font-bold">{siteConfig.cvIsPdf ? "Download CV (PDF)" : "View CV on LinkedIn"}</a>
+              <Link href="/#projects" className="focus-ring btn-lift rounded-xl bg-blue-600 px-7 py-4 text-center text-sm font-bold shadow-xl shadow-blue-500/25">Explore My Projects →</Link>
+              <Link href="/#contact" className="focus-ring btn-lift rounded-xl border border-white/15 bg-white/[.04] px-7 py-4 text-center text-sm font-bold">Let’s Connect</Link>
             </div>
             <dl className="mt-10 flex flex-wrap gap-x-10 gap-y-4 text-sm text-slate-400">
               <div><dt className="sr-only">Live client products</dt><dd><b className="block text-2xl font-black text-white">{shippedProjects.length}</b>live client products</dd></div>
@@ -104,13 +106,14 @@ export default async function Page() {
           <p className="eyebrow">Selected work</p>
           <div className="mt-3 flex items-end justify-between gap-6">
             <div>
-              <h2 className="text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Shipped first. Concepts clearly labelled.</h2>
-              <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">Live client products I designed and built, followed by deeper product concepts showing complex interaction design.</p>
+              <h2 className="text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Projects</h2>
+              <p className="mt-3 max-w-2xl text-slate-600 dark:text-slate-400">Real client work I designed and built to client requirements, alongside independent concept products where I explore more complex product problems. Each one is labelled with its status.</p>
             </div>
             <Link href="/projects" className="text-link hidden shrink-0 text-sm sm:inline">View all projects →</Link>
           </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
+          <h3 className="mt-10 flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-green-700 dark:text-green-400"><i className="h-2 w-2 rounded-full bg-green-500" aria-hidden="true" />Client projects, shipped</h3>
+          <div className="mt-4 grid gap-6 md:grid-cols-2">
             {shippedProjects.map((project) => (
               <article key={project.slug} className="group card-hover flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/10 dark:bg-[#0B1120]">
                 <div className="relative h-64 overflow-hidden bg-slate-100 dark:bg-[#070B16]">
@@ -118,7 +121,7 @@ export default async function Page() {
                 </div>
                 <div className="flex flex-1 flex-col p-6">
                   <p className="inline-flex items-center gap-2 text-xs font-bold text-green-700 dark:text-green-400"><i className="h-2 w-2 rounded-full bg-green-500" aria-hidden="true" />{statusLabels.shipped} · {project.role}</p>
-                  <h3 className="mt-3 text-2xl font-black text-slate-950 dark:text-white">{project.title}</h3>
+                  <h4 className="mt-3 text-2xl font-black text-slate-950 dark:text-white">{project.title}</h4>
                   <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{project.description}</p>
                   {project.evidence && (
                     <dl className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -143,19 +146,29 @@ export default async function Page() {
             ))}
           </div>
 
-          <div className="mt-6 grid gap-6 md:grid-cols-2">
+          <h3 className="mt-14 flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-amber-700 dark:text-amber-300"><i className="h-2 w-2 rounded-full bg-amber-500" aria-hidden="true" />Independent concept products</h3>
+          <div className="mt-4 grid gap-6 md:grid-cols-2">
             {conceptProjects.map((project) => (
-              <article key={project.slug} className="group card-hover flex flex-col gap-5 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:flex-row sm:items-center dark:border-white/10 dark:bg-[#080D1A]">
-                <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:h-36 sm:w-44 dark:bg-[#070B16]">
-                  <Image src={project.image} fill sizes="(max-width:640px) 100vw,176px" className="project-img object-cover" alt={project.imageAlt} />
+              <article key={project.slug} className="group card-hover flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-[#080D1A]">
+                <div className="relative h-56 overflow-hidden bg-slate-100 dark:bg-[#070B16]">
+                  <Image src={project.image} fill sizes="(max-width:768px) 100vw,50vw" className="project-img object-cover" alt={project.imageAlt} />
                 </div>
-                <div className="min-w-0">
+                <div className="flex flex-1 flex-col p-6">
                   <div className="flex flex-wrap gap-2 text-slate-700 dark:text-slate-200">
                     {project.statuses.map((status) => <span key={status} className={`status-tag status-tag--${status}`}>{statusLabels[status]}</span>)}
                   </div>
-                  <h3 className="mt-3 text-xl font-black text-slate-950 dark:text-white">{project.title}</h3>
-                  <p className="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-400">{project.category}. {project.approach}</p>
-                  <Link href={`/projects/${project.slug}`} className="text-link mt-3 inline-block text-sm" aria-label={`View the ${project.title} case study`}>View case study →</Link>
+                  <h4 className="mt-3 text-2xl font-black text-slate-950 dark:text-white">{project.title}</h4>
+                  <p className="mt-1 text-sm font-semibold text-slate-700 dark:text-slate-300">{project.category} · {project.role}</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{project.description}</p>
+                  {project.highlights && (
+                    <ul className="mt-5 grid gap-2 sm:grid-cols-2" aria-label={`What ${project.title} explores`}>
+                      {project.highlights.map((item) => <li key={item} className="flex gap-2 text-sm leading-6 text-slate-700 dark:text-slate-300"><i className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-600" aria-hidden="true" />{item}</li>)}
+                    </ul>
+                  )}
+                  <p className="mt-5 text-xs leading-5 text-slate-500 dark:text-slate-400"><b className="font-semibold text-slate-700 dark:text-slate-300">Status:</b> {project.outcome}</p>
+                  <div className="mt-auto pt-5 text-sm">
+                    <Link href={`/projects/${project.slug}`} className="text-link" aria-label={`View the ${project.title} project`}>View project →</Link>
+                  </div>
                 </div>
               </article>
             ))}
@@ -166,14 +179,39 @@ export default async function Page() {
 
       <MotionPrototype />
 
-      {reviews.length > 0 && (
-        <section id="reviews" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <p className="eyebrow text-center">Client feedback</p>
-            <div className="mt-5"><ReviewCarousel reviews={reviews} /></div>
+      <section id="process" className="scroll-mt-24 bg-slate-50 pt-20 dark:bg-[#080D1A]">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <p className="eyebrow">Approach and capabilities</p>
+          <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">A clear path from uncertainty to delivery</h2>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+            {process.map(([step, copy], index) => (
+              <article key={step} className="process-card rounded-2xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-[#0B1120]">
+                <p className="text-xs font-black text-blue-600">0{index + 1}</p>
+                <h3 className="mt-4 font-black text-slate-950 dark:text-white">{step}</h3>
+                <p className="mt-3 text-xs leading-6 text-slate-600 dark:text-slate-400">{copy}</p>
+              </article>
+            ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
+
+      <section id="capabilities" className="scroll-mt-24 bg-slate-50 pb-20 dark:bg-[#080D1A]">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <h3 className="pt-16 text-2xl font-black text-slate-950 md:text-3xl dark:text-white">Capabilities: product, brand and code, connected by one system</h3>
+          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {capabilities.map((capability, index) => (
+              <article key={capability.title} className="skill-card" style={{animationDelay: `${index * 90}ms`}}>
+                <span className="skill-orb">0{index + 1}</span>
+                <h4 className="mt-6 text-lg font-black text-slate-950 dark:text-white">{capability.title}</h4>
+                <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{capability.does}</p>
+                <ul className="mt-5 space-y-3">
+                  {capability.items.map((item) => <li key={item} className="flex gap-3 text-sm text-slate-600 dark:text-slate-300"><i className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-600" />{item}</li>)}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section id="about" className="scroll-mt-24 border-y border-slate-200 bg-white py-16 dark:border-white/10 dark:bg-[#050914]">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[.72fr_1.28fr] lg:px-8">
@@ -183,7 +221,7 @@ export default async function Page() {
             <a href={siteConfig.cvUrl} {...cvLinkProps} className="focus-ring mt-8 inline-flex min-h-11 items-center rounded-xl border border-slate-300 px-5 text-sm font-bold text-slate-950 hover:border-slate-500 dark:border-white/15 dark:text-white dark:hover:border-white/40">{siteConfig.cvIsPdf ? "Download CV (PDF) ↓" : "View CV on LinkedIn ↗"}</a>
           </div>
           <div>
-            <p className="text-lg leading-8 text-slate-600 dark:text-slate-300">I started in graphic design and brand identity, which taught me hierarchy, typography and how a brand should feel. Product design added research, user flows and systems thinking. Learning React and Next.js changed how I design, because I now consider how a screen gets built while I’m still shaping it.</p>
+            <p className="text-lg leading-8 text-slate-600 dark:text-slate-300">I started in graphic design and brand identity. That background in visual communication still shapes my work: clear hierarchy, consistent systems and interfaces people can use without having to think about them. UI/UX and product design added research, user flows and systems thinking. Learning front-end development with React and Next.js changed how I design, because I now consider how a screen gets built while I’m still shaping it.</p>
             <p className="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">On <Link href="/projects/ma-adjo-s-kitchen" className="text-link">Ma Adjo’s Kitchen</Link>, I took a client’s ordering journey from UX through to a live product on my own.</p>
             <h3 className="mt-10 font-bold text-slate-950 dark:text-white">How I work</h3>
             <div className="mt-5 grid gap-6 sm:grid-cols-2">
@@ -202,74 +240,37 @@ export default async function Page() {
         </div>
       </section>
 
-      <section id="process" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <p className="eyebrow">Product design and engineering</p>
-          <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">A clear path from uncertainty to delivery</h2>
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-            {process.map(([step, copy], index) => (
-              <article key={step} className="process-card rounded-2xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-[#0B1120]">
-                <p className="text-xs font-black text-blue-600">0{index + 1}</p>
-                <h3 className="mt-4 font-black text-slate-950 dark:text-white">{step}</h3>
-                <p className="mt-3 text-xs leading-6 text-slate-600 dark:text-slate-400">{copy}</p>
-              </article>
-            ))}
+      {reviews.length > 0 && (
+        <section id="reviews" className="scroll-mt-24 bg-slate-50 py-20 dark:bg-[#080D1A]">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <p className="eyebrow text-center">Client feedback</p>
+            <div className="mt-5"><ReviewCarousel reviews={reviews} /></div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      <section id="capabilities" className="scroll-mt-24 bg-slate-50 pb-20 dark:bg-[#080D1A]">
+      <section id="books" aria-labelledby="books-title" className="scroll-mt-24 border-t border-slate-200 bg-white py-14 dark:border-white/10 dark:bg-[#050914]">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="text-center">
-            <p className="eyebrow">Core capabilities</p>
-            <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Product, brand and code — connected by one system</h2>
-          </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {capabilities.map((capability, index) => (
-              <article key={capability.title} className="skill-card" style={{animationDelay: `${index * 90}ms`}}>
-                <span className="skill-orb">0{index + 1}</span>
-                <h3 className="mt-6 text-lg font-black text-slate-950 dark:text-white">{capability.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">{capability.does}</p>
-                <ul className="mt-5 space-y-3">
-                  {capability.items.map((item) => <li key={item} className="flex gap-3 text-sm text-slate-600 dark:text-slate-300"><i className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-600" />{item}</li>)}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="services" aria-labelledby="services-teaser-title" className="scroll-mt-24 bg-[#050914] py-20 text-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="eyebrow !text-blue-300">For founders and businesses</p>
-              <h2 id="services-teaser-title" className="mt-3 text-3xl font-black md:text-4xl">Need a product or website built?</h2>
-            </div>
-            <Link href="/services" className="text-sm font-bold text-blue-300 hover:text-white">Services and prices →</Link>
-          </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {Object.entries(serviceDetails).map(([slug, service]) => (
-              <Link key={slug} href={`/services/${slug}`} className={`focus-ring block rounded-2xl border p-6 transition hover:-translate-y-1 ${slug === "website-design-norwich" ? "border-blue-400/60 bg-white/[.06]" : "border-white/10 bg-white/[.03]"}`}>
-                <span className="text-sm text-slate-400">{service.price} · {service.duration.replace("Typically ", "")}</span>
-                <h3 className="mt-2 text-xl font-black">{service.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-300">{service.summary}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="books" className="scroll-mt-24 bg-white py-20 dark:bg-[#050914]">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="eyebrow">Books</p>
-              <h2 className="mt-3 text-3xl font-black text-slate-950 md:text-4xl dark:text-white">Practical writing, published through Bisacom</h2>
+              <p className="eyebrow">Books and insights</p>
+              <h2 id="books-title" className="mt-2 text-2xl font-black text-slate-950 dark:text-white">Writing and knowledge sharing, published through Bisacom</h2>
             </div>
             <Link href="/books" className="text-link text-sm">View all books →</Link>
           </div>
-          <div className="mt-10"><BookGrid books={books.slice(0, 3)} /></div>
+          <ul className="mt-8 grid gap-5 md:grid-cols-2">
+            {books.slice(0, 2).map((book) => (
+              <li key={book.slug} className="flex gap-5 rounded-2xl border border-slate-200 p-4 dark:border-white/10">
+                {book.cover && <Image src={book.cover.src} width={book.cover.width} height={book.cover.height} sizes="80px" alt={book.cover.alt} className="h-auto w-20 shrink-0 self-start rounded border border-slate-200 dark:border-white/10" />}
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">{book.statusLabel}</p>
+                  <h3 className="mt-1 text-lg font-black text-slate-950 dark:text-white">{book.title}</h3>
+                  <p className="mt-1 line-clamp-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{book.description}</p>
+                  <Link href={`/books/${book.slug}`} className="text-link mt-2 inline-block text-sm" aria-label={`View ${book.title}`}>View the book →</Link>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

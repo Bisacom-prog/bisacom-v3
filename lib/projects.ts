@@ -26,6 +26,8 @@ export type FeaturedProject = {
   evidence?: {value: string; label: string}[];
   shipped?: string[];
   quote?: {text: string; author: string};
+  // What a concept project explores. Drawn from the published case study, not from testing.
+  highlights?: string[];
 };
 
 // Copy is drawn from the published case studies in Sanity. Keep outcome statements verifiable.
@@ -87,6 +89,7 @@ export const featuredProjects: FeaturedProject[] = [
     outcome: "End-to-end UX, design system and motion prototype. A solo concept that has not been launched.",
     image: "/img/mobile.webp",
     imageAlt: "Three Mobile Mechanic iPhone screens showing the splash screen, the assigned mechanic with AI vehicle diagnosis, and mechanic accepted",
+    highlights: ["Problem definition for stressed drivers", "Mechanic matching and dispatch", "Live tracking and repair progress", "AI-assisted diagnosis during the wait"],
   },
   {
     slug: "short-notice-shift-coverage",
@@ -101,6 +104,7 @@ export const featuredProjects: FeaturedProject[] = [
     outcome: "Defined MVP and interactive prototype. Not tested in a live organisation, so no business impact is claimed.",
     image: "/img/shift-coverage.png",
     imageAlt: "Shift coverage dashboard showing one uncovered shift that requires attention and a table of recent coverage activity",
+    highlights: ["Absence reporting to confirmed cover", "Manager (desktop) and employee (mobile) roles", "Suitable-staff matching and cover requests", "Rota updates and notifications"],
   },
 ];
 

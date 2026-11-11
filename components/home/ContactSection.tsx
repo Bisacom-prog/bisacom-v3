@@ -45,29 +45,31 @@ export default function ContactSection() {
     <section id="contact" aria-labelledby="contact-title" className="on-navy scroll-mt-24 bg-[linear-gradient(135deg,#050914,#21115C)] py-20 text-on-navy">
       <div className="page-shell">
         <p className="eyebrow">Contact</p>
-        <h2 id="contact-title" className="mt-3 max-w-3xl text-3xl font-black md:text-4xl">Hiring, or building something? Let’s talk.</h2>
+        <h2 id="contact-title" className="mt-3 max-w-3xl text-3xl font-black md:text-4xl">Let’s build better digital products together.</h2>
         <p className="mt-3 text-on-navy-muted">I reply {siteConfig.responseTime}.</p>
 
-        <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-navy-line bg-navy-line md:grid-cols-2">
-          <article className="flex flex-col bg-[#070B16] p-7 lg:p-9">
-            <h3 className="text-2xl font-bold">Recruiters and hiring managers</h3>
+        <div className="mt-12 grid gap-5 md:grid-cols-[1.25fr_1fr]">
+          <article className="flex flex-col rounded-xl border-2 border-[#7d9aff] bg-[#0B1430] p-7 lg:p-9">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#a9bbff]">For recruiters and hiring managers</p>
+            <h3 className="mt-2 text-2xl font-bold">Hiring a Product Designer or Design Engineer?</h3>
             <p className="mt-3 flex-1 leading-7 text-on-navy-muted">
               Discuss a Product Designer or Design Engineer opportunity.{siteConfig.availability.open ? ` ${siteConfig.availability.detail}` : ""}
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <button type="button" onClick={() => choose("role")} className="btn btn-primary">Discuss a role</button>
+              <button type="button" onClick={() => choose("role")} className="btn btn-primary">Discuss a Product Design Opportunity</button>
               {siteConfig.cvIsPdf && <a href={siteConfig.cvUrl} download className="text-link">Download CV</a>}
               <a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className="text-link">LinkedIn profile</a>
               <a href={`mailto:${siteConfig.email}?subject=Product%20design%20opportunity`} className="text-link">{siteConfig.email}</a>
             </div>
           </article>
-          <article className="flex flex-col bg-[#070B16] p-7 lg:p-9">
-            <h3 className="text-2xl font-bold">Founders and businesses</h3>
+          <article className="flex flex-col rounded-xl border border-navy-line bg-[#070B16] p-7 lg:p-9">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-on-navy-muted">For founders and businesses</p>
+            <h3 className="mt-2 text-xl font-bold">Need a product or website designed and built?</h3>
             <p className="mt-3 flex-1 leading-7 text-on-navy-muted">
               Discuss a new product, website, SaaS application or digital experience. I can take an idea from concept through UX and interface design to a working implementation.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <button type="button" onClick={() => choose("project")} className="btn btn-primary">Discuss a project</button>
+              <button type="button" onClick={() => choose("project")} className="btn !border-white/40 !text-white hover:!border-white/80">Work With Me</button>
               <Link href="/services" className="text-link">Services and prices</Link>
               <a href={siteConfig.callHref} className="text-link">Book a 15-minute call</a>
             </div>

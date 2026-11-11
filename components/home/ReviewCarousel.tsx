@@ -56,7 +56,7 @@ export default function ReviewCarousel({reviews}: {reviews: Review[]}) {
       </p>
 
       <h2 className="mx-auto mt-6 max-w-2xl text-4xl font-black leading-[1.05] tracking-tight text-slate-950 md:text-6xl dark:text-white">
-        Trusted collaboration, clearly delivered
+        What clients say about working with me.
       </h2>
 
       <div
