@@ -34,7 +34,7 @@ const principles = [
   ["Say what’s proven", "I separate what’s been tested from what’s still an assumption, which is why my concept projects are labelled as concepts."],
 ];
 
-const clients = ["Ma Adjo’s Kitchen", "NextAge Consult", "Flower Bar GH", "AddoBees Consultancy"];
+const clients = ["Church of Pentecost Norwich", "Ma Adjo’s Kitchen", "NextAge Consult", "Flower Bar GH", "AddoBees Consultancy"];
 
 const cvLinkProps = siteConfig.cvIsPdf ? {download: true} : {target: "_blank", rel: "noreferrer"};
 
@@ -44,6 +44,7 @@ export default async function Page() {
   const shippedProjects = featuredProjects.filter((p) => p.statuses.includes("shipped"));
   const conceptProjects = featuredProjects.filter((p) => !p.statuses.includes("shipped"));
   const heroProject = shippedProjects[0];
+  const [featuredShipped, ...otherShipped] = shippedProjects;
 
   return (
     <>
@@ -86,7 +87,7 @@ export default async function Page() {
               </div>
               <figcaption className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm text-slate-300">
                 <span className="inline-flex items-center gap-2 font-bold text-green-400"><i className="h-2 w-2 rounded-full bg-green-400" aria-hidden="true" />Shipped</span>
-                <span>{heroProject.title}, Norwich</span>
+                <span>{heroProject.title}</span>
                 <Link href={`/projects/${heroProject.slug}`} className="font-bold text-blue-300 hover:text-white">Read case study →</Link>
               </figcaption>
             </figure>
@@ -113,8 +114,42 @@ export default async function Page() {
           </div>
 
           <h3 className="mt-10 flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-green-700 dark:text-green-400"><i className="h-2 w-2 rounded-full bg-green-500" aria-hidden="true" />Client projects, shipped</h3>
-          <div className="mt-4 grid gap-6 md:grid-cols-2">
-            {shippedProjects.map((project) => (
+          {featuredShipped && (
+            <div className="mt-4">
+              {[featuredShipped].map((project) => (
+                <article key={project.slug} className="group card-hover grid overflow-hidden md:grid-cols-[1.1fr_1fr] rounded-2xl border border-slate-200 bg-white dark:border-white/10 dark:bg-[#0B1120]">
+                  <div className="relative h-64 overflow-hidden bg-slate-100 md:h-full md:min-h-[26rem] dark:bg-[#070B16]">
+                    <Image src={project.image} fill sizes="(max-width:768px) 100vw,55vw" className="project-img object-cover" alt={project.imageAlt} />
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <p className="inline-flex items-center gap-2 text-xs font-bold text-green-700 dark:text-green-400"><i className="h-2 w-2 rounded-full bg-green-500" aria-hidden="true" />{statusLabels.shipped} · {project.role}</p>
+                    <h4 className="mt-3 text-3xl font-black text-slate-950 dark:text-white">{project.title}</h4>
+                    <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{project.description}</p>
+                    {project.evidence && (
+                      <dl className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                        {project.evidence.map((item) => (
+                          <div key={item.value} className="flex flex-col rounded-xl bg-slate-50 px-4 py-3 dark:bg-white/[.05]">
+                            <dt className="text-xs text-slate-600 dark:text-slate-400">{item.label}</dt>
+                            <dd className="order-first font-black text-slate-950 dark:text-white">{item.value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    )}
+                    {project.quote && (
+                      <blockquote className="mt-5 border-l-2 border-slate-300 pl-4 text-sm italic text-slate-700 dark:border-white/20 dark:text-slate-300">“{project.quote.text}” <span className="not-italic text-slate-500 dark:text-slate-400">— {project.quote.author}</span></blockquote>
+                    )}
+                    <p className="mt-5 text-xs text-slate-500 dark:text-slate-400">{project.tools.join(" · ")}</p>
+                    <div className="mt-auto flex flex-wrap gap-x-6 gap-y-2 pt-5 text-sm">
+                      <Link href={`/projects/${project.slug}`} className="text-link" aria-label={`Read the ${project.title} case study`}>Read case study →</Link>
+                      {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-link" aria-label={`Visit the live ${project.title} site`}>Visit live site ↗</a>}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            {otherShipped.map((project) => (
               <article key={project.slug} className="group card-hover flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-white/10 dark:bg-[#0B1120]">
                 <div className="relative h-64 overflow-hidden bg-slate-100 dark:bg-[#070B16]">
                   <Image src={project.image} fill sizes="(max-width:768px) 100vw,50vw" className="project-img object-cover" alt={project.imageAlt} />

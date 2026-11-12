@@ -45,6 +45,14 @@ type ProjectCard = {
 
 const fallbackProjects: ProjectCard[] = [
   {
+    title: "COP Norwich",
+    type: "Live Client Project · Responsive Web",
+    description:
+      "A responsive website for The Church of Pentecost, Norwich Assembly, with service times, livestream, events and sermons that church volunteers manage themselves in Sanity.",
+    image: "/img/cop-norwich.webp",
+    href: "/projects/cop-norwich",
+  },
+  {
     title: "Ma Adjo’s Kitchen",
     type: "Live Client Project · Responsive Web",
     description:
@@ -68,7 +76,7 @@ export const revalidate = 60
 export default async function ProjectsPage() {
   const sanityProjects = await client.fetch<ProjectCard[]>(projectsIndexQuery).catch(() => [] as ProjectCard[])
   const sanitySlugs = new Set(sanityProjects.map((project) => project.slug))
-  const order = ["Ma Adjo’s Kitchen", "NextAge Consult", "Mobile Mechanic App", "Short-Notice Shift Coverage"]
+  const order = ["COP Norwich", "Ma Adjo’s Kitchen", "NextAge Consult", "Mobile Mechanic App", "Short-Notice Shift Coverage"]
   const projects = [
     ...sanityProjects,
     ...fallbackProjects.filter((project) => {

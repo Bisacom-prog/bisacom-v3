@@ -33,6 +33,35 @@ export type FeaturedProject = {
 // Copy is drawn from the published case studies in Sanity. Keep outcome statements verifiable.
 export const featuredProjects: FeaturedProject[] = [
   {
+    slug: "cop-norwich",
+    title: "COP Norwich",
+    category: "Church website with editor-managed content",
+    statuses: ["shipped"],
+    description: "A responsive website for The Church of Pentecost, Norwich Assembly, designed and built so visitors can find service times, watch online and get in touch, while church volunteers keep the content up to date themselves.",
+    role: "Product Designer & Front-End Developer",
+    tools: ["Next.js", "TypeScript", "Tailwind CSS", "Sanity", "Resend", "Vercel"],
+    problem: "Members and first-time visitors need one dependable place for service times, events, sermons and contact details, kept current by church volunteers rather than a developer.",
+    approach: "A visitor-first homepage with quick links, a livestream card that flags when a service is live, and Sanity Studio so editors manage events, sermons, ministries and church settings.",
+    outcome: "Live at copnorwich.org since November 2026. It is too new for usage figures, so none are claimed.",
+    image: "/img/cop-norwich.webp",
+    imageSize: [1800, 1125],
+    imageAlt: "The Church of Pentecost Norwich Assembly website on desktop and mobile, with the Encounter God hero, service times and quick links",
+    liveUrl: "https://www.copnorwich.org",
+    evidence: [
+      {value: "Live", label: "copnorwich.org"},
+      {value: "Editor-managed", label: "Events, sermons and ministries in Sanity"},
+      {value: "Visitor-first", label: "Service times, livestream, directions"},
+    ],
+    shipped: [
+      "Service times, directions and map for first-time visitors",
+      "Livestream card that flags when a service is live",
+      "Weekly and one-off events, with past events hidden automatically",
+      "Sermon list linking to YouTube and Facebook",
+      "Prayer requests, giving and enquiries sent to the church inbox",
+      "Sanity Studio so volunteers update content without a developer",
+    ],
+  },
+  {
     slug: "ma-adjo-s-kitchen",
     title: "Ma Adjo’s Kitchen",
     category: "Responsive ordering and catering website",

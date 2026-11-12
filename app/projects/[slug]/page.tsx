@@ -12,6 +12,7 @@ import type {
 } from "@/components/case-study/types"
 import CaseStudyNav from "@/components/case-study/CaseStudyNav"
 import AtAGlance from "@/components/case-study/AtAGlance"
+import LocalCaseStudy, {findLocalProject} from "@/components/case-study/LocalCaseStudy"
 import Reveal from "@/components/case-study/Reveal"
 import LightboxGallery from "@/components/case-study/LightboxGallery"
 import PhoneRail from "@/components/case-study/PhoneRail"
@@ -23,8 +24,20 @@ export const dynamic = "force-dynamic"
 
 export async function generateMetadata({params}: {params: Promise<{slug:string}>}): Promise<Metadata> {
   const {slug} = await params
-  const project = await client.fetch<Project | null>(projectBySlugQuery, {slug})
-  if (!project) return {title: "Project not found", robots: {index: false, follow: false}}
+  const project = await client.fetch<Project | null>(projectBySlugQuery, {slug}).catch(() => null)
+  if (!project) {
+    const local = findLocalProject(slug)
+    if (!local) return {title: "Project not found", robots: {index: false, follow: false}}
+    const canonical = `${siteConfig.url}/projects/${slug}`
+    const image = {url: local.image, width: local.imageSize?.[0], height: local.imageSize?.[1], alt: local.imageAlt}
+    return {
+      title: `${local.title}: ${local.category}`,
+      description: local.description,
+      alternates: {canonical},
+      openGraph: {title: local.title, description: local.description, url: canonical, type: "article", images: [image]},
+      twitter: {card: "summary_large_image", title: local.title, description: local.description, images: [local.image]},
+    }
+  }
 
   const title = project.seoTitle || `${project.title} UX/UI Case Study`
   const description = project.seoDescription || project.summary
@@ -278,9 +291,13 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
     projectBySlugQuery,
     {slug},
     {cache: "no-store"},
-  )
+  ).catch(() => null)
 
-  if (!project) notFound()
+  if (!project) {
+    const local = findLocalProject(slug)
+    if (local) return <LocalCaseStudy project={local} />
+    notFound()
+  }
 
   const canonicalUrl = `${siteConfig.url}/projects/${slug}`
   const isClientProject = project.projectType === "client" || project.projectType === "freelance"
