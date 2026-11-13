@@ -13,6 +13,7 @@ import type {
 import CaseStudyNav from "@/components/case-study/CaseStudyNav"
 import AtAGlance from "@/components/case-study/AtAGlance"
 import LocalCaseStudy, {findLocalProject} from "@/components/case-study/LocalCaseStudy"
+import {richCaseStudies} from "@/lib/caseStudies"
 import Reveal from "@/components/case-study/Reveal"
 import LightboxGallery from "@/components/case-study/LightboxGallery"
 import PhoneRail from "@/components/case-study/PhoneRail"
@@ -29,6 +30,17 @@ export async function generateMetadata({params}: {params: Promise<{slug:string}>
     const local = findLocalProject(slug)
     if (!local) return {title: "Project not found", robots: {index: false, follow: false}}
     const canonical = `${siteConfig.url}/projects/${slug}`
+    const rich = richCaseStudies[slug]
+    if (rich) {
+      const img = {url: rich.seo.image.src, width: rich.seo.image.width, height: rich.seo.image.height, alt: rich.seo.image.alt}
+      return {
+        title: rich.seo.title,
+        description: rich.seo.description,
+        alternates: {canonical},
+        openGraph: {title: rich.seo.title, description: rich.seo.description, url: canonical, type: "article", images: [img]},
+        twitter: {card: "summary_large_image", title: rich.seo.title, description: rich.seo.description, images: [rich.seo.image.src]},
+      }
+    }
     const image = {url: local.image, width: local.imageSize?.[0], height: local.imageSize?.[1], alt: local.imageAlt}
     return {
       title: `${local.title}: ${local.category}`,

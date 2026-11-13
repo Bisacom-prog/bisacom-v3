@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from "react"
 
-type Item = {src: string; alt: string; caption?: string}
+type Item = {src: string; alt: string; caption?: string; width?: number; height?: number}
 
 export default function LightboxGallery({
   items,
@@ -48,6 +48,10 @@ export default function LightboxGallery({
               <img
                 src={item.src}
                 alt={item.alt}
+                width={item.width}
+                height={item.height}
+                loading="lazy"
+                decoding="async"
                 className="h-auto w-full object-cover transition duration-500 group-hover:scale-[1.02]"
               />
               {item.caption && (

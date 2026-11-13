@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import AtAGlance from "@/components/case-study/AtAGlance";
+import RichCaseStudy from "@/components/case-study/RichCaseStudy";
+import {richCaseStudies} from "@/lib/caseStudies";
 import {featuredProjects, statusLabels, type FeaturedProject} from "@/lib/projects";
 import {siteConfig} from "@/lib/site";
 
@@ -11,6 +13,8 @@ export function findLocalProject(slug: string) {
 }
 
 export default function LocalCaseStudy({project}: {project: FeaturedProject}) {
+  const rich = richCaseStudies[project.slug];
+  if (rich && project.liveUrl) return <RichCaseStudy project={project} study={rich} />;
   const canonicalUrl = `${siteConfig.url}/projects/${project.slug}`;
   const structuredData = {
     "@context": "https://schema.org",
