@@ -6,13 +6,16 @@ import {siteConfig} from "@/lib/site";
 
 type Pathway = "role" | "project";
 
+const serviceOptions = ["Product design (UX/UI)", "Web design", "Front-end development", "AI automation / business workflows", "Not sure yet"];
+const budgetOptions = ["Under £1k", "£1k–£3k", "£3k–£5k", "£5k–£10k", "£10k+", "Not sure yet"];
+
 const copy: Record<Pathway, {submit: string; prompt: string; success: string}> = {
   role: {submit: "Send role details", prompt: "Tell me about the role and team", success: "I’ll reply to the email you provided."},
   project: {submit: "Send project details", prompt: "What are you building, and where are you stuck?", success: "I’ll reply to the email you provided."},
 };
 
 export default function ContactSection() {
-  const [pathway, setPathway] = useState<Pathway>("role");
+  const [pathway, setPathway] = useState<Pathway>("project");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const nameRef = useRef<HTMLInputElement>(null);
 
@@ -103,6 +106,22 @@ export default function ContactSection() {
                   <input name="email" type="email" required autoComplete="email" className="form-control font-normal" />
                 </label>
               </div>
+              {pathway === "project" && (
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <label className="grid gap-2 text-sm font-semibold">Service <span className="font-normal text-on-navy-muted">(optional)</span>
+                    <select name="service" defaultValue="" className="form-control font-normal">
+                      <option value="">Select a service</option>
+                      {serviceOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                    </select>
+                  </label>
+                  <label className="grid gap-2 text-sm font-semibold">Budget <span className="font-normal text-on-navy-muted">(optional)</span>
+                    <select name="budget" defaultValue="" className="form-control font-normal">
+                      <option value="">Select a budget</option>
+                      {budgetOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                    </select>
+                  </label>
+                </div>
+              )}
               <label className="grid gap-2 text-sm font-semibold">{copy[pathway].prompt}
                 <textarea name="message" required minLength={20} maxLength={2000} rows={5} className="form-control font-normal" />
               </label>
