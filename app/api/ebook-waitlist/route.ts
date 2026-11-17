@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   }];
   if (ebook.plannerUrl) emails.push({from, to: [email], reply_to: "bapenkwah@gmail.com",
     subject: "Your 30-Day Product Design Career Planner",
-    text: `Thanks for requesting the 30-Day Product Design Career Planner.\n\nDownload your free planner: ${ebook.plannerUrl}\n\nFrom Beginner to Hired is now available in Paperback and Kindle: https://bisacom.dev/from-beginner-to-hired\n\nBismark Apenkwah\nBisacom\n\nTo stop future updates, reply with “unsubscribe” or email bapenkwah@gmail.com.`,
+    text: `Thanks for requesting the 30-Day Product Design Career Planner.\n\nDownload your free planner: ${ebook.plannerUrl}\n\nFrom Beginner to Hired is now available in Paperback and Kindle: https://www.bisacom.dev/books/from-beginner-to-hired\n\nBismark Apenkwah\nBisacom\n\nTo stop future updates, reply with “unsubscribe” or email bapenkwah@gmail.com.`,
   });
   try {
     const response = await fetch("https://api.resend.com/emails/batch", {

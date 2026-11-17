@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
-    url: "https://bisacom.dev/free-planner",
+    url: "https://www.bisacom.dev/free-planner",
     type: "website",
     images: [{ url: "/img/From-beginner.webp", alt: "From Beginner to Hired book cover" }],
   },

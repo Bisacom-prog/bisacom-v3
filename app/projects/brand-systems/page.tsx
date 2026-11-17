@@ -1,5 +1,17 @@
+import type {Metadata} from "next";
 import Link from "next/link";
 import Image from "next/image";
+
+const title = "Brand Identity Design: Logo and Brand Systems";
+const description = "Three brand identities by Bismark Apenkwah (Bisacom, Mall Street Food and Aba's Pie) showing logo craft, colour, typography and how each system is applied.";
+
+export const metadata: Metadata = {
+  title,
+  description,
+  alternates: {canonical: "/projects/brand-systems"},
+  openGraph: {title, description, url: "/projects/brand-systems", type: "website", images: [{url: "/img/bisacom-brand.png", alt: "Bisacom brand identity"}]},
+  twitter: {card: "summary_large_image", title, description, images: ["/img/bisacom-brand.png"]},
+};
 
 const brands = [
   {
