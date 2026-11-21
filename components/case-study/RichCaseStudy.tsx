@@ -62,7 +62,7 @@ export default function RichCaseStudy({project, study}: {project: FeaturedProjec
     ["Category", study.category],
     ["Services", study.services.join(", ")],
     ["My role", project.role],
-    ["Status", <a key="s" href={live} target="_blank" rel="noreferrer" className="text-link">{study.status} at {liveLabel} ↗</a>],
+    ["Status", <a key="s" href={live} target="_blank" rel="noopener noreferrer" className="text-link">{study.status} at {liveLabel} ↗<span className="sr-only"> (opens in a new tab)</span></a>],
     ["Stack", project.tools.join(" · ")],
   ];
 
@@ -73,7 +73,7 @@ export default function RichCaseStudy({project, study}: {project: FeaturedProjec
       {/* A. Hero */}
       <section className="px-6 pb-14 pt-14 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <Link href="/projects" className="text-sm font-bold text-blue-700 dark:text-blue-400">← All projects</Link>
+          <Link href="/projects" className="inline-flex min-h-6 items-center text-sm font-bold text-blue-700 dark:text-blue-400">← All projects</Link>
           <div className="mt-8 grid gap-12 lg:grid-cols-[1.05fr_1fr] lg:items-start">
             <div>
               <div className="flex flex-wrap gap-2">
@@ -86,7 +86,7 @@ export default function RichCaseStudy({project, study}: {project: FeaturedProjec
               <p className="mt-3 text-lg font-semibold text-slate-700 dark:text-slate-300">Church website: product design, UX/UI and front-end build</p>
               <p className={`mt-6 max-w-2xl text-lg ${body}`}>{study.intro}</p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <a href={live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-[#2D5BFF] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-[#2148d8]">
+                <a href={live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-[#2D5BFF] px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:bg-[#2148d8]">
                   Visit the live website <span aria-hidden>↗</span><span className="sr-only">(opens in a new tab)</span>
                 </a>
                 <Link href="/projects" className="inline-flex items-center rounded-full border border-slate-300 px-6 py-3 text-sm font-bold transition hover:border-slate-950 dark:border-white/20 dark:hover:border-white">
@@ -179,7 +179,7 @@ export default function RichCaseStudy({project, study}: {project: FeaturedProjec
                     <h3 className="mt-2 text-xl font-black">{title}</h3>
                     <p className={`mt-2 ${body}`}>{(t => t.charAt(0).toUpperCase() + t.slice(1))(rest.join(": "))}</p>
                   </figcaption>
-                  <a href={shot.src} target="_blank" rel="noreferrer" className="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-[#0B1120] dark:shadow-black/30" aria-label={`Open full-size screenshot: ${title}`}>
+                  <a href={shot.src} target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-[#0B1120] dark:shadow-black/30" aria-label={`Open full-size screenshot: ${title} (opens in a new tab)`}>
                     <div className="flex gap-1.5 border-b border-slate-200 px-4 py-2.5 dark:border-white/10" aria-hidden>
                       <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-white/20" /><span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-white/20" /><span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-white/20" />
                     </div>
@@ -279,7 +279,7 @@ export default function RichCaseStudy({project, study}: {project: FeaturedProjec
           <h2 id="cta-title" className="max-w-2xl text-3xl font-black tracking-[-0.03em] md:text-4xl">See it working for real</h2>
           <p className="mt-4 max-w-2xl leading-7 text-slate-300">The site is live and maintained by the church. Visit it to see the design and build described here, or explore more of my product design and front-end work.</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={live} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-slate-950 transition hover:bg-slate-200">
+            <a href={live} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-slate-950 transition hover:bg-slate-200">
               Visit the live website <span aria-hidden>↗</span><span className="sr-only">(opens in a new tab)</span>
             </a>
             <Link href="/projects" className="inline-flex items-center rounded-full border border-white/30 px-6 py-3 text-sm font-bold transition hover:border-white">Explore more projects</Link>
