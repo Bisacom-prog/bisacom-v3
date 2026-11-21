@@ -9,22 +9,46 @@ function CookieModal({preferences, onSave, onClose}: {preferences: CookiePrefere
   const [analytics, setAnalytics] = useState(Boolean(preferences?.analytics));
   const [marketing, setMarketing] = useState(Boolean(preferences?.marketing));
   const closeRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => closeRef.current?.focus(), []);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Focus the dialog on open, keep Tab inside it, and return focus to whatever opened it on close.
+  useEffect(() => {
+    const opener = document.activeElement as HTMLElement | null;
+    closeRef.current?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Tab" || !cardRef.current) return;
+      const focusable = cardRef.current.querySelectorAll<HTMLElement>("button, input");
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      if (opener?.isConnected) opener.focus();
+    };
+  }, []);
 
   return (
-    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cookie-title" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="modal-card">
+    <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cookie-title" aria-describedby="cookie-description" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+      <div ref={cardRef} className="modal-card">
         <button ref={closeRef} type="button" onClick={onClose} className="modal-close" aria-label="Close cookie preferences">×</button>
         <p className="eyebrow">Cookie control</p>
         <h2 id="cookie-title" className="mt-2 text-3xl font-bold">Manage cookie preferences</h2>
-        <p className="mt-3 text-sm leading-6 text-muted">Choose which optional cookies you allow. Necessary storage keeps essential preferences and cannot be switched off.</p>
+        <p id="cookie-description" className="mt-3 text-sm leading-6 text-muted">Choose which optional cookies you allow. Necessary storage keeps essential preferences and cannot be switched off.</p>
         <div className="mt-7 grid gap-3">
           <div className="cookie-option"><div><b>Strictly necessary</b><p>Required for theme, cookie choices and core site functions.</p></div><span className="cookie-status">Always on</span></div>
           <label className="cookie-option"><div><b>Analytics</b><p>Helps understand how the portfolio is used and improved.</p></div><input type="checkbox" checked={analytics} onChange={(e) => setAnalytics(e.target.checked)} className="cookie-toggle" /></label>
           <label className="cookie-option"><div><b>Marketing</b><p>Allows embedded social or campaign content when added.</p></div><input type="checkbox" checked={marketing} onChange={(e) => setMarketing(e.target.checked)} className="cookie-toggle" /></label>
         </div>
         <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-          <button type="button" onClick={() => onSave(false, false)} className="btn btn-secondary">Reject optional</button>
+          <button type="button" onClick={() => onSave(false, false)} className="btn btn-secondary">Reject optional cookies</button>
           <button type="button" onClick={() => onSave(analytics, marketing)} className="btn btn-primary">Save preferences</button>
         </div>
       </div>
@@ -92,7 +116,7 @@ export default function CookieConsent() {
           </div>
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => save(false, false)} className="btn btn-secondary flex-1 whitespace-nowrap px-4">Necessary only</button>
-            <button type="button" onClick={() => setOpen(true)} className="btn btn-secondary flex-1 px-4">Manage</button>
+            <button type="button" onClick={() => setOpen(true)} className="btn btn-secondary flex-1 whitespace-nowrap px-4">Manage<span className="sr-only"> cookie preferences</span></button>
             <button type="button" onClick={() => save(true, true)} className="btn btn-primary flex-1 whitespace-nowrap px-4">Accept all</button>
           </div>
         </aside>

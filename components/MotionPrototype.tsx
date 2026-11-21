@@ -16,7 +16,7 @@ export default function MotionPrototype() {
             <span className="motion-meta">Live-tracking transition</span>
             <span className="motion-meta">Reduced-motion friendly</span>
           </div>
-          <Link href="/projects/mobile-mechanic-app" className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-blue-300 hover:text-white">
+          <Link href="/projects/mobile-mechanic-app" className="mt-8 inline-flex min-h-6 items-center gap-2 text-sm font-bold text-blue-300 hover:text-white">
             View the full Mobile Mechanic case study <span aria-hidden="true">→</span>
           </Link>
         </div>

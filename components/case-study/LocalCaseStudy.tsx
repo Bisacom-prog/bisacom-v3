@@ -32,7 +32,7 @@ export default function LocalCaseStudy({project}: {project: FeaturedProject}) {
 
       <section className="px-6 pb-12 pt-16 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <Link href="/#projects" className="text-sm font-bold text-blue-600 dark:text-blue-400">← All projects</Link>
+          <Link href="/#projects" className="inline-flex min-h-6 items-center text-sm font-bold text-blue-600 dark:text-blue-400">← All projects</Link>
           <div className="mt-8 flex flex-wrap gap-2">
             {project.statuses.map((status) => <span key={status} className={`status-tag status-tag--${status}`}>{statusLabels[status]}</span>)}
           </div>
@@ -52,7 +52,7 @@ export default function LocalCaseStudy({project}: {project: FeaturedProject}) {
             {project.liveUrl && (
               <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-white/[0.04]">
                 <dt className="text-xs font-bold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-400">Live site</dt>
-                <dd className="mt-2"><a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-link font-bold">{project.liveUrl.replace(/^https?:\/\/(www\.)?/, "")} ↗</a></dd>
+                <dd className="mt-2"><a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-link font-bold">{project.liveUrl.replace(/^https?:\/\/(www\.)?/, "")} ↗<span className="sr-only"> (opens in a new tab)</span></a></dd>
               </div>
             )}
           </dl>

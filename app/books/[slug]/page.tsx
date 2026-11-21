@@ -49,7 +49,7 @@ function PurchaseActions({book}: {book: Book}) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
       {book.purchase?.map((item, index) => (
-        <a key={item.href} href={item.href} target="_blank" rel="noreferrer" className={`btn ${index === 0 ? "btn-primary" : "btn-secondary"}`}>{item.label}</a>
+        <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" className={`btn ${index === 0 ? "btn-primary" : "btn-secondary"}`}>{item.label}<span className="sr-only"> (opens in a new tab)</span></a>
       ))}
     </div>
   );

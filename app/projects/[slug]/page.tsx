@@ -20,7 +20,9 @@ import {siteConfig} from "@/lib/site"
 import MotionPrototype from "@/components/MotionPrototype"
 import {statusLabels, statusesForCaseStudy} from "@/lib/projects"
 
-export const dynamic = "force-dynamic"
+// Cached and refreshed in the background every 5 minutes, like the homepage and services pages,
+// so case studies load fast and keep working briefly if Sanity is slow. Edits appear within 5 minutes.
+export const revalidate = 300
 
 export async function generateMetadata({params}: {params: Promise<{slug:string}>}): Promise<Metadata> {
   const {slug} = await params
@@ -290,7 +292,6 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
   const project = await client.fetch<(Project & Record<string, any>) | null>(
     projectBySlugQuery,
     {slug},
-    {cache: "no-store"},
   ).catch(() => null)
 
   if (!project) {
@@ -392,10 +393,10 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
               </p>
               <div className="mt-9 flex flex-col gap-4 sm:flex-row">
                 {(project.prototypeUrl || project.figmaUrl) && (
-                  <a href={project.prototypeUrl || project.figmaUrl} target="_blank" rel="noreferrer" className="rounded-xl bg-[#2D5BFF] px-7 py-4 text-center text-sm font-bold shadow-xl shadow-blue-500/25">View Prototype →</a>
+                  <a href={project.prototypeUrl || project.figmaUrl} target="_blank" rel="noopener noreferrer" className="rounded-xl bg-[#2D5BFF] px-7 py-4 text-center text-sm font-bold shadow-xl shadow-blue-500/25">View Prototype →<span className="sr-only"> (opens in a new tab)</span></a>
                 )}
                 {project.liveUrl && (
-                  <a href={project.liveUrl} target="_blank" rel="noreferrer" className="rounded-xl border border-white/15 bg-white/[0.04] px-7 py-4 text-center text-sm font-bold">View Live Project →</a>
+                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/15 bg-white/[0.04] px-7 py-4 text-center text-sm font-bold">View Live Project →<span className="sr-only"> (opens in a new tab)</span></a>
                 )}
               </div>
             </Reveal>
@@ -656,10 +657,10 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
                     <a
                       href={project.prototypeUrl || project.figmaUrl}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="rounded-xl bg-[#2D5BFF] px-7 py-4 text-sm font-bold text-white"
                     >
-                      Explore Interactive Prototype →
+                      Explore Interactive Prototype →<span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   </div>
                 )}
@@ -743,9 +744,9 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
           <div className="mx-auto max-w-7xl">
             <Reveal><SectionHeading eyebrow="Links" title="Explore the project" /></Reveal>
             <div className="mt-10 flex flex-wrap gap-4">
-              {project.figmaUrl && <a href={project.figmaUrl} target="_blank" rel="noreferrer" className="rounded-xl bg-[#2D5BFF] px-6 py-4 text-sm font-bold text-white">Open Figma →</a>}
-              {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="rounded-xl border border-slate-200 bg-white px-6 py-4 text-sm font-bold dark:border-white/10 dark:bg-white/[0.04]">View Live Project →</a>}
-              {(project.githubUrl || project.repositoryUrl) && <a href={project.githubUrl || project.repositoryUrl} target="_blank" rel="noreferrer" className="rounded-xl border border-slate-200 bg-white px-6 py-4 text-sm font-bold dark:border-white/10 dark:bg-white/[0.04]">View Repository →</a>}
+              {project.figmaUrl && <a href={project.figmaUrl} target="_blank" rel="noopener noreferrer" className="rounded-xl bg-[#2D5BFF] px-6 py-4 text-sm font-bold text-white">Open Figma →<span className="sr-only"> (opens in a new tab)</span></a>}
+              {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-slate-200 bg-white px-6 py-4 text-sm font-bold dark:border-white/10 dark:bg-white/[0.04]">View Live Project →<span className="sr-only"> (opens in a new tab)</span></a>}
+              {(project.githubUrl || project.repositoryUrl) && <a href={project.githubUrl || project.repositoryUrl} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-slate-200 bg-white px-6 py-4 text-sm font-bold dark:border-white/10 dark:bg-white/[0.04]">View Repository →<span className="sr-only"> (opens in a new tab)</span></a>}
             </div>
           </div>
         </section>

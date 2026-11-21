@@ -143,7 +143,7 @@ export default function BrandSystemsPage() {
               </div>
             ))}
           </div>
-          <Link href="/#projects" className="mt-10 inline-flex text-sm font-bold text-blue-300 hover:text-white">← Back to selected work</Link>
+          <Link href="/#projects" className="mt-10 inline-flex min-h-6 items-center text-sm font-bold text-blue-300 hover:text-white">← Back to selected work</Link>
         </div>
       </section>
     </div>

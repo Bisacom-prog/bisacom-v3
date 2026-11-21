@@ -79,7 +79,7 @@ export default function AtAGlance({slug}: {slug: string}) {
               </blockquote>
             )}
             <div className="flex flex-wrap gap-3">
-              {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="rounded-xl bg-[#2D5BFF] px-5 py-3 text-sm font-bold text-white">Visit the live site ↗</a>}
+              {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="rounded-xl bg-[#2D5BFF] px-5 py-3 text-sm font-bold text-white">Visit the live site ↗<span className="sr-only"> (opens in a new tab)</span></a>}
               <Link href="/#contact" className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-bold dark:border-white/20">Get in touch</Link>
             </div>
           </div>

@@ -36,7 +36,7 @@ const principles = [
 
 const clients = ["Church of Pentecost Norwich", "Ma Adjo’s Kitchen", "NextAge Consult", "Flower Bar GH", "AddoBees Consultancy"];
 
-const cvLinkProps = siteConfig.cvIsPdf ? {download: true} : {target: "_blank", rel: "noreferrer"};
+const cvLinkProps = siteConfig.cvIsPdf ? {download: true} : {target: "_blank", rel: "noopener noreferrer"};
 
 export default async function Page() {
   const reviews = await getApprovedReviews();
@@ -88,7 +88,7 @@ export default async function Page() {
               <figcaption className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-sm text-slate-300">
                 <span className="inline-flex items-center gap-2 font-bold text-green-400"><i className="h-2 w-2 rounded-full bg-green-400" aria-hidden="true" />Shipped</span>
                 <span>{heroProject.title}</span>
-                <Link href={`/projects/${heroProject.slug}`} className="font-bold text-blue-300 hover:text-white">Read case study →</Link>
+                <Link href={`/projects/${heroProject.slug}`} className="inline-flex min-h-6 items-center font-bold text-blue-300 hover:text-white">Read case study →</Link>
               </figcaption>
             </figure>
           )}
@@ -140,8 +140,8 @@ export default async function Page() {
                     )}
                     <p className="mt-5 text-xs text-slate-500 dark:text-slate-400">{project.tools.join(" · ")}</p>
                     <div className="mt-auto flex flex-wrap gap-x-6 gap-y-2 pt-5 text-sm">
-                      <Link href={`/projects/${project.slug}`} className="text-link" aria-label={`Read the ${project.title} case study`}>Read case study →</Link>
-                      {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-link" aria-label={`Visit the live ${project.title} site`}>Visit live site ↗</a>}
+                      <Link href={`/projects/${project.slug}`} className="text-link inline-flex min-h-6 items-center" aria-label={`Read the ${project.title} case study`}>Read case study →</Link>
+                      {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-link" aria-label={`Visit the live ${project.title} site (opens in a new tab)`}>Visit live site ↗</a>}
                     </div>
                   </div>
                 </article>
@@ -173,8 +173,8 @@ export default async function Page() {
                   )}
                   <p className="mt-5 text-xs text-slate-500 dark:text-slate-400">{project.tools.join(" · ")}</p>
                   <div className="mt-auto flex flex-wrap gap-x-6 gap-y-2 pt-5 text-sm">
-                    <Link href={`/projects/${project.slug}`} className="text-link" aria-label={`Read the ${project.title} case study`}>Read case study →</Link>
-                    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="text-link" aria-label={`Visit the live ${project.title} site`}>Visit live site ↗</a>}
+                    <Link href={`/projects/${project.slug}`} className="text-link inline-flex min-h-6 items-center" aria-label={`Read the ${project.title} case study`}>Read case study →</Link>
+                    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-link" aria-label={`Visit the live ${project.title} site (opens in a new tab)`}>Visit live site ↗</a>}
                   </div>
                 </div>
               </article>
@@ -202,7 +202,7 @@ export default async function Page() {
                   )}
                   <p className="mt-5 text-xs leading-5 text-slate-500 dark:text-slate-400"><b className="font-semibold text-slate-700 dark:text-slate-300">Status:</b> {project.outcome}</p>
                   <div className="mt-auto pt-5 text-sm">
-                    <Link href={`/projects/${project.slug}`} className="text-link" aria-label={`View the ${project.title} project`}>View project →</Link>
+                    <Link href={`/projects/${project.slug}`} className="text-link inline-flex min-h-6 items-center" aria-label={`View the ${project.title} project`}>View project →</Link>
                   </div>
                 </div>
               </article>

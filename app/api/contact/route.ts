@@ -7,6 +7,11 @@ function text(value: unknown, max = 2000) {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
 
+// For values placed in an email subject line: one line only.
+function oneLine(value: string) {
+  return value.replace(/[\r\n]+/g, " ");
+}
+
 // Sends project enquiries to the LeadFlow AI workflow in n8n (analysis, scoring, sheet, approval).
 // Server-side only, so LEADFLOW_KEY never reaches the browser. Returns true if LeadFlow accepted it.
 async function forwardToLeadFlow(lead: {name: string; email: string; message: string; body: Record<string, unknown>}) {
@@ -76,7 +81,7 @@ export async function POST(request: Request) {
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json"},
-      body: JSON.stringify({from: process.env.CONTACT_FROM_EMAIL || "Bisacom Portfolio <onboarding@resend.dev>", to: [EMAIL], reply_to: email, subject: `${body.enquiryType === "quote" ? `Quote request${body.business ? ` — ${text(body.business, 80)}` : ""}` : "Portfolio enquiry"} from ${name}`, text: details}),
+      body: JSON.stringify({from: process.env.CONTACT_FROM_EMAIL || "Bisacom Portfolio <onboarding@resend.dev>", to: [EMAIL], reply_to: email, subject: oneLine(`${body.enquiryType === "quote" ? `Quote request${body.business ? ` — ${text(body.business, 80)}` : ""}` : "Portfolio enquiry"} from ${name}`), text: details}),
     });
     const leadFlowOk = await leadFlow;
     if (!response.ok && !leadFlowOk) return NextResponse.json({error: "Email could not be sent."}, {status: 502});

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ExternalLink from "@/components/ui/ExternalLink";
 import {ManageCookiesButton} from "@/components/site/CookieConsent";
 import {books, bookHref} from "@/lib/books";
 import {primaryNav, siteConfig} from "@/lib/site";
@@ -33,8 +34,8 @@ export default function SiteFooter() {
         <nav aria-label="Footer: profiles" className="text-sm text-on-navy-muted">
           <p className="mono-note mb-3 text-on-navy">Profiles</p>
           <ul>
-            <li><a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className={linkClass}>LinkedIn</a></li>
-            <li><a href={siteConfig.github} target="_blank" rel="noreferrer" className={linkClass}>GitHub</a></li>
+            <li><ExternalLink href={siteConfig.linkedIn} className={linkClass}>LinkedIn</ExternalLink></li>
+            <li><ExternalLink href={siteConfig.github} className={linkClass}>GitHub</ExternalLink></li>
           </ul>
         </nav>
       </div>

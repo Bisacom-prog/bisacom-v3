@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import {FormEvent, useRef, useState} from "react";
+import {FormEvent, useEffect, useRef, useState} from "react";
+import ExternalLink from "@/components/ui/ExternalLink";
+import Select from "@/components/ui/Select";
 import {siteConfig} from "@/lib/site";
 
 type Pathway = "role" | "project";
@@ -18,6 +20,12 @@ export default function ContactSection() {
   const [pathway, setPathway] = useState<Pathway>("project");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const nameRef = useRef<HTMLInputElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
+
+  // The form is replaced by the confirmation, so move focus there: screen readers announce it and keyboard users are not left on a removed element.
+  useEffect(() => {
+    if (status === "success") successRef.current?.focus();
+  }, [status]);
 
   function choose(next: Pathway) {
     setPathway(next);
@@ -61,7 +69,7 @@ export default function ContactSection() {
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
               <button type="button" onClick={() => choose("role")} className="btn btn-primary">Discuss a Product Design Opportunity</button>
               {siteConfig.cvIsPdf && <a href={siteConfig.cvUrl} download className="text-link">Download CV</a>}
-              <a href={siteConfig.linkedIn} target="_blank" rel="noreferrer" className="text-link">LinkedIn profile</a>
+              <ExternalLink href={siteConfig.linkedIn} className="text-link">LinkedIn profile</ExternalLink>
               <a href={`mailto:${siteConfig.email}?subject=Product%20design%20opportunity`} className="text-link">{siteConfig.email}</a>
             </div>
           </article>
@@ -81,12 +89,12 @@ export default function ContactSection() {
 
         <div className="mt-12 max-w-3xl">
           {status === "success" ? (
-            <div role="status" className="rounded-lg border border-navy-line p-6">
+            <div ref={successRef} tabIndex={-1} role="status" className="rounded-lg border border-navy-line p-6">
               <b>Thank you, your message has been received.</b>
               <p className="mt-2 text-sm text-on-navy-muted">{copy[pathway].success}</p>
             </div>
           ) : (
-            <form onSubmit={submit} className="grid gap-5" aria-busy={status === "sending"}>
+            <form onSubmit={submit} className="grid gap-5" aria-busy={status === "sending"} aria-describedby={status === "error" ? "contact-error" : undefined}>
               <fieldset>
                 <legend className="text-sm font-semibold">I’m getting in touch about</legend>
                 <div className="mt-2 flex flex-wrap gap-x-6">
@@ -108,17 +116,13 @@ export default function ContactSection() {
               </div>
               {pathway === "project" && (
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <label className="grid gap-2 text-sm font-semibold">Service <span className="font-normal text-on-navy-muted">(optional)</span>
-                    <select name="service" defaultValue="" className="form-control font-normal">
-                      <option value="">Select a service</option>
-                      {serviceOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-                    </select>
+                  <label className="grid gap-2 text-sm font-semibold">
+                    <span>Service <span className="font-normal text-on-navy-muted">(optional)</span></span>
+                    <Select name="service" placeholder="Select a service" options={serviceOptions} className="font-normal" />
                   </label>
-                  <label className="grid gap-2 text-sm font-semibold">Budget <span className="font-normal text-on-navy-muted">(optional)</span>
-                    <select name="budget" defaultValue="" className="form-control font-normal">
-                      <option value="">Select a budget</option>
-                      {budgetOptions.map((option) => <option key={option} value={option}>{option}</option>)}
-                    </select>
+                  <label className="grid gap-2 text-sm font-semibold">
+                    <span>Budget <span className="font-normal text-on-navy-muted">(optional)</span></span>
+                    <Select name="budget" placeholder="Select a budget" options={budgetOptions} className="font-normal" />
                   </label>
                 </div>
               )}
@@ -126,8 +130,8 @@ export default function ContactSection() {
                 <textarea name="message" required minLength={20} maxLength={2000} rows={5} className="form-control font-normal" />
               </label>
               <div hidden aria-hidden="true"><label>Leave this empty<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
-              {status === "error" && <p role="alert" className="text-sm font-semibold text-accent-bright">The message could not be sent. Please email <a href={`mailto:${siteConfig.email}`} className="underline">{siteConfig.email}</a>.</p>}
-              <div><button disabled={status === "sending"} className="btn btn-primary disabled:opacity-60">{status === "sending" ? "Sending…" : copy[pathway].submit}</button></div>
+              {status === "error" && <p id="contact-error" role="alert" className="text-sm font-semibold text-accent-bright">The message could not be sent. Please email <a href={`mailto:${siteConfig.email}`} className="underline">{siteConfig.email}</a>.</p>}
+              <div><button type="submit" disabled={status === "sending"} className="btn btn-primary">{status === "sending" ? "Sending…" : copy[pathway].submit}</button></div>
             </form>
           )}
         </div>

@@ -79,7 +79,7 @@ export default async function ServicesPage() {
                 {s.caseStudy && <p className="mt-6 text-sm text-slate-500 dark:text-slate-400">See it applied: <Link href={s.caseStudy.href} className="text-link">{s.caseStudy.label} →</Link></p>}
                 <div className="mt-6 grid gap-3">
                   <a href={`mailto:${siteConfig.email}?subject=${encodeURIComponent(`${s.title} enquiry`)}`} className={`rounded-xl px-5 py-3 text-center text-sm font-bold ${isFeatured ? "bg-blue-600 text-white" : "border border-slate-300 dark:border-white/20"}`}>Enquire about this</a>
-                  <Link href={`/services/${slug}`} className="text-center text-sm font-bold text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white">Full details →</Link>
+                  <Link href={`/services/${slug}`} className="inline-flex min-h-6 items-center justify-center text-sm font-bold text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white">Full details →</Link>
                 </div>
               </article>
             );
