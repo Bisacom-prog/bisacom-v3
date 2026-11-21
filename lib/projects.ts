@@ -1,9 +1,9 @@
 export type ProjectStatus = "shipped" | "concept" | "research" | "prototype";
 
 export const statusLabels: Record<ProjectStatus, string> = {
-  shipped: "Shipped client product",
-  concept: "Concept product",
-  research: "Research-led concept",
+  shipped: "Shipped client project",
+  concept: "Independent concept",
+  research: "Independent concept",
   prototype: "Interactive prototype",
 };
 
@@ -124,7 +124,7 @@ export const featuredProjects: FeaturedProject[] = [
     slug: "short-notice-shift-coverage",
     title: "ShiftFlow",
     category: "B2B SaaS, complex workflow",
-    statuses: ["research", "prototype"],
+    statuses: ["concept", "prototype"],
     description: "A role-based workflow that takes shift-based teams from an unexpected absence to a confirmed replacement, with everyone affected notified.",
     role: "Product Designer",
     tools: ["Figma", "FigJam"],

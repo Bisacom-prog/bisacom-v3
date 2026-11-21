@@ -67,7 +67,7 @@ export default async function BookPage({params}: {params: Promise<{slug: string}
       <section className="border-b border-line">
         <div className="page-shell grid items-center gap-12 py-14 lg:grid-cols-[1.2fr_.8fr] lg:gap-20 lg:py-20">
           <div>
-            <nav aria-label="Breadcrumb" className="mono-note text-muted"><Link href="/books" className="underline underline-offset-4 hover:text-foreground">Books</Link> / {book.title}</nav>
+            <nav aria-label="Breadcrumb" className="mono-note text-muted"><Link href="/books" className="inline-flex min-h-6 items-center underline underline-offset-4 hover:text-foreground">Books</Link> / {book.title}</nav>
             <p className={`status-tag status-tag--${book.status} mt-8`}>{book.statusLabel}</p>
             {book.series && <p className="eyebrow mt-6">{book.series}</p>}
             <h1 className="mt-4 text-[clamp(2.75rem,2rem+4vw,5.5rem)] font-black leading-[.98] tracking-[-.055em]">{book.title}</h1>

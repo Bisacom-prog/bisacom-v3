@@ -451,6 +451,10 @@ section[id] { scroll-margin-top: 5.5rem; }
 .form-control:focus-visible { outline-offset: 2px; }
 .form-control[aria-invalid="true"], .form-control[aria-invalid="true"]:focus { border-color: var(--field-error); }
 .form-control:disabled { cursor: not-allowed; opacity: .6; }
+.field-error { display: flex; gap: .4rem; font-size: .8125rem; font-weight: 600; color: var(--field-error); }
+.field-error::before { content: "!"; display: inline-grid; place-items: center; width: 1.05rem; height: 1.05rem; flex: none; margin-top: .1rem; border-radius: 999px; background: var(--field-error); color: #fff; font-size: .7rem; font-weight: 800; }
+.on-navy .field-error { color: #fca5a5; }
+.on-navy .field-error::before { background: #fca5a5; color: #1a0b0b; }
 /* Select: native element for accessibility, restyled closed state with a custom chevron. */
 .form-select { appearance: none; padding-right: 2.75rem; cursor: pointer; text-overflow: ellipsis; }
 .form-select:disabled { cursor: not-allowed; }

@@ -4,11 +4,17 @@ import Link from "next/link";
 import {FormEvent, useEffect, useRef, useState} from "react";
 import ExternalLink from "@/components/ui/ExternalLink";
 import Select from "@/components/ui/Select";
+import {serviceDetails} from "@/lib/services";
 import {siteConfig} from "@/lib/site";
 
 type Pathway = "role" | "project";
 
-const serviceOptions = ["Product design (UX/UI)", "Web design", "Front-end development", "AI automation / business workflows", "Not sure yet"];
+// The published services and their starting prices, straight from lib/services.ts so the form never drifts from the Services page.
+const serviceOptions = [
+  ...Object.values(serviceDetails).map((service) => `${service.title} (${service.price.toLowerCase()})`),
+  "AI automation / business workflows",
+  "Something else / not sure yet",
+];
 const budgetOptions = ["Under £1k", "£1k–£3k", "£3k–£5k", "£5k–£10k", "£10k+", "Not sure yet"];
 
 const copy: Record<Pathway, {submit: string; prompt: string; success: string}> = {
@@ -16,10 +22,28 @@ const copy: Record<Pathway, {submit: string; prompt: string; success: string}> =
   project: {submit: "Send project details", prompt: "What are you building, and where are you stuck?", success: "I’ll reply to the email you provided."},
 };
 
+type Field = "name" | "email" | "message";
+type Errors = Partial<Record<Field, string>>;
+
+// Same rules the API enforces, checked first in the browser so people see what to fix next to the field.
+function validate(data: FormData): Errors {
+  const errors: Errors = {};
+  const name = String(data.get("name") ?? "").trim();
+  const email = String(data.get("email") ?? "").trim();
+  const message = String(data.get("message") ?? "").trim();
+  if (!name) errors.name = "Enter your name.";
+  if (!email) errors.email = "Enter your email address.";
+  else if (!/^\S+@\S+\.\S+$/.test(email)) errors.email = "Enter an email address like name@example.com.";
+  if (message.length < 20) errors.message = message ? `Add a little more detail: at least 20 characters (${message.length} so far).` : "Tell me a little about it: at least 20 characters.";
+  return errors;
+}
+
 export default function ContactSection() {
   const [pathway, setPathway] = useState<Pathway>("project");
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errors, setErrors] = useState<Errors>({});
   const nameRef = useRef<HTMLInputElement>(null);
+  const isProject = pathway === "project";
   const successRef = useRef<HTMLDivElement>(null);
 
   // The form is replaced by the confirmation, so move focus there: screen readers announce it and keyboard users are not left on a removed element.
@@ -33,10 +57,22 @@ export default function ContactSection() {
     nameRef.current?.focus();
   }
 
+  function clearError(field: Field) {
+    if (errors[field]) setErrors((current) => ({...current, [field]: undefined}));
+  }
+
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setStatus("sending");
     const form = event.currentTarget;
+    const found = validate(new FormData(form));
+    setErrors(found);
+    const first = (["name", "email", "message"] as const).find((field) => found[field]);
+    if (first) {
+      form.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
+      return;
+    }
+    setStatus("sending");
+    // Project-only fields sit in a disabled fieldset for role enquiries, so they are never sent with them.
     const data = Object.fromEntries(new FormData(form).entries());
     try {
       const response = await fetch("/api/contact", {
@@ -92,9 +128,10 @@ export default function ContactSection() {
             <div ref={successRef} tabIndex={-1} role="status" className="rounded-lg border border-navy-line p-6">
               <b>Thank you, your message has been received.</b>
               <p className="mt-2 text-sm text-on-navy-muted">{copy[pathway].success}</p>
+              <button type="button" onClick={() => setStatus("idle")} className="text-link mt-4 inline-flex min-h-6 items-center text-sm">Send another message</button>
             </div>
           ) : (
-            <form onSubmit={submit} className="grid gap-5" aria-busy={status === "sending"} aria-describedby={status === "error" ? "contact-error" : undefined}>
+            <form onSubmit={submit} noValidate className="grid gap-5" aria-busy={status === "sending"} aria-describedby={status === "error" ? "contact-error" : undefined}>
               <fieldset>
                 <legend className="text-sm font-semibold">I’m getting in touch about</legend>
                 <div className="mt-2 flex flex-wrap gap-x-6">
@@ -107,15 +144,24 @@ export default function ContactSection() {
                 </div>
               </fieldset>
               <div className="grid gap-5 sm:grid-cols-2">
-                <label className="grid gap-2 text-sm font-semibold">Full name
-                  <input ref={nameRef} name="name" required autoComplete="name" className="form-control font-normal" />
-                </label>
-                <label className="grid gap-2 text-sm font-semibold">Email
-                  <input name="email" type="email" required autoComplete="email" className="form-control font-normal" />
-                </label>
+                <div className="grid content-start gap-2">
+                  <label htmlFor="contact-name" className="text-sm font-semibold">Full name</label>
+                  <input ref={nameRef} id="contact-name" name="name" required autoComplete="name" onInput={() => clearError("name")} aria-invalid={errors.name ? true : undefined} aria-describedby={errors.name ? "contact-name-error" : undefined} className="form-control" />
+                  {errors.name && <p id="contact-name-error" className="field-error">{errors.name}</p>}
+                </div>
+                <div className="grid content-start gap-2">
+                  <label htmlFor="contact-email" className="text-sm font-semibold">Email</label>
+                  <input id="contact-email" name="email" type="email" required autoComplete="email" inputMode="email" onInput={() => clearError("email")} aria-invalid={errors.email ? true : undefined} aria-describedby={errors.email ? "contact-email-error" : undefined} className="form-control" />
+                  {errors.email && <p id="contact-email-error" className="field-error">{errors.email}</p>}
+                </div>
               </div>
-              {pathway === "project" && (
-                <div className="grid gap-5 sm:grid-cols-2">
+              {/* Project-only fields. They stay mounted and collapse smoothly, so switching enquiry type does not make the page jump;
+                  when collapsed the fieldset is disabled (not submitted, not focusable) and inert (hidden from assistive tech). */}
+              <div>
+              <div className={`grid transition-[grid-template-rows,opacity] duration-200 ease-out ${isProject ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`} inert={!isProject}>
+                <div className="min-h-0 overflow-hidden">
+                <fieldset disabled={!isProject} className="grid gap-5 pb-5 sm:grid-cols-2">
+                  <legend className="sr-only">Project details</legend>
                   <label className="grid gap-2 text-sm font-semibold">
                     <span>Service <span className="font-normal text-on-navy-muted">(optional)</span></span>
                     <Select name="service" placeholder="Select a service" options={serviceOptions} className="font-normal" />
@@ -124,11 +170,15 @@ export default function ContactSection() {
                     <span>Budget <span className="font-normal text-on-navy-muted">(optional)</span></span>
                     <Select name="budget" placeholder="Select a budget" options={budgetOptions} className="font-normal" />
                   </label>
+                </fieldset>
                 </div>
-              )}
-              <label className="grid gap-2 text-sm font-semibold">{copy[pathway].prompt}
-                <textarea name="message" required minLength={20} maxLength={2000} rows={5} className="form-control font-normal" />
-              </label>
+              </div>
+              <div className="grid gap-2">
+                <label htmlFor="contact-message" className="text-sm font-semibold">{copy[pathway].prompt}</label>
+                <textarea id="contact-message" name="message" required minLength={20} maxLength={2000} rows={5} onInput={() => clearError("message")} aria-invalid={errors.message ? true : undefined} aria-describedby={errors.message ? "contact-message-error" : "contact-message-hint"} className="form-control" />
+                {errors.message ? <p id="contact-message-error" className="field-error">{errors.message}</p> : <p id="contact-message-hint" className="text-xs text-on-navy-muted">At least 20 characters.</p>}
+              </div>
+              </div>
               <div hidden aria-hidden="true"><label>Leave this empty<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
               {status === "error" && <p id="contact-error" role="alert" className="text-sm font-semibold text-accent-bright">The message could not be sent. Please email <a href={`mailto:${siteConfig.email}`} className="underline">{siteConfig.email}</a>.</p>}
               <div><button type="submit" disabled={status === "sending"} className="btn btn-primary">{status === "sending" ? "Sending…" : copy[pathway].submit}</button></div>

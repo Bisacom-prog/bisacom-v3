@@ -34,8 +34,9 @@ export default function Reveal({
     <div
       ref={ref}
       style={{transitionDelay: `${delay}ms`}}
-      className={`${className} transition-all duration-700 ease-out ${
-        visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
+      // Only animate for people who have not asked for reduced motion; for them content is simply visible.
+      className={`${className} motion-safe:transition-[opacity,transform] motion-safe:duration-500 motion-safe:ease-out ${
+        visible ? "translate-y-0 opacity-100" : "motion-safe:translate-y-6 motion-safe:opacity-0"
       }`}
     >
       {children}

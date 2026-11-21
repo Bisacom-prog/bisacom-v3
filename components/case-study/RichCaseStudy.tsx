@@ -79,7 +79,7 @@ export default function RichCaseStudy({project, study}: {project: FeaturedProjec
               <div className="flex flex-wrap gap-2">
                 <span className="status-tag status-tag--shipped">{statusLabels.shipped}</span>
                 <span className="inline-flex items-center gap-2 rounded-full border border-emerald-600/30 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-300">
-                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />Real client project · Live
+                  <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />Live
                 </span>
               </div>
               <h1 className="mt-5 text-5xl font-black tracking-[-0.045em] md:text-7xl">{project.title}</h1>

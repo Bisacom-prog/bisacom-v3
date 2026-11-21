@@ -401,7 +401,7 @@ export default async function ProjectPage({params}: {params: Promise<{slug: stri
               <p className="mt-6 max-w-2xl border-l-2 border-blue-400 pl-4 text-sm leading-6 text-slate-300">
                 {isClientProject
                   ? "Shipped work. Delivered outcomes below describe what was built and released. Expected impact is a design intention, not a measured result."
-                  : "Concept project, not a commercially launched product. Assumptions and validation status are stated throughout, and no measured business impact is claimed."}
+                  : "Independent concept, not a commercially launched product. Assumptions and validation status are stated throughout, and no measured business impact is claimed."}
               </p>
               <div className="mt-9 flex flex-col gap-4 sm:flex-row">
                 {(project.prototypeUrl || project.figmaUrl) && (
