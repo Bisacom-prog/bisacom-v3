@@ -10,7 +10,8 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: {canonical: "/books"},
-  openGraph: {title, description, url: `${siteConfig.url}/books`, type: "website"},
+  openGraph: {title, description, url: `${siteConfig.url}/books`, type: "website", images: [{url: "/img/From-beginner.webp", width: 1433, height: 2048, alt: "From Beginner to Hired book cover by Bismark Apenkwah"}]},
+  twitter: {card: "summary_large_image", title, description, images: ["/img/From-beginner.webp"]},
 };
 
 export default function BooksPage() {

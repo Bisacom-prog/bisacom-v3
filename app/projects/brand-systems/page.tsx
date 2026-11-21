@@ -78,6 +78,8 @@ function ColourSwatches({items}:{items:{name:string;hex:string}[]}) {
 }
 
 function ApplicationStudy({brand}:{brand:(typeof brands)[number]}) {
+  // The Bisacom study sits on deep navy; the others on cream, so the text colour follows the surface.
+  const onDark = brand.surface === "bg-[#071127]"
   return (
     <div className="grid gap-3 sm:grid-cols-3">
       {brand.applications.map((item,index)=><div key={item} className={`relative min-h-40 overflow-hidden rounded-2xl border border-white/10 ${brand.surface}`}>
@@ -85,8 +87,8 @@ function ApplicationStudy({brand}:{brand:(typeof brands)[number]}) {
         <div className="relative flex h-full min-h-40 flex-col justify-between p-5">
           <div className="relative h-16 w-28"><Image src={brand.src} alt="" fill sizes="112px" className="object-contain object-left"/></div>
           <div>
-            <span className="text-[10px] font-black uppercase tracking-[.18em] text-slate-500">Application 0{index+1}</span>
-            <p className="mt-1 text-sm font-black text-slate-900">{item}</p>
+            <span className={`text-[10px] font-black uppercase tracking-[.18em] ${onDark ? "text-slate-400" : "text-slate-600"}`}>Application 0{index+1}</span>
+            <p className={`mt-1 text-sm font-black ${onDark ? "text-white" : "text-slate-900"}`}>{item}</p>
           </div>
         </div>
       </div>)}

@@ -15,8 +15,8 @@ export default function BookGrid({books, headingLevel = "h3"}: {books: Book[]; h
           <Heading className="mt-4 text-2xl font-bold leading-tight">{book.title}</Heading>
           <p className="mt-3 flex-1 leading-7 text-muted">{book.description}</p>
           <p className="mt-4 text-sm leading-6"><b className="font-semibold">For:</b> <span className="text-muted">{book.audience}</span></p>
-          <Link href={bookHref(book)} className="text-link mt-5 self-start" aria-label={`${book.status === "available" ? "View" : "Preview"} ${book.title}`}>
-            {book.status === "available" ? "View the book" : "See the preview"}
+          <Link href={bookHref(book)} className="text-link mt-5 self-start">
+            {book.status === "available" ? "View the book" : "See the preview"}<span className="sr-only">: {book.title}</span>
           </Link>
         </li>
       ))}

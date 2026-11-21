@@ -19,11 +19,18 @@ import LightboxGallery from "@/components/case-study/LightboxGallery"
 import PhoneRail from "@/components/case-study/PhoneRail"
 import {siteConfig} from "@/lib/site"
 import MotionPrototype from "@/components/MotionPrototype"
-import {statusLabels, statusesForCaseStudy} from "@/lib/projects"
+import {featuredProjects, statusLabels, statusesForCaseStudy} from "@/lib/projects"
 
 // Cached and refreshed in the background every 5 minutes, like the homepage and services pages,
 // so case studies load fast and keep working briefly if Sanity is slow. Edits appear within 5 minutes.
 export const revalidate = 300
+
+// Listing the known projects makes these pages static (built once, refreshed every 5 minutes) instead of
+// rendered on every request. Without generateStaticParams Next.js treats [slug] as fully dynamic and ignores
+// revalidate. Any other published slug still renders on first request and is then cached the same way.
+export async function generateStaticParams() {
+  return featuredProjects.map((project) => ({slug: project.slug}))
+}
 
 export async function generateMetadata({params}: {params: Promise<{slug:string}>}): Promise<Metadata> {
   const {slug} = await params

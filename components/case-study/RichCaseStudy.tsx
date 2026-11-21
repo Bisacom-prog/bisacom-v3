@@ -109,7 +109,7 @@ export default function RichCaseStudy({project, study}: {project: FeaturedProjec
                   <span className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-white/20" />
                   <span className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-white/20" />
                   <span className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-white/20" />
-                  <span className="ml-3 truncate rounded-md bg-slate-100 px-3 py-1 text-xs text-slate-500 dark:bg-white/5 dark:text-slate-400">{liveLabel}</span>
+                  <span className="ml-3 truncate rounded-md bg-slate-100 px-3 py-1 text-xs text-slate-600 dark:bg-white/5 dark:text-slate-400">{liveLabel}</span>
                 </div>
                 <Image src={study.hero.desktop.src} width={study.hero.desktop.width} height={study.hero.desktop.height} alt={study.hero.desktop.alt} sizes="(max-width:1024px) 100vw, 640px" className="h-auto w-full" priority />
               </div>

@@ -78,13 +78,19 @@ export async function POST(request: Request) {
       "",
       message,
     ].filter(Boolean).join("\n");
+    // A network failure or timeout reaching Resend is a delivery problem (502), not a bad request,
+    // and must never be reported to the visitor as success.
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json"},
       body: JSON.stringify({from: process.env.CONTACT_FROM_EMAIL || "Bisacom Portfolio <onboarding@resend.dev>", to: [EMAIL], reply_to: email, subject: oneLine(`${body.enquiryType === "quote" ? `Quote request${body.business ? ` — ${text(body.business, 80)}` : ""}` : "Portfolio enquiry"} from ${name}`), text: details}),
+      signal: AbortSignal.timeout(10000),
+    }).catch((error) => {
+      console.error("Resend request failed", error);
+      return null;
     });
     const leadFlowOk = await leadFlow;
-    if (!response.ok && !leadFlowOk) return NextResponse.json({error: "Email could not be sent."}, {status: 502});
+    if (!response?.ok && !leadFlowOk) return NextResponse.json({error: "Email could not be sent."}, {status: 502});
     return NextResponse.json({ok: true});
   } catch {
     return NextResponse.json({error: "Invalid request."}, {status: 400});

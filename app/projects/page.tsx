@@ -13,11 +13,13 @@ export const metadata: Metadata = {
     description: "Explore shipped product work, AI and SaaS case studies, and design engineering work by Bismark Apenkwah.",
     url: "/projects",
     type: "website",
+    images: [{url: "/img/cop-norwich.webp", width: 1800, height: 1125, alt: "COP Norwich website on desktop and mobile, the lead project in Bismark Apenkwah's portfolio"}],
   },
   twitter: {
     card: "summary_large_image",
     title: "Product Design & Design Engineering",
     description: "Explore shipped product work, AI and SaaS case studies, and design engineering work by Bismark Apenkwah.",
+    images: ["/img/cop-norwich.webp"],
   },
 }
 

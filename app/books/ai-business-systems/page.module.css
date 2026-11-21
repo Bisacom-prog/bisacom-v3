@@ -129,7 +129,7 @@
 /* Outcomes */
 .outcomes { margin-top: 36px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .outcome { padding: 24px; background: var(--navy-2); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08); }
-.outcome span { font-family: var(--font-mono), monospace; font-size: 12px; color: var(--orange); }
+.outcome span { font-family: var(--font-mono), monospace; font-size: 12px; color: #ff8456; } /* lighter than --orange so 12px text meets 4.5:1 on navy */
 .outcome h3 { margin: 10px 0 0; font-size: 19px; font-weight: 800; color: #fff; }
 .outcome p { margin: 8px 0 0; font-size: 15px; line-height: 1.55; color: var(--muted-light); }
 .noteDark { margin: 28px 0 0; max-width: 760px; font-size: 15px; color: var(--muted-light); }
@@ -176,7 +176,7 @@
   .parts, .twoCol { grid-template-columns: 1fr; }
   .sequence { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sequence li:last-child { grid-column: span 2; }
-  .pricing { grid-template-columns: 1fr; padding: 28px 22px; gap: 28px; }
+  .pricing { grid-template-columns: minmax(0, 1fr); padding: 28px 22px; gap: 28px; }
   .priceCover { max-width: 180px; }
 }
 @media (max-width: 560px) {
@@ -199,4 +199,9 @@
   .heroActions .buyGroup, .heroActions .buy, .final .buyGroup, .final .buy { width: 100%; }
   .heroActions .ghost { width: 100%; justify-content: center; }
   .buy, .priceBody .buy { padding: 0 20px; font-size: 18px; white-space: nowrap; }
+}
+
+/* Very small phones: let the buy button fit inside the pricing card instead of widening the page. */
+@media (max-width: 360px) {
+  .buy, .priceBody .buy { padding: 0 14px; font-size: 16px; }
 }

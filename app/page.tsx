@@ -140,8 +140,8 @@ export default async function Page() {
                     )}
                     <p className="mt-5 text-xs text-slate-500 dark:text-slate-400">{project.tools.join(" · ")}</p>
                     <div className="mt-auto flex flex-wrap gap-x-6 gap-y-2 pt-5 text-sm">
-                      <Link href={`/projects/${project.slug}`} className="text-link inline-flex min-h-6 items-center" aria-label={`Read the ${project.title} case study`}>Read case study →</Link>
-                      {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-link" aria-label={`Visit the live ${project.title} site (opens in a new tab)`}>Visit live site ↗</a>}
+                      <Link href={`/projects/${project.slug}`} className="text-link inline-flex min-h-6 items-center" >Read case study<span className="sr-only">: {project.title}</span> →</Link>
+                      {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-link">Visit live site<span className="sr-only">: {project.title}, opens in a new tab</span> ↗</a>}
                     </div>
                   </div>
                 </article>
@@ -173,8 +173,8 @@ export default async function Page() {
                   )}
                   <p className="mt-5 text-xs text-slate-500 dark:text-slate-400">{project.tools.join(" · ")}</p>
                   <div className="mt-auto flex flex-wrap gap-x-6 gap-y-2 pt-5 text-sm">
-                    <Link href={`/projects/${project.slug}`} className="text-link inline-flex min-h-6 items-center" aria-label={`Read the ${project.title} case study`}>Read case study →</Link>
-                    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-link" aria-label={`Visit the live ${project.title} site (opens in a new tab)`}>Visit live site ↗</a>}
+                    <Link href={`/projects/${project.slug}`} className="text-link inline-flex min-h-6 items-center" >Read case study<span className="sr-only">: {project.title}</span> →</Link>
+                    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-link">Visit live site<span className="sr-only">: {project.title}, opens in a new tab</span> ↗</a>}
                   </div>
                 </div>
               </article>
@@ -202,7 +202,7 @@ export default async function Page() {
                   )}
                   <p className="mt-5 text-xs leading-5 text-slate-500 dark:text-slate-400"><b className="font-semibold text-slate-700 dark:text-slate-300">Status:</b> {project.outcome}</p>
                   <div className="mt-auto pt-5 text-sm">
-                    <Link href={`/projects/${project.slug}`} className="text-link inline-flex min-h-6 items-center" aria-label={`View the ${project.title} project`}>View project →</Link>
+                    <Link href={`/projects/${project.slug}`} className="text-link inline-flex min-h-6 items-center" >View project<span className="sr-only">: {project.title}</span> →</Link>
                   </div>
                 </div>
               </article>
@@ -301,7 +301,7 @@ export default async function Page() {
                   <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">{book.statusLabel}</p>
                   <h3 className="mt-1 text-lg font-black text-slate-950 dark:text-white">{book.title}</h3>
                   <p className="mt-1 line-clamp-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{book.description}</p>
-                  <Link href={`/books/${book.slug}`} className="text-link mt-2 inline-block text-sm" aria-label={`View ${book.title}`}>View the book →</Link>
+                  <Link href={`/books/${book.slug}`} className="text-link mt-2 inline-block text-sm" >View the book<span className="sr-only">: {book.title}</span> →</Link>
                 </div>
               </li>
             ))}
