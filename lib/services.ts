@@ -23,7 +23,7 @@ export const serviceDetails = {
     deliverables: ["Requirements and scope call", "Primary user flow and low-fidelity wireframes", "Five to eight responsive high-fidelity screens", "Reusable Figma components and states", "Clickable prototype and one revision round"],
     process: ["Clarify the user, task and constraints", "Map the minimum viable journey", "Review wireframes before visual design", "Build and refine the high-fidelity prototype"],
     duration: "Typically 1–2 weeks",
-    caseStudy: {label: "ShiftFlow case study", href: "/projects/short-notice-shift-coverage"} as {label: string; href: string} | undefined,
+    caseStudy: {label: "LeadFlow case study", href: "/projects/leadflow"} as {label: string; href: string} | undefined,
   },
   "website-design-norwich": {
     title: "Website Design & Build",

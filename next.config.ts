@@ -39,6 +39,8 @@ const nextConfig: NextConfig = {
     return [
       {source: "/from-beginner-to-hired", destination: "/books/from-beginner-to-hired", permanent: true},
       {source: "/ai-business-systems", destination: "/books/ai-business-systems", permanent: true},
+      // ShiftFlow was replaced by LeadFlow on the portfolio.
+      {source: "/projects/short-notice-shift-coverage", destination: "/projects/leadflow", permanent: true},
       // Insights was removed; old article links land on the homepage.
       {source: "/blog", destination: "/", permanent: true},
       {source: "/blog/:path*", destination: "/", permanent: true},

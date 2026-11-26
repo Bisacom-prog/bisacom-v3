@@ -2,7 +2,7 @@ import Link from "next/link"
 import {client} from "../../sanity/lib/client"
 import {projectsIndexQuery} from "../../sanity/lib/queries"
 import type {Metadata} from "next"
-import {featuredProjects, statusLabels, statusesForCaseStudy} from "@/lib/projects"
+import {featuredProjects, retiredProjectSlugs, statusLabels, statusesForCaseStudy} from "@/lib/projects"
 
 export const metadata: Metadata = {
   title: "Product Design & Design Engineering",
@@ -59,7 +59,8 @@ const fallbackProjects: ProjectCard[] = featuredProjects.map((project) => ({
 export const revalidate = 60
 
 export default async function ProjectsPage() {
-  const sanityProjects = await client.fetch<ProjectCard[]>(projectsIndexQuery).catch(() => [] as ProjectCard[])
+  const sanityProjects = (await client.fetch<ProjectCard[]>(projectsIndexQuery).catch(() => [] as ProjectCard[]))
+    .filter((project) => !retiredProjectSlugs.has(project.slug ?? ""))
   const sanitySlugs = new Set(sanityProjects.map((project) => project.slug))
   // Portfolio order follows lib/projects.ts; anything only in Sanity goes after it.
   const order = featuredProjects.map((project) => project.slug)

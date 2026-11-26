@@ -670,6 +670,7 @@ html { scroll-padding-top: 5.5rem; }
 .status-tag--shipped::before, .status-tag--available::before { border-radius: 999px; background: #22c55e; }
 .status-tag--concept::before, .status-tag--upcoming::before { border: 1.5px solid currentColor; border-radius: 999px; }
 .status-tag--research::before { border: 1.5px solid currentColor; }
+.status-tag--build::before { border-radius: .15rem; background: #3b82f6; }
 .status-tag--prototype::before { background: currentColor; transform: rotate(45deg); width: .42rem; height: .42rem; }
 .nav-link { display: inline-flex; align-items: center; min-height: 2.75rem; }
 .nav-link::after { bottom: .35rem; }

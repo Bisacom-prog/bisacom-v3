@@ -2,6 +2,7 @@ import type {MetadataRoute} from "next";
 import {client} from "@/sanity/lib/client";
 import {siteConfig} from "@/lib/site";
 import {books} from "@/lib/books";
+import {featuredProjects, retiredProjectSlugs} from "@/lib/projects";
 
 type SitemapProject = {
   slug: string;
@@ -39,7 +40,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         {next: {revalidate: 3600}},
     );
 
-    const projectRoutes: MetadataRoute.Sitemap = projects.map((project) => ({
+    const live = projects.filter((project) => !retiredProjectSlugs.has(project.slug));
+    const sanitySlugs = new Set(live.map((project) => project.slug));
+    // Projects with a local case study only (lib/projects.ts) are listed too.
+    const localOnly = featuredProjects.filter((project) => !sanitySlugs.has(project.slug)).map((project) => ({slug: project.slug, updatedAt: undefined as string | undefined}));
+    const projectRoutes: MetadataRoute.Sitemap = [...live, ...localOnly].map((project) => ({
       url: `${siteConfig.url}/projects/${project.slug}`,
       lastModified: project.updatedAt ? new Date(project.updatedAt) : undefined,
       changeFrequency: "monthly",

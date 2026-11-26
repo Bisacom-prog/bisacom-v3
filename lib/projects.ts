@@ -1,10 +1,11 @@
-export type ProjectStatus = "shipped" | "concept" | "research" | "prototype";
+export type ProjectStatus = "shipped" | "concept" | "research" | "prototype" | "build";
 
 export const statusLabels: Record<ProjectStatus, string> = {
   shipped: "Shipped client project",
   concept: "Independent concept",
   research: "Independent concept",
   prototype: "Interactive prototype",
+  build: "Working build",
 };
 
 export type FeaturedProject = {
@@ -29,6 +30,10 @@ export type FeaturedProject = {
   // What a concept project explores. Drawn from the published case study, not from testing.
   highlights?: string[];
 };
+
+// Projects taken off the portfolio. They may still exist in Sanity, so lists and the sitemap skip them,
+// and next.config.ts redirects their old URLs.
+export const retiredProjectSlugs = new Set(["short-notice-shift-coverage"]);
 
 // Copy is drawn from the published case studies in Sanity. Keep outcome statements verifiable.
 export const featuredProjects: FeaturedProject[] = [
@@ -121,19 +126,20 @@ export const featuredProjects: FeaturedProject[] = [
     highlights: ["Problem definition for stressed drivers", "Mechanic matching and dispatch", "Live tracking and repair progress", "AI-assisted diagnosis during the wait"],
   },
   {
-    slug: "short-notice-shift-coverage",
-    title: "ShiftFlow",
-    category: "B2B SaaS, complex workflow",
-    statuses: ["concept", "prototype"],
-    description: "A role-based workflow that takes shift-based teams from an unexpected absence to a confirmed replacement, with everyone affected notified.",
-    role: "Product Designer",
-    tools: ["Figma", "FigJam"],
-    problem: "Short-notice absence is a recurring operational problem in shift-based work, and finding cover spreads across too many steps.",
-    approach: "One workflow connecting absence reporting, suitable-staff matching, cover requests, manager confirmation and rota updates.",
-    outcome: "Defined MVP and interactive prototype. Not tested in a live organisation, so no business impact is claimed.",
-    image: "/img/shift-coverage.png",
-    imageAlt: "Shift coverage dashboard showing one uncovered shift that requires attention and a table of recent coverage activity",
-    highlights: ["Absence reporting to confirmed cover", "Manager (desktop) and employee (mobile) roles", "Suitable-staff matching and cover requests", "Rota updates and notifications"],
+    slug: "leadflow",
+    title: "LeadFlow",
+    category: "B2B SaaS, AI enquiry workflow",
+    statuses: ["concept", "build"],
+    description: "An enquiry dashboard for a small service business. AI summarises and scores every enquiry and drafts a reply, and nothing is sent until the owner approves it.",
+    role: "Product Design Engineer",
+    tools: ["Next.js", "TypeScript", "Tailwind CSS", "n8n", "Google Sheets", "Vercel"],
+    problem: "Enquiries arrive through the website, walk-ins, calls and WhatsApp. Without one place to triage them, good leads wait too long for a reply or are forgotten.",
+    approach: "An n8n workflow analyses and scores each enquiry and drafts a reply for approval. A Next.js dashboard turns the results into a decision queue, pipeline and analytics, and staff can log offline enquiries so they are scored the same way.",
+    outcome: "Working build handling Bisacom’s own enquiries from bisacom.dev. Not yet used by another business, so no business impact is claimed.",
+    image: "/img/leadflow.webp",
+    imageSize: [1800, 1125],
+    imageAlt: "LeadFlow dashboard with sample data, showing four enquiries awaiting a decision ranked by score, and figures for enquiries, open pipeline, win rate and reply time",
+    highlights: ["AI summary and score on every enquiry", "Owner approves every AI-drafted reply", "Walk-ins, calls and WhatsApp logged with web leads", "Pipeline, analytics and CSV export"],
   },
 ];
 
